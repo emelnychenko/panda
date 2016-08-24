@@ -6,14 +6,26 @@
  *  @author  Eugen Melnychenko
  */
 
+/**
+ *  Native boot with fast class map incuding.
+ */
 class BootPanda
 {
     const PANDA_FOUNDATION_DIR      = '/Foundation';
     const PANDA_FRAMEWORK_DIR       = '/Framework';
-    const PANDA_NATIVELOADER_MAP    = '/BootPanda.map.php';
+    const PANDA_NATIVELOADER_MAP    = '/bootpanda.map.php';
 
+    /**
+     *  @var array
+     */
     protected $nativeloader_map;
 
+    /**
+     *  Initialize class by static::app($force = false) action.
+     *  Force param mean than every boot build class map.
+     *
+     *  @var bool $force
+     */
     protected function __construct($force = false)
     {
         $nativeloader_map = __DIR__ . static::PANDA_NATIVELOADER_MAP;
@@ -24,6 +36,14 @@ class BootPanda
         spl_autoload_register(array($this, '__spl_processor'));
     }
 
+    /**
+     *  System finder all classes in child directories.
+     *
+     *  @var string $directory
+     *  @var array  $collection
+     *
+     *  @return array
+     */
     protected function __find_nativeloader_classes($directory, &$collection = array())
     {
         $items = glob($directory . '/*');
@@ -43,6 +63,11 @@ class BootPanda
         return $collection;
     }
 
+    /**
+     *  Export map class to BootPanda.map.php file.
+     *
+     *  @return array
+     */
     protected function __make_nativeloader_map()
     {
         $collection = array();
@@ -61,13 +86,18 @@ class BootPanda
         file_put_contents(
             __DIR__ . static::PANDA_NATIVELOADER_MAP, 
             sprintf(
-                "<?php\n\nreturn %s;", var_export($collection, true)
+                "<?php\n\nreturn %s;\n", var_export($collection, true)
             )
         );
 
         return $collection;
     }
 
+    /**
+     *  SPL Autoloder processor.
+     *
+     *  @var string $class
+     */
     public function __spl_processor($class)
     {
         if (
@@ -77,6 +107,11 @@ class BootPanda
         }
     }
 
+    /**
+     *  Factory execution.
+     *
+     *  @var bool $force
+     */
     public static function app($force = false)
     {
         new static($force);
