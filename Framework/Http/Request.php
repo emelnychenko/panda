@@ -1,8 +1,8 @@
 <?php
 /**
- *  Panda PHP Framework
+ *  Panda PHP Foundation, Packages and Framework
  *
- *  @package Panda
+ *  @package Panda Framework
  *  @author  Eugen Melnychenko
  */
 
@@ -12,19 +12,35 @@ use Panda\Foundation\Http\ClientRequestedAbstract;
 use Panda\Foundation\Support\EssenceReadableInstance;
 
 /**
- *  Client Request Processor
+ *  Http Request Instance
  *
  *  @subpackage Http
  */
 class Request extends ClientRequestedAbstract implements RequestInterface
 {
+    /**
+     *  @var \Panda\Foundation\Support\EssenceReadableInstance
+     */
     protected $json     = null;
 
+    /**
+     *  Check if request XMLHttpRequest.
+     *
+     *  @return mixed
+     */
     public function xhr()
     {
         return $this->server->xmlhttprequest();
     }
 
+    /**
+     *  Get json output value or container.
+     *
+     *  @var mixed $key
+     *  @var mixed $default
+     *
+     *  @return mixed
+     */
     public function json($key = null, $default = null)
     {
         if (
@@ -45,4 +61,3 @@ class Request extends ClientRequestedAbstract implements RequestInterface
         return $this->json->get($key, $default);
     }
 }
-
