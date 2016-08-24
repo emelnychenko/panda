@@ -1,8 +1,8 @@
 <?php
 /**
- *  Panda PHP Framework
+ *  Panda PHP Foundation, Packages and Framework
  *
- *  @package Panda
+ *  @package Panda Framework
  *  @author  Eugen Melnychenko
  */
 
