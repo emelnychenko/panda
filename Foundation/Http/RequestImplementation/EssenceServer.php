@@ -33,7 +33,7 @@ class EssenceServer extends EssenceReadableInstance
                 $matches
             )
         ) {
-            $language = [];
+            $language = array();
 
             foreach (array_combine($matches[1], $matches[2]) as $key => $value) {
                 $language[$key] = empty($value) ? 1 : (float) $value;
