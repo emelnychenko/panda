@@ -9,12 +9,11 @@
 namespace Panda\Foundation\Support;
 
 /**
- *  Writeable Container Factory
+ *  Writeable Container Instance
  *
  *  @subpackage Support
  */
 class EssenceWriteableInstance extends EssenceWriteableAbstract
 {
-    # code ... 
+    # imeplementaion ... 
 }
-

@@ -15,6 +15,32 @@ namespace Panda\Foundation\Support;
  */
 interface EssenceWriteableInterface
 {
-    public function add($container);
+    /**
+     *  Set container array data.
+     *
+     *  @var array $container
+     *
+     *  @return \Panda\Foundation\Support\EssenceWriteableAbstract
+     */
+    public function add(array $container = null);
+
+    /**
+     *  Set container by key.
+     *
+     *  @var array $key
+     *  @var array $equal
+     *
+     *  @return \Panda\Foundation\Support\EssenceWriteableAbstract
+     */
+    public function set($key, $equal);
+
+    /**
+     *  Set magic container by key.
+     *
+     *  @var array $key
+     *  @var array $equal
+     *
+     *  @return \Panda\Foundation\Support\EssenceWriteableAbstract
+     */
     public function __set($key, $equal);
 }
