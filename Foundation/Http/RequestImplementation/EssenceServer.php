@@ -1,8 +1,8 @@
 <?php
 /**
- *  Panda PHP Framework
+ *  Panda PHP Foundation, Packages and Framework
  *
- *  @package Panda
+ *  @package Panda Foundation
  *  @author  Eugen Melnychenko
  */
 
@@ -19,6 +19,8 @@ class EssenceServer extends EssenceReadableInstance
 {
     /**
      *  Get client locale or verify if locale is $question.
+     *
+     *  @var mixed $default
      *
      *  @return mixed
      */
@@ -55,6 +57,8 @@ class EssenceServer extends EssenceReadableInstance
     /**
      *  Get uri path.
      *
+     *  @var mixed $default
+     *
      *  @return string
      */
     public function uri($default = null)
@@ -65,6 +69,8 @@ class EssenceServer extends EssenceReadableInstance
     /**
      *  Get url path (without uri).
      *
+     *  @var mixed $default
+     *
      *  @return string
      */
     public function url($default = null)
@@ -74,6 +80,8 @@ class EssenceServer extends EssenceReadableInstance
 
     /**
      *  Get request method or verify if method is $question.
+     *
+     *  @var mixed $default
      *
      *  @return mixed
      */
@@ -87,6 +95,8 @@ class EssenceServer extends EssenceReadableInstance
     /**
      *  Get client IP.
      *
+     *  @var mixed $default
+     *
      *  @return string
      */
     public function ip($default = '127.0.0.1')
@@ -96,6 +106,8 @@ class EssenceServer extends EssenceReadableInstance
 
     /**
      *  Get client user agent.
+     *
+     *  @var mixed $default
      *
      *  @return string
      */
@@ -107,6 +119,8 @@ class EssenceServer extends EssenceReadableInstance
     /**
      *  Get domain.
      *
+     *  @var mixed $default
+     *
      *  @return string
      */
     public function domain($default = null)
@@ -116,6 +130,8 @@ class EssenceServer extends EssenceReadableInstance
 
     /**
      *  Get document root.
+     *
+     *  @var mixed $default
      *
      *  @return string
      */
