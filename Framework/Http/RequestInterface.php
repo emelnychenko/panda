@@ -8,8 +8,6 @@
 
 namespace Panda\Http;
 
-use Panda\Foundation\Http\RoutingDispatchAbstract;
-
 /**
  *  Client Request Processor
  *

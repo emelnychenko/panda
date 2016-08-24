@@ -17,6 +17,6 @@ use Panda\Foundation\Support\EssenceReadableInstance;
  */
 class EssenceFiles extends EssenceReadableInstance
 {
-    
+    # implementation ... 
 }
 

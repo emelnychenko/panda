@@ -11,7 +11,6 @@ namespace Panda\Foundation\Http;
 use Panda\Foundation\Http\RequestImplementation\EssenceFiles;
 use Panda\Foundation\Http\RequestImplementation\EssenceCookie;
 use Panda\Foundation\Http\RequestImplementation\EssenceServer;
-
 use Panda\Foundation\Support\EssenceReadableInstance;
 
 /**
