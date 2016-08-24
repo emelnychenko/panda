@@ -3,11 +3,13 @@
 return array (
   'Panda\\Foundation\\Http\\ClientRequestedAbstract' => '/Foundation/Http/ClientRequestedAbstract.php',
   'Panda\\Foundation\\Http\\ClientRequestedInterface' => '/Foundation/Http/ClientRequestedInterface.php',
+  'Panda\\Foundation\\Http\\ClientResponseAbstract' => '/Foundation/Http/ClientResponseAbstract.php',
+  'Panda\\Foundation\\Http\\ClientResponseInterface' => '/Foundation/Http/ClientResponseInterface.php',
   'Panda\\Foundation\\Http\\ControllerListener' => '/Foundation/Http/ControllerListener.php',
-  'Panda\\Foundation\\Http\\RenderResponseAbstract' => '/Foundation/Http/RenderResponseAbstract.php',
   'Panda\\Foundation\\Http\\RequestImplementation\\EssenceCookie' => '/Foundation/Http/RequestImplementation/EssenceCookie.php',
   'Panda\\Foundation\\Http\\RequestImplementation\\EssenceFiles' => '/Foundation/Http/RequestImplementation/EssenceFiles.php',
   'Panda\\Foundation\\Http\\RequestImplementation\\EssenceServer' => '/Foundation/Http/RequestImplementation/EssenceServer.php',
+  'Panda\\Foundation\\Http\\ResponseImplementation\\EssenceHeaders' => '/Foundation/Http/ResponseImplementation/EssenceHeaders.php',
   'Panda\\Foundation\\Http\\RouterImplementation\\EssenceRoutes' => '/Foundation/Http/RouterImplementation/EssenceRoutes.php',
   'Panda\\Foundation\\Http\\RoutingDispatchAbstract' => '/Foundation/Http/RoutingDispatchAbstract.php',
   'Panda\\Foundation\\Support\\EssenceReadableAbstract' => '/Foundation/Support/EssenceReadableAbstract.php',
@@ -20,5 +22,6 @@ return array (
   'Panda\\Http\\Request' => '/Framework/Http/Request.php',
   'Panda\\Http\\RequestInterface' => '/Framework/Http/RequestInterface.php',
   'Panda\\Http\\Response' => '/Framework/Http/Response.php',
+  'Panda\\Http\\ResponseInterface' => '/Framework/Http/ResponseInterface.php',
   'Panda\\Http\\Router' => '/Framework/Http/Router.php',
 );

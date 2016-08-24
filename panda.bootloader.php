@@ -6,14 +6,16 @@
  *  @author  Eugen Melnychenko
  */
 
+include 'panda.complitable.php';
+
 /**
  *  Native boot with fast class map incuding.
  */
-class BootPanda
+class PandaBootloader
 {
     const PANDA_FOUNDATION_DIR      = '/Foundation';
     const PANDA_FRAMEWORK_DIR       = '/Framework';
-    const PANDA_NATIVELOADER_MAP    = '/bootpanda.map.php';
+    const PANDA_NATIVELOADER_MAP    = '/panda.bootloader.map.php';
 
     /**
      *  @var array
