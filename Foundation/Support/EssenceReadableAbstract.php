@@ -17,6 +17,11 @@ abstract class EssenceReadableAbstract implements EssenceReadableInterface
 {
     protected $container;
 
+    public function get($key, $default = null)
+    {
+        return array_key_exists($key, $this->container) ? $this->container[$key] : $default;
+    }
+
     public function only($keys)
     {
         $keys = is_array($keys) ? $keys : func_get_args();
@@ -60,12 +65,12 @@ abstract class EssenceReadableAbstract implements EssenceReadableInterface
 
     public function __get($key)
     {
-        return array_key_exists($key, $this->container);
+        return $this->get($key);
     }
 
     public function __isset($key)
     {
-        return !is_null($this->__get($key));
+        return array_key_exists($key, $this->container);
     }
 }
 

@@ -17,14 +17,14 @@ abstract class EssenceWriteableAbstract extends EssenceReadableAbstract implemen
 {
     public function add($container)
     {
-        $this->container = $this->array_replace($this->container, $container);
+        $this->container = array_replace($this->container, $container);
 
         return $this;
     }
 
     public function __set($key, $equal)
     {
-        return $this->container[$key] = $value;
+        return $this->container[$key] = $equal;
     }
 }
 
