@@ -11,7 +11,7 @@ namespace Panda\Foundation\Http\RequestImplementation;
 use Panda\Foundation\Support\EssenceReadableInstance;
 
 /**
- *  Client Request Processor
+ *  Client Request Essence Server
  *
  *  @subpackage Http
  */
