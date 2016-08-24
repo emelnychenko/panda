@@ -1,8 +1,8 @@
 <?php
 /**
- *  Panda PHP Framework
+ *  Panda PHP Foundation, Packages and Framework
  *
- *  @package Panda
+ *  @package Panda Foundation
  *  @author  Eugen Melnychenko
  */
 
@@ -162,6 +162,8 @@ abstract class ClientRequestedAbstract implements ClientRequestedInterface
     /**
      *  Get request method or verify if method is $question.
      *
+     *  @var mixed $question
+     *
      *  @return mixed
      */
     public function method($question = null)
@@ -183,6 +185,8 @@ abstract class ClientRequestedAbstract implements ClientRequestedInterface
 
     /**
      *  Get client locale or verify if locale is $question.
+     *
+     *  @var mixed $question
      *
      *  @return mixed
      */
