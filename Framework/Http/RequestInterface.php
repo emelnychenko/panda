@@ -15,20 +15,5 @@ namespace Panda\Http;
  */
 interface RequestInterface
 {
-    /**
-     *  Check if request XMLHttpRequest.
-     *
-     *  @return mixed
-     */
-    public function xhr();
-
-    /**
-     *  Get json output value or container.
-     *
-     *  @var mixed $key
-     *  @var mixed $default
-     *
-     *  @return mixed
-     */
-    public function json($key = null, $default = null);
+    # implements ...
 }

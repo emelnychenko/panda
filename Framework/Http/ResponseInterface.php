@@ -24,7 +24,7 @@ interface ResponseInterface
      *
      *  @return \Panda\Http\Response
      */
-    public static function text($content = '', $status = 200, $headers = array());
+    public static function text($content = '', $status = 200, array $headers = array());
 
     /**
      *  Create text/html response.
@@ -35,7 +35,7 @@ interface ResponseInterface
      *
      *  @return \Panda\Http\Response
      */
-    public static function html($content = '', $status = 200, $headers = array());
+    public static function html($content = '', $status = 200, array $headers = array());
 
     /**
      *  Create application/json response.
@@ -46,7 +46,7 @@ interface ResponseInterface
      *
      *  @return \Panda\Http\Response
      */
-    public static function json($content = '', $status = 200, $headers = array());
+    public static function json($content = '', $status = 200, array $headers = array());
 
     /**
      *  Create application/xml response.
@@ -57,5 +57,5 @@ interface ResponseInterface
      *
      *  @return \Panda\Http\Response
      */
-    public static function xml($content = '', $status = 200, $headers = array());
+    public static function xml($content = '', $status = 200, array $headers = array());
 }
