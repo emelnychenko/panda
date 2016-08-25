@@ -24,7 +24,7 @@ interface ClientResponseInterface
      *
      *  @return mixed
      */
-    public static function create($content = '', $status = 200, $headers = array());
+    public static function create($content = '', $status = 200, array $headers = array());
 
     /**
      *  Get status, set status code.

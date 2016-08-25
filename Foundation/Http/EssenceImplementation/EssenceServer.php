@@ -6,7 +6,7 @@
  *  @author  Eugen Melnychenko
  */
 
-namespace Panda\Foundation\Http\RequestImplementation;
+namespace Panda\Foundation\Http\EssenceImplementation;
 
 use Panda\Foundation\Support\EssenceReadableInstance;
 
@@ -52,6 +52,13 @@ class EssenceServer extends EssenceReadableInstance
         }
         
         return $default;
+    }
+
+    public function is_json()
+    {
+        return preg_match(
+            '/(text|application)\/json/i', $this->get('CONTENT_TYPE')
+        );
     }
 
     /**

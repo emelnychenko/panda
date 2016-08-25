@@ -15,5 +15,13 @@ namespace Panda\Foundation\Support;
  */
 class EssenceWriteableInstance extends EssenceWriteableAbstract
 {
-    # imeplementaion ... 
+    /**
+     *  Single setter - __construct.
+     *
+     *  @var mixed  $container
+     */
+    public function __construct(array $container = null)
+    {
+        $this->container = is_array($container) ? $container : func_get_args();
+    }
 }

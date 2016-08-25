@@ -8,9 +8,9 @@
 
 namespace Panda\Foundation\Http;
 
-use Panda\Foundation\Http\RequestImplementation\EssenceFiles;
-use Panda\Foundation\Http\RequestImplementation\EssenceCookie;
-use Panda\Foundation\Http\RequestImplementation\EssenceServer;
+use Panda\Foundation\Http\EssenceImplementation\EssenceFiles;
+use Panda\Foundation\Http\EssenceImplementation\EssenceCookie;
+use Panda\Foundation\Http\EssenceImplementation\EssenceServer;
 use Panda\Foundation\Support\EssenceReadableInstance;
 
 /**
@@ -56,6 +56,11 @@ abstract class ClientRequestedAbstract implements ClientRequestedInterface
     public $server      = null;
 
     /**
+     *  @var \Panda\Foundation\Support\EssenceReadableInstance
+     */
+    protected $json     = null;
+
+    /**
      *  Simple constructor.
      *
      *  @var array $query 
@@ -97,6 +102,188 @@ abstract class ClientRequestedAbstract implements ClientRequestedInterface
                 'REQUEST_TIME'          => time(),
             ), $server)
         );
+    }
+
+    /**
+     *  Get main essence.
+     *
+     *  @return @var \Panda\Foundation\Support\EssenceReadableInstance
+     */
+    public function source()
+    {
+        if (
+            $this->is_json()
+        ) {
+            return $this->json();
+        }
+
+        return $this->method('get') ? $this->query : $this->request;
+    }
+
+    /**
+     *  Get only array keys from main essence.
+     *
+     *  @var mixed $key
+     *
+     *  @return array
+     */
+    public function only($keys)
+    {
+        $keys = is_array($keys) ? $keys : func_get_args();
+
+        return $this->source()->only($keys);
+    }
+
+    /**
+     *  Get actual array dataset from main essence.
+     *
+     *  @return array
+     */
+    public function all()
+    {
+        return $this->source()->all();
+    }
+
+    /**
+     *  Get request essence, request param.
+     *
+     *  @var mixed $key
+     *  @var mixed $default
+     *
+     *  @return mixed
+     */
+    public function input($key = null, $default = null)
+    {
+        if (
+            $key === null
+        ) {
+            return $this->source();
+        }
+
+        return $this->source()->get($key, $default);
+    }
+
+    /**
+     *  Get query essence, query param.
+     *
+     *  @var mixed $key
+     *  @var mixed $default
+     *
+     *  @return mixed
+     */
+    public function query($key = null, $default = null)
+    {
+        if ($key === null) {
+            return $this->query;
+        }
+
+        return $this->query->get($key, $default);
+    }
+
+    /**
+     *  Get request essence, request param.
+     *
+     *  @var mixed $key
+     *  @var mixed $default
+     *
+     *  @return mixed
+     */
+    public function request($key = null, $default = null)
+    {
+        if ($key === null) {
+            return $this->request;
+        }
+
+        return $this->request->get($key, $default);
+    }
+
+    /**
+     *  Get cookie essence, cookie param.
+     *
+     *  @var mixed $key
+     *  @var mixed $default
+     *
+     *  @return mixed
+     */
+    public function cookie($key = null, $default = null)
+    {
+        if ($key === null) {
+            return $this->cookie;
+        }
+
+        return $this->cookie->get($key, $default);
+    }
+
+    /**
+     *  Get files essence, files param.
+     *
+     *  @var mixed $key
+     *  @var mixed $default
+     *
+     *  @return mixed
+     */
+    public function file($key = null, $default = null)
+    {
+        if ($key === null) {
+            return $this->files;
+        }
+
+        return $this->files->get($key, $default);
+    }
+
+    /**
+     *  Get server essence, server param.
+     *
+     *  @var mixed $key
+     *  @var mixed $default
+     *
+     *  @return mixed
+     */
+    public function server($key = null, $default = null)
+    {
+        if ($key === null) {
+            return $this->server;
+        }
+
+        return $this->server->get($key, $default);
+    }
+
+    /**
+     *  Get json output value or container.
+     *
+     *  @var mixed $key
+     *  @var mixed $default
+     *
+     *  @return mixed
+     */
+    public function json($key = null, $default = null)
+    {
+        if (
+            $this->json === null
+        ) {
+            $bufferize  = @json_decode(file_get_contents('php://input'), true);
+        
+            $this->json = new EssenceReadableInstance(
+                isset($bufferize) ? $bufferize : array()
+            );
+        }
+
+        if (is_null($key)) {
+            return $this->json;
+        }
+
+
+        return $this->json->get($key, $default);
+    }
+
+    /**
+     *  Verify if request is json content type.
+     *
+     *  @return bool
+     */
+    public function is_json()
+    {
+        return $this->server->is_json();
     }
 
     /**
@@ -205,6 +392,16 @@ abstract class ClientRequestedAbstract implements ClientRequestedInterface
         }
 
         return $this->locale;
+    }
+
+    /**
+     *  Check if request XMLHttpRequest.
+     *
+     *  @return mixed
+     */
+    public function xhr()
+    {
+        return $this->server->xmlhttprequest();
     }
 
     /**

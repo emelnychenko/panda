@@ -8,7 +8,7 @@
 
 namespace Panda\Foundation\Http;
 
-use Panda\Foundation\Http\ResponseImplementation\EssenceHeaders;
+use Panda\Foundation\Http\EssenceImplementation\EssenceHeaders;
 
 /**
  *  Client Response Abstract
@@ -161,7 +161,7 @@ abstract class ClientResponseAbstract implements ClientResponseInterface
      *  @var integer $status
      *  @var array   $headers
      */
-    public function __construct($content = '', $status = 200, $headers = array())
+    public function __construct($content = '', $status = 200, array $headers = array())
     {
         $this->content($content); $this->status($status);
     
@@ -177,7 +177,7 @@ abstract class ClientResponseAbstract implements ClientResponseInterface
      *
      *  @return \Panda\Foundation\Http\ClientResponseAbstract
      */
-    public static function create($content = '', $status = 200, $headers = array())
+    public static function create($content = '', $status = 200, array $headers = array())
     {
         return new static($content, $status, $headers);
     } 

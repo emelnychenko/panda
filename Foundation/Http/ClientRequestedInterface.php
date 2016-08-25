@@ -16,6 +16,106 @@ namespace Panda\Foundation\Http;
 interface ClientRequestedInterface
 {
     /**
+     *  Get main essence.
+     *
+     *  @return @var \Panda\Foundation\Support\EssenceReadableInstance
+     */
+    public function source();
+    
+    /**
+     *  Get only array keys from main essence.
+     *
+     *  @var mixed $key
+     *
+     *  @return array
+     */
+    public function only($keys);
+
+    /**
+     *  Get actual array dataset from main essence.
+     *
+     *  @return array
+     */
+    public function all();
+
+    /**
+     *  Get request essence, request param.
+     *
+     *  @var mixed $key
+     *  @var mixed $default
+     *
+     *  @return mixed
+     */
+    public function input($key = null, $default = null);
+
+    /**
+     *  Get query essence, query param.
+     *
+     *  @var mixed $key
+     *  @var mixed $default
+     *
+     *  @return mixed
+     */
+    public function query($key = null, $default = null);
+
+    /**
+     *  Get request essence, request param.
+     *
+     *  @var mixed $key
+     *  @var mixed $default
+     *
+     *  @return mixed
+     */
+    public function request($key = null, $default = null);
+
+    /**
+     *  Get cookie essence, cookie param.
+     *
+     *  @var mixed $key
+     *  @var mixed $default
+     *
+     *  @return mixed
+     */
+    public function cookie($key = null, $default = null);
+
+    /**
+     *  Get files essence, files param.
+     *
+     *  @var mixed $key
+     *  @var mixed $default
+     *
+     *  @return mixed
+     */
+    public function file($key = null, $default = null);
+
+    /**
+     *  Get server essence, server param.
+     *
+     *  @var mixed $key
+     *  @var mixed $default
+     *
+     *  @return mixed
+     */
+    public function server($key = null, $default = null);
+
+    /**
+     *  Get json output value or container.
+     *
+     *  @var mixed $key
+     *  @var mixed $default
+     *
+     *  @return mixed
+     */
+    public function json($key = null, $default = null);
+
+    /**
+     *  Verify if request is json content type.
+     *
+     *  @return bool
+     */
+    public function is_json();
+
+    /**
      *  Get uri path.
      *
      *  @return string
@@ -70,6 +170,13 @@ interface ClientRequestedInterface
      *  @return mixed
      */
     public function locale($question = null);
+
+    /**
+     *  Check if request XMLHttpRequest.
+     *
+     *  @return mixed
+     */
+    public function xhr();
 
     /**
      *  Check if request XMLHttpRequest.

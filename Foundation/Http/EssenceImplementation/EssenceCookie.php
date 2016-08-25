@@ -6,7 +6,7 @@
  *  @author  Eugen Melnychenko
  */
 
-namespace Panda\Foundation\Http\RequestImplementation;
+namespace Panda\Foundation\Http\EssenceImplementation;
 
 use Panda\Foundation\Support\EssenceReadableInstance;
 

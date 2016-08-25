@@ -6,7 +6,7 @@
  *  @author  Eugen Melnychenko
  */
 
-namespace Panda\Foundation\Http\ResponseImplementation;
+namespace Panda\Foundation\Http\EssenceImplementation;
 
 use Panda\Foundation\Support\EssenceWriteableInstance;
 
@@ -17,14 +17,6 @@ use Panda\Foundation\Support\EssenceWriteableInstance;
  */
 class EssenceHeaders extends EssenceWriteableInstance
 {
-    /**
-     *  Simple __construct.
-     *
-     *  @var mixed  $container
-     */
-    public function __construct($container)
-    {
-        $this->container = is_array($container) ? $container : func_get_args();
-    }
+    # implementation ... 
 }
 
