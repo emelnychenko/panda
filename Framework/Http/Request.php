@@ -9,7 +9,6 @@
 namespace Panda\Http;
 
 use Panda\Foundation\Http\ClientRequestedAbstract;
-use Panda\Foundation\Support\EssenceReadableInstance;
 
 /**
  *  Http Request Instance
