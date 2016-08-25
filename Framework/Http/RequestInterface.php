@@ -15,5 +15,41 @@ namespace Panda\Http;
  */
 interface RequestInterface
 {
-    # implements ...
+    /**
+     *  Factory implementation.
+     *
+     *  @var array $query 
+     *  @var array $request
+     *  @var array $files
+     *  @var array $cookie 
+     *  @var array $server
+     *
+     *  @return \Panda\Foundation\Http\ClientRequestedAbstract
+     */
+    public static function factory(
+        array $query    = null,
+        array $request  = null,
+        array $files    = null,
+        array $cookie   = null,
+        array $server   = null
+    );
+
+    /**
+     *  Singleton implementation.
+     *
+     *  @var array $query 
+     *  @var array $request
+     *  @var array $files
+     *  @var array $cookie 
+     *  @var array $server
+     *
+     *  @return \Panda\Foundation\Http\ClientRequestedAbstract
+     */
+    public static function singleton(
+        array $query    = null,
+        array $request  = null,
+        array $files    = null,
+        array $cookie   = null,
+        array $server   = null
+    );
 }
