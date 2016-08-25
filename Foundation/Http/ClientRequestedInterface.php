@@ -21,7 +21,7 @@ interface ClientRequestedInterface
      *  @return @var \Panda\Foundation\Support\EssenceReadableInstance
      */
     public function source();
-    
+
     /**
      *  Get only array keys from main essence.
      *
@@ -114,6 +114,13 @@ interface ClientRequestedInterface
      *  @return bool
      */
     public function is_json();
+
+    /**
+     *  Compare url path.
+     *
+     *  @return bool
+     */
+    public function is($url = '/');
 
     /**
      *  Get uri path.

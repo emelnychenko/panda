@@ -287,6 +287,22 @@ abstract class ClientRequestedAbstract implements ClientRequestedInterface
     }
 
     /**
+     *  Compare url path.
+     *
+     *  @return bool
+     */
+    public function is($url = '/')
+    {
+        $windcard = str_replace(
+            array('*', '/'), array('.*?', '\/'), $url
+        );
+
+        return (bool) preg_match(
+            sprintf('/^%s$/i', $windcard), $this->url()
+        );
+    }
+
+    /**
      *  Get uri path.
      *
      *  @return string
