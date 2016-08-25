@@ -27,7 +27,7 @@ class Request extends ClientRequestedAbstract implements RequestInterface
      *  @var array $cookie 
      *  @var array $server
      *
-     *  @return \Panda\Foundation\Http\ClientRequestedAbstract
+     *  @return \Panda\Http\Request
      */
     public static function factory(
         array $query    = null,
@@ -48,7 +48,7 @@ class Request extends ClientRequestedAbstract implements RequestInterface
      *  @var array $cookie 
      *  @var array $server
      *
-     *  @return \Panda\Foundation\Http\ClientRequestedAbstract
+     *  @return \Panda\Http\Request
      */
     public static function singleton(
         array $query    = null,
