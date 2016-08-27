@@ -2,8 +2,7 @@
     "name": "panda-bear/framework",
     "autoload": {
         "psr-4": { 
-            "Panda\\Foundation\\": ["Foundation/"],
-            "Panda\\": ["Framework/"]
+            "Panda\\": ["source/"]
         },
         "files": ["panda.complitable.php"]
     },
