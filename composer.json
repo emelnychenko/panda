@@ -5,7 +5,7 @@
             "Panda\\Foundation\\": ["Foundation/"],
             "Panda\\": ["Framework/"]
         },
-        "files": ["panda/panda.complitable.php"]
+        "files": ["panda.complitable.php"]
     },
     "require": {
         "php": ">=5.3.0"
