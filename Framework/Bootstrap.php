@@ -8,10 +8,9 @@ use Panda\Http;
 
 class Bootstrap
 {
-    protected function __construct($appdir, $config)
+    protected function __construct($config)
     {
         $this
-            ->chroot($appdir)
             ->config($config)
             ->putapp($config)
         ;
@@ -76,13 +75,8 @@ class Bootstrap
         );
     }
 
-    protected function chroot($directory)
+    public static function make($config)
     {
-        chdir($directory); return $this;
-    }
-
-    public static function make($appdir, $config)
-    {
-        return new static($appdir, $config);
+        return new static($config);
     }
 }
