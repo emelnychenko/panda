@@ -31,5 +31,6 @@ return array (
   'Panda\\Http\\Response' => '/Framework/Http/Response.php',
   'Panda\\Http\\ResponseInterface' => '/Framework/Http/ResponseInterface.php',
   'Panda\\Http\\Router' => '/Framework/Http/Router.php',
+  'Panda\\Http\\RouterInterface' => '/Framework/Http/RouterInterface.php',
   'Panda\\Provider' => '/Framework/Provider.php',
 );
