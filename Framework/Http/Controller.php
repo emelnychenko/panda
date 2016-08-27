@@ -15,7 +15,7 @@ use Panda\Foundation\Http\ControllerNativeAbstract;
  *
  *  @subpackage Http
  */
-abstract class ControllerAbstract extends ControllerNativeAbstract implements ControllerInterface
+abstract class Controller extends ControllerNativeAbstract implements ControllerInterface
 {
     # extends ...
 }

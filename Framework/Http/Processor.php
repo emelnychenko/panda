@@ -15,7 +15,7 @@ use Panda\Foundation\Http\ProcessorEventAbstract;
  *
  *  @subpackage Http
  */
-abstract class ProcessorAbstract extends ProcessorEventAbstract implements ProcessorInterface
+abstract class Processor extends ProcessorEventAbstract implements ProcessorInterface
 {
     # extends ...
 }
