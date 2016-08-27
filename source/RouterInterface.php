@@ -2,25 +2,25 @@
 /**
  *  Panda PHP Foundation, Packages and Framework
  *
- *  @package Panda Framework
+ *  @package Panda
  *  @author  Eugen Melnychenko
  */
 
 namespace Panda;
 
 /**
- *  Http Router Interface
+ *  Panda Router
  *
- *  @subpackage Http
+ *  @subpackage Framework
  */
 interface RouterInterface
 {
     /**
      *  Factory layer.
      *
-     *  @var \Panda\Http\Request $request
+     *  @var Panda\Request $request
      *
-     *  @return \Panda\Http\Router
+     *  @return Panda\Router
      */
     public static function factory(Request $request);
 }

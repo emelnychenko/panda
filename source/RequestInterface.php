@@ -2,16 +2,16 @@
 /**
  *  Panda PHP Foundation, Packages and Framework
  *
- *  @package Panda Framework
+ *  @package Panda
  *  @author  Eugen Melnychenko
  */
 
 namespace Panda;
 
 /**
- *  Http Request Interface
+ *  Panda Request
  *
- *  @subpackage Http
+ *  @subpackage Framework
  */
 interface RequestInterface
 {

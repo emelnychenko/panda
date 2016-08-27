@@ -1,6 +1,6 @@
 <?php
 /**
- *  Panda PHP Framework
+ *  Panda PHP Foundation, Packages and Framework
  *
  *  @package Panda
  *  @author  Eugen Melnychenko
@@ -9,9 +9,9 @@
 namespace Panda;
 
 /**
- *  Http Response Instance
+ *  Panda Response
  *
- *  @subpackage Http
+ *  @subpackage Framework
  */
 class Response extends ClientResponseAbstract implements ResponseInterface
 {
@@ -22,7 +22,7 @@ class Response extends ClientResponseAbstract implements ResponseInterface
      *  @var integer $status
      *  @var array   $headers
      *
-     *  @return \Panda\Http\Response
+     *  @return Panda\Response
      */
     public static function text($content = '', $status = 200, array $headers = array())
     {
@@ -38,7 +38,7 @@ class Response extends ClientResponseAbstract implements ResponseInterface
      *  @var integer $status
      *  @var array   $headers
      *
-     *  @return \Panda\Http\Response
+     *  @return Panda\Response
      */
     public static function html($content = '', $status = 200, array $headers = array())
     {
@@ -54,7 +54,7 @@ class Response extends ClientResponseAbstract implements ResponseInterface
      *  @var integer $status
      *  @var array   $headers
      *
-     *  @return \Panda\Http\Response
+     *  @return Panda\Response
      */
     public static function json($content = '', $status = 200, array $headers = array())
     {
@@ -70,7 +70,7 @@ class Response extends ClientResponseAbstract implements ResponseInterface
      *  @var integer $status
      *  @var array   $headers
      *
-     *  @return \Panda\Http\Response
+     *  @return Panda\Response
      */
     public static function xml($content = '', $status = 200, array $headers = array())
     {

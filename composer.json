@@ -4,9 +4,9 @@
         "psr-4": { 
             "Panda\\": ["source/"]
         },
-        "files": ["panda.complitable.php"]
+        "files": ["panda.procedures.php"]
     },
     "require": {
-        "php": ">=5.3.0"
+        "php": ">=5.4.0"
     }
 }

@@ -1,10 +1,24 @@
 <?php
+/**
+ *  Panda PHP Foundation, Packages and Framework
+ *
+ *  @package Panda
+ *  @author  Eugen Melnychenko
+ */
 
 namespace Panda;
 
 use Panda\Foundation\EssenceReadableAbstract;
 
-class Ladder extends EssenceReadableAbstract implements LadderInterface
+use Panda\Foundation\SingletonProviderInterface;
+use Panda\Foundation\SingletonProviderExpansion;
+
+/**
+ *  Panda Ladder
+ *
+ *  @subpackage Framework
+ */
+class Ladder extends EssenceReadableAbstract implements LadderInterface, SingletonProviderInterface
 {
     public function __construct()
     {
@@ -75,4 +89,6 @@ class Ladder extends EssenceReadableAbstract implements LadderInterface
             file_exists($class_file_path) ? include($class_file_path) : null;
         }
     }
+
+    use SingletonProviderExpansion;
 }

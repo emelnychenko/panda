@@ -1,6 +1,6 @@
 <?php
 /**
- *  Panda PHP Framework
+ *  Panda PHP Foundation, Packages and Framework
  *
  *  @package Panda
  *  @author  Eugen Melnychenko
@@ -11,9 +11,9 @@ namespace Panda;
 use Panda\Foundation\ControllerNativeAbstract;
 
 /**
- *  Http Controller Abstract
+ *  Panda Controller
  *
- *  @subpackage *
+ *  @subpackage Framework
  */
 abstract class Controller extends ControllerNativeAbstract implements ControllerInterface
 {
@@ -34,16 +34,8 @@ abstract class Controller extends ControllerNativeAbstract implements Controller
 
     public function json($content, $status = 200, array $headers = array())
     {
-        if (
-            version_compare(PHP_VERSION, '5.4.0') >= 0
-        ) {
-            return Response::json(
-                json_encode($content, JSON_PRETTY_PRINT), $status, $headers
-            ); 
-        }
-
         return Response::json(
-            json_encode($content), $status, $headers
+            json_encode($content, JSON_PRETTY_PRINT), $status, $headers
         ); 
     }
 }

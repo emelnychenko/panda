@@ -2,16 +2,16 @@
 /**
  *  Panda PHP Foundation, Packages and Framework
  *
- *  @package Panda Framework
+ *  @package Panda
  *  @author  Eugen Melnychenko
  */
 
 namespace Panda;
 
 /**
- *  Http Controller Interface
+ *  Panda Controller
  *
- *  @subpackage Http
+ *  @subpackage Framework
  */
 interface ControllerInterface
 {

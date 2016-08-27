@@ -1,10 +1,22 @@
 <?php
+/**
+ *  Panda PHP Foundation, Packages and Framework
+ *
+ *  @package Panda
+ *  @author  Eugen Melnychenko
+ */
 
 namespace Panda;
 
-use Panda\Foundation\ProviderSingletonInterface;
+use Panda\Foundation\SingletonProviderInterface;
+use Panda\Foundation\SingletonProviderExpansion;
 
-class Support implements SupportInterface, ProviderSingletonInterface
+/**
+ *  Panda Support
+ *
+ *  @subpackage Framework
+ */
+class Support implements SupportInterface, SingletonProviderInterface
 {
     protected $history = array();
     protected $provide = array();
@@ -49,16 +61,5 @@ class Support implements SupportInterface, ProviderSingletonInterface
         return null;
     }
 
-    public static function singleton()
-    {
-        static $instance = null;
-
-        if (
-            is_null($instance)
-        ) {
-            $instance = new static();
-        }
-
-        return $instance;
-    }
+    use SingletonProviderExpansion;
 }

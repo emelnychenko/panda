@@ -1,7 +1,18 @@
 <?php
+/**
+ *  Panda PHP Foundation, Packages and Framework
+ *
+ *  @package Panda
+ *  @author  Eugen Melnychenko
+ */
 
 namespace Panda;
 
+/**
+ *  Panda Bootstrap
+ *
+ *  @subpackage Framework
+ */
 class Bootstrap
 {
     protected function __construct($config)
@@ -32,10 +43,10 @@ class Bootstrap
     protected function putapp($config)
     {
         $support = Support::singleton()->append(array(
-            'ladder'        => new Ladder,
             'request'       => Request::singleton(), 
-            'router'        => Router::singleton(), 
-            'config'        => $config
+            'ladder'        =>  Ladder::singleton(),
+            'router'        =>  Router::singleton(), 
+            'config'        =>  $config
         ));
 
         $this->package($support, $config);

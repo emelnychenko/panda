@@ -8,8 +8,6 @@
 
 namespace Panda\Foundation;
 
-use Panda\Foundation\Support\EssenceReadableInstance;
-
 /**
  *  Client Request
  *

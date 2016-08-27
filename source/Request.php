@@ -1,6 +1,6 @@
 <?php
 /**
- *  Panda PHP Framework
+ *  Panda PHP Foundation, Packages and Framework
  *
  *  @package Panda
  *  @author  Eugen Melnychenko
@@ -9,14 +9,16 @@
 namespace Panda;
 
 use Panda\Foundation\ClientRequestedAbstract;
-use Panda\Foundation\ProviderSingletonInterface;
+
+use Panda\Foundation\SingletonProviderInterface;
+use Panda\Foundation\SingletonProviderExpansion;
 
 /**
- *  Http Request Instance
+ *  Panda Request
  *
- *  @subpackage Http
+ *  @subpackage Framework
  */
-class Request extends ClientRequestedAbstract implements RequestInterface, ProviderSingletonInterface
+class Request extends ClientRequestedAbstract implements RequestInterface, SingletonProviderInterface
 {
     /**
      *  Factory implementation.
@@ -27,7 +29,7 @@ class Request extends ClientRequestedAbstract implements RequestInterface, Provi
      *  @var array $cookie 
      *  @var array $server
      *
-     *  @return \Panda\Http\Request
+     *  @return Panda\Request
      */
     public static function factory(
         array $query    = null,
@@ -39,26 +41,5 @@ class Request extends ClientRequestedAbstract implements RequestInterface, Provi
         return new static($query, $request, $files, $cookie, $server);
     }
 
-    /**
-     *  Singleton implementation.
-     *
-     *  @var array $query 
-     *  @var array $request
-     *  @var array $files
-     *  @var array $cookie 
-     *  @var array $server
-     *
-     *  @return \Panda\Http\Request
-     */
-    public static function singleton() {
-        static $instance = null;
-
-        if (
-            is_null($instance)
-        ) {
-            $instance = new static();
-        }
-
-        return $instance;
-    }
+    use SingletonProviderExpansion;
 }

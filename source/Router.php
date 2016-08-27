@@ -1,6 +1,6 @@
 <?php
 /**
- *  Panda PHP Framework
+ *  Panda PHP Foundation, Packages and Framework
  *
  *  @package Panda
  *  @author  Eugen Melnychenko
@@ -9,42 +9,28 @@
 namespace Panda;
 
 use Panda\Foundation\RoutingDispatchAbstract;
-use Panda\Foundation\ProviderSingletonInterface;
+
+use Panda\Foundation\SingletonProviderInterface;
+use Panda\Foundation\SingletonProviderExpansion;
 
 /**
- *  Http Router
+ *  Panda Router
  *
- *  @subpackage Http
+ *  @subpackage Framework
  */
-class Router extends RoutingDispatchAbstract implements RouterInterface, ProviderSingletonInterface 
+class Router extends RoutingDispatchAbstract implements RouterInterface, SingletonProviderInterface 
 {
     /**
      *  Factory layer.
      *
-     *  @var \Panda\Http\Request $request
+     *  @var Panda\Request $request
      *
-     *  @return \Panda\Http\Router
+     *  @return Panda\Router
      */
     public static function factory(Request $request)
     {
         return new static($request);
     }
 
-    /**
-     *  Singleton layer.
-     *
-     *  @return \Panda\Http\Router
-     */
-    public static function singleton()
-    {
-        static $instance = null;
-
-        if (
-            is_null($instance)
-        ) {
-            $instance = new static();
-        }
-
-        return $instance;
-    }
+    use SingletonProviderExpansion;
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- *  Panda PHP Framework
+ *  Panda PHP Foundation, Packages and Framework
  *
  *  @package Panda
  *  @author  Eugen Melnychenko
@@ -9,9 +9,9 @@
 namespace Panda;
 
 /**
- *  Http Processor Interface
+ *  Panda Processor
  *
- *  @subpackage Http
+ *  @subpackage Framework
  */
 interface ProcessorInterface
 {

@@ -13,7 +13,7 @@ namespace Panda\Foundation;
  *
  *  @subpackage Foundation
  */
-interface ProviderSingletonInterface
+interface SingletonProviderInterface
 {
     /**
      *  Return singleton instance

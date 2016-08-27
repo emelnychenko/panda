@@ -1,6 +1,6 @@
 <?php
 /**
- *  Panda PHP Framework
+ *  Panda PHP Foundation, Packages and Framework
  *
  *  @package Panda
  *  @author  Eugen Melnychenko
@@ -11,9 +11,9 @@ namespace Panda;
 use Panda\Foundation\ProcessorEventAbstract;
 
 /**
- *  Http Processor Abstract
+ *  Panda Processor
  *
- *  @subpackage Http
+ *  @subpackage Framework
  */
 abstract class Processor extends ProcessorEventAbstract implements ProcessorInterface
 {
