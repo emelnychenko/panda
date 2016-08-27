@@ -1,5 +1,5 @@
 {
-    "name": "phpanda/framwork",
+    "name": "panda-bear/framework",
     "autoload": {
         "psr-4": { 
             "Panda\\Foundation\\": ["Foundation/"],
