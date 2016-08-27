@@ -10,6 +10,8 @@ namespace Panda\Http;
 
 use Panda\Foundation\Http\ControllerNativeAbstract;
 
+use Panda\Session;
+
 /**
  *  Http Controller Abstract
  *
@@ -17,6 +19,11 @@ use Panda\Foundation\Http\ControllerNativeAbstract;
  */
 abstract class Controller extends ControllerNativeAbstract implements ControllerInterface
 {
+    public function session($container = 'panda.app')
+    {
+        return new Session($container);
+    }
+
     public function html($content, $status = 200, array $headers = array())
     {
         return Response::html($content, $status, $headers); 

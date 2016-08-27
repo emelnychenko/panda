@@ -10,6 +10,8 @@ namespace Panda\Http;
 
 use Panda\Foundation\Http\ProcessorEventAbstract;
 
+use Panda\Session;
+
 /**
  *  Http Processor Abstract
  *
@@ -17,6 +19,9 @@ use Panda\Foundation\Http\ProcessorEventAbstract;
  */
 abstract class Processor extends ProcessorEventAbstract implements ProcessorInterface
 {
-    # extends ...
+    public function session($container = 'panda.app')
+    {
+        return new Session($container);
+    }
 }
 
