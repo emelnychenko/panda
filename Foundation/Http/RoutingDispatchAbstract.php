@@ -29,9 +29,9 @@ abstract class RoutingDispatchAbstract
     protected $denied;
 
     /**
-     *  @var \Panda\Foundation\Http\ClientRequestedInterface
+     *  @var string
      */ 
-    protected $request;
+    protected $method;
 
     /**
      *  @var \Panda\Foundation\Http\EssenceImplementation\EssenceProcessors
@@ -46,16 +46,14 @@ abstract class RoutingDispatchAbstract
     /**
      *  Get headers Essence, value or set header.
      *
-     *  @var \Panda\Foundation\Http\ClientRequestedInterface $request
-     *
      *  @return mixed
      */
-    public function __construct(ClientRequestedInterface $request)
+    public function __construct()
     {
         $this->routes       = new EssenceWriteableInstance();
         $this->denied       = new EssenceWriteableInstance();
         $this->processors   = new EssenceWriteableInstance();
-        $this->request      = $request;
+        $this->method       = array_key_exists('REQUEST_METHOD', $_SERVER) ? $_SERVER['REQUEST_METHOD'] : 'GET';
     }
 
     /**
@@ -72,7 +70,7 @@ abstract class RoutingDispatchAbstract
         $matches = is_array($pattern) ? $pattern : explode('|', $pattern);
 
         if (
-            in_array($this->request->method(), $matches, true)
+            in_array($this->method, $matches, true)
         ) {
             $this->iterator(
                 $url, $handler, array($this, 'prepare'), 'routes'
@@ -220,9 +218,9 @@ abstract class RoutingDispatchAbstract
      *
      *  @return mixed
      */
-    public function run()
+    public function run(ClientRequestedInterface $request)
     {
-        $current_url = $this->request->url();
+        $current_url = $request->url();
 
         foreach($this->routes->all() as $url => $essence) {
             if (
@@ -230,7 +228,7 @@ abstract class RoutingDispatchAbstract
             ) {
                 array_shift($matches); $matches = array_filter($matches);
 
-                $response = $this->dispatch($essence, $matches);
+                $response = $this->dispatch($essence, $matches, $request);
                 $floating = is_subclass_of($response, 'Panda\Foundation\Http\ControllerNativeAbstract');
 
                 if (
@@ -249,9 +247,9 @@ abstract class RoutingDispatchAbstract
             ) as $url => $essence
         ) {
             if (
-                $this->request->is($url)
+                $request->is($url)
             ) {
-                return $this->dispatch($essence);
+                return $this->dispatch($essence, $request);
             }
         }
     }
@@ -264,7 +262,7 @@ abstract class RoutingDispatchAbstract
      *
      *  @return mixed
      */
-    protected function dispatch($essence, array $matches = array())
+    protected function dispatch($essence, array $matches = array(), ClientRequestedInterface $request)
     {
         if (
             array_key_exists('processor', $essence)
@@ -272,7 +270,7 @@ abstract class RoutingDispatchAbstract
             foreach (
                 $this->processors->only($essence['processor']) as $processor
             ) {
-                $instance = new $processor($this->request);
+                $instance = new $processor($request);
                 $response = $instance->handle();
 
                 if ($instance->skipped() === false) {
@@ -287,10 +285,10 @@ abstract class RoutingDispatchAbstract
             list($controller, $event) = explode('@', $essence['handler']);
 
             $controller = array_key_exists('namespace', $essence) ? 
-                sprintf('%s\\%s', $essence['namespace'], $contoller) : $contoller;
+                sprintf('%s\\%s', $essence['namespace'], $controller) : $controller;
 
             return call_user_func_array(array(
-                new $controller($this->request), $event
+                new $controller($request), $event
             ), $matches);
         }
         

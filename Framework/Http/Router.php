@@ -10,12 +10,14 @@ namespace Panda\Http;
 
 use Panda\Foundation\Http\RoutingDispatchAbstract;
 
+use Panda\Foundation\Support\ProviderSingletonInterface;
+
 /**
  *  Http Router
  *
  *  @subpackage Http
  */
-class Router extends RoutingDispatchAbstract implements RouterInterface
+class Router extends RoutingDispatchAbstract implements RouterInterface, ProviderSingletonInterface 
 {
     /**
      *  Factory layer.
@@ -32,18 +34,16 @@ class Router extends RoutingDispatchAbstract implements RouterInterface
     /**
      *  Singleton layer.
      *
-     *  @var \Panda\Http\Request $request
-     *
      *  @return \Panda\Http\Router
      */
-    public static function singleton(Request $request = null)
+    public static function singleton()
     {
         static $instance = null;
 
         if (
             is_null($instance)
         ) {
-            $instance = new static($request);
+            $instance = new static();
         }
 
         return $instance;

@@ -23,13 +23,4 @@ interface RouterInterface
      *  @return \Panda\Http\Router
      */
     public static function factory(Request $request);
-
-    /**
-     *  Singleton layer.
-     *
-     *  @var \Panda\Http\Request $request
-     *
-     *  @return \Panda\Http\Router
-     */
-    public static function singleton(Request $request = null);
 }

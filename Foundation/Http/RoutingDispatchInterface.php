@@ -110,6 +110,6 @@ interface RoutingDispatchInterface
      *
      *  @return mixed
      */
-    public function run();
+    public function run(ClientRequestedInterface $request);
 }
 
