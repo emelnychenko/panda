@@ -8,7 +8,7 @@
 
 namespace Panda\Foundation\Http;
 
-use Panda\Foundation\Http\EssenceImplementation\EssenceHeaders;
+use Panda\Foundation\Support\EssenceWriteableInstance;
 
 /**
  *  Client Response Abstract
@@ -165,7 +165,7 @@ abstract class ClientResponseAbstract implements ClientResponseInterface
     {
         $this->content($content); $this->status($status);
     
-        $this->headers = new EssenceHeaders($headers);
+        $this->headers = new EssenceWriteableInstance($headers);
     }
 
     /**

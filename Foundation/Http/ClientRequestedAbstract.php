@@ -8,9 +8,6 @@
 
 namespace Panda\Foundation\Http;
 
-use Panda\Foundation\Http\EssenceImplementation\EssenceFiles;
-use Panda\Foundation\Http\EssenceImplementation\EssenceCookie;
-use Panda\Foundation\Http\EssenceImplementation\EssenceServer;
 use Panda\Foundation\Support\EssenceReadableInstance;
 
 /**
@@ -84,9 +81,9 @@ abstract class ClientRequestedAbstract implements ClientRequestedInterface
 
         $this->query    = new EssenceReadableInstance($query);
         $this->request  = new EssenceReadableInstance($request);
-        $this->files    = new EssenceFiles($files);
-        $this->cookie   = new EssenceCookie($cookie);
-        $this->server   = new EssenceServer(
+        $this->files    = new EssenceReadableInstance($files);
+        $this->cookie   = new EssenceReadableInstance($cookie);
+        $this->server   = new EssenceReadableInstance(
             array_replace(array(
                 'SERVER_NAME'           => 'localhost',
                 'SERVER_PORT'           => 80,
@@ -283,7 +280,9 @@ abstract class ClientRequestedAbstract implements ClientRequestedInterface
      */
     public function is_json()
     {
-        return $this->server->is_json();
+        return preg_match(
+            '/(text|application)\/json/i', $this->server('CONTENT_TYPE')
+        );
     }
 
     /**
@@ -309,7 +308,7 @@ abstract class ClientRequestedAbstract implements ClientRequestedInterface
      */
     public function uri()
     {
-        return $this->server->uri();
+        return $this->server('REQUEST_URI');
     }
 
     /**
@@ -319,7 +318,7 @@ abstract class ClientRequestedAbstract implements ClientRequestedInterface
      */
     public function url()
     {
-        return $this->server->url();
+        return strtok($this->uri(), '?');
     }
 
     /**
@@ -329,7 +328,7 @@ abstract class ClientRequestedAbstract implements ClientRequestedInterface
      */
     public function ip()
     {
-        return $this->server->ip();
+        return $this->server('REMOTE_ADDR', '127.0.0.1');
     }
 
     /**
@@ -339,7 +338,7 @@ abstract class ClientRequestedAbstract implements ClientRequestedInterface
      */
     public function agent()
     {
-        return $this->server->agent();
+        return $this->server('HTTP_USER_AGENT');
     }
 
     /**
@@ -349,7 +348,7 @@ abstract class ClientRequestedAbstract implements ClientRequestedInterface
      */
     public function domain()
     {
-        return $this->server->domain();
+        return $this->server('HTTP_HOST');
     }
 
     /**
@@ -359,28 +358,20 @@ abstract class ClientRequestedAbstract implements ClientRequestedInterface
      */
     public function docroot()
     {
-        return $this->server->docroot();
+        return $this->server('DOCUMENT_ROOT');
     }
 
     /**
      *  Get request method or verify if method is $question.
      *
-     *  @var mixed $question
-     *
      *  @return mixed
      */
-    public function method($question = null)
+    public function method()
     {
         if (
             $this->method === null
         ) {
-            $this->method = $this->server->method('GET');
-        }
-
-        if (
-            is_string($question)
-        ) {
-            return strtoupper($question) === $this->method;
+            $this->method = $this->server('REQUEST_METHOD', 'GET');
         }
 
         return $this->method;
@@ -393,20 +384,39 @@ abstract class ClientRequestedAbstract implements ClientRequestedInterface
      *
      *  @return mixed
      */
-    public function locale($question = null)
+    public function locale($locale = 'en')
     {
         if (
             $this->locale === null
         ) {
-            $this->locale = $this->server->locale('en');
-        }
+            if (
+                preg_match_all(
+                    '/([a-z]{1,8}(?:-[a-z]{1,8})?)(?:;q=([0-9.]+))?/', 
+                    strtolower(
+                        $this->server('HTTP_ACCEPT_LANGUAGE')
+                    ),
+                    $matches
+                )
+            ) {
+                $language = array();
 
-        if (
-            is_string($question)
-        ) {
-            return strtoupper($question) === $this->locale;
-        }
+                foreach (array_combine($matches[1], $matches[2]) as $key => $value) {
+                    $language[$key] = empty($value) ? 1 : (float) $value;
+                }
 
+                arsort($language, SORT_NUMERIC);
+
+                $language   = array_keys($language);
+                $primary    = array_shift(
+                    $language
+                );
+
+                $locale = strtok($primary, '-');
+            }
+
+            $this->locale = $locale; 
+        }
+        
         return $this->locale;
     }
 
@@ -417,7 +427,9 @@ abstract class ClientRequestedAbstract implements ClientRequestedInterface
      */
     public function xhr()
     {
-        return $this->server->xmlhttprequest();
+        return 'xmlhttprequest' == strtolower(
+            $this->server('HTTP_X_REQUESTED_WITH')
+        );
     }
 
     /**
@@ -427,6 +439,6 @@ abstract class ClientRequestedAbstract implements ClientRequestedInterface
      */
     public function ajax()
     {
-        return $this->server->xmlhttprequest();
+        return $this->xhr();
     }
 }

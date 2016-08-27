@@ -169,14 +169,14 @@ interface ClientRequestedInterface
      *
      *  @return mixed
      */
-    public function method($question = null);
+    public function method();
 
     /**
      *  Get client locale or verify if locale is $question.
      *
      *  @return mixed
      */
-    public function locale($question = null);
+    public function locale($locale = 'en');
 
     /**
      *  Check if request XMLHttpRequest.
