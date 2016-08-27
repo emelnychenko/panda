@@ -114,7 +114,7 @@ abstract class ClientRequestedAbstract implements ClientRequestedInterface
             return $this->json();
         }
 
-        return $this->method('get') ? $this->query : $this->request;
+        return $this->method() === 'GET' ? $this->query : $this->request;
     }
 
     /**

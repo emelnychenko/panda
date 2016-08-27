@@ -10,12 +10,14 @@ namespace Panda\Http;
 
 use Panda\Foundation\Http\ClientRequestedAbstract;
 
+use Panda\Foundation\Support\ProviderSingletonInterface;
+
 /**
  *  Http Request Instance
  *
  *  @subpackage Http
  */
-class Request extends ClientRequestedAbstract implements RequestInterface
+class Request extends ClientRequestedAbstract implements RequestInterface, ProviderSingletonInterface
 {
     /**
      *  Factory implementation.
@@ -49,19 +51,13 @@ class Request extends ClientRequestedAbstract implements RequestInterface
      *
      *  @return \Panda\Http\Request
      */
-    public static function singleton(
-        array $query    = null,
-        array $request  = null,
-        array $files    = null,
-        array $cookie   = null,
-        array $server   = null
-    ) {
+    public static function singleton() {
         static $instance = null;
 
         if (
             is_null($instance)
         ) {
-            $instance = new static($query, $request, $files, $cookie, $server);
+            $instance = new static();
         }
 
         return $instance;
