@@ -12,11 +12,12 @@ include 'panda.procedures.php';
 
 include 'source/Foundation/EssenceReadableInterface.php';
 include 'source/Foundation/EssenceReadableAbstract.php';
+include 'source/Foundation/TechnicalProviderExpansion.php';
 include 'source/Foundation/SingletonProviderInterface.php';
 include 'source/Foundation/SingletonProviderExpansion.php';
 include 'source/LadderInterface.php';
 include 'source/Ladder.php';
 
-Panda\Ladder::singleton()->add(
+Panda\Ladder::factory()->add(
     'Panda\\', __DIR__ . '/source'
 );

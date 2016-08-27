@@ -217,8 +217,9 @@ abstract class RoutingDispatchAbstract
      *
      *  @return mixed
      */
-    public function run(ClientRequestedInterface $request)
+    public function run(SupportServicesInterface $support = null)
     {
+        $request     = $support->get('request');
         $current_url = $request->url();
 
         foreach($this->routes->all() as $url => $essence) {
@@ -227,8 +228,8 @@ abstract class RoutingDispatchAbstract
             ) {
                 array_shift($matches); $matches = array_filter($matches);
 
-                $response = $this->dispatch($essence, $matches, $request);
-                $floating = is_subclass_of($response, 'Panda\Foundation\Http\ControllerNativeAbstract');
+                $response = $this->dispatch($essence, $matches, $support);
+                $floating = is_subclass_of($response, 'Panda\Foundation\ControllerNativeAbstract');
 
                 if (
                     !$floating || (
@@ -248,7 +249,7 @@ abstract class RoutingDispatchAbstract
             if (
                 $request->is($url)
             ) {
-                return $this->dispatch($essence, array(), $request);
+                return $this->dispatch($essence, array(), $support);
             }
         }
     }
@@ -261,7 +262,7 @@ abstract class RoutingDispatchAbstract
      *
      *  @return mixed
      */
-    protected function dispatch($essence, array $matches = array(), ClientRequestedInterface $request)
+    protected function dispatch($essence, array $matches = array(), SupportServicesInterface $support)
     {
         if (
             array_key_exists('processor', $essence)
@@ -269,7 +270,7 @@ abstract class RoutingDispatchAbstract
             foreach (
                 $this->processors->only($essence['processor']) as $processor
             ) {
-                $instance = new $processor($request);
+                $instance = new $processor($support);
                 $response = $instance->handle();
 
                 if ($instance->skipped() === false) {
@@ -287,7 +288,7 @@ abstract class RoutingDispatchAbstract
                 sprintf('%s\\%s', $essence['namespace'], $controller) : $controller;
 
             return call_user_func_array(array(
-                new $controller($request), $event
+                new $controller($support), $event
             ), $matches);
         }
         

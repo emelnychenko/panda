@@ -5,14 +5,15 @@
  *  @package Panda
  *  @author  Eugen Melnychenko
  */
-namespace Panda\Foundation;
+
+namespace Panda;
 
 /**
- *  Panda Foundation Sesison Essence Interface
+ *  Panda Swift
  *
  *  @subpackage Framework
  */
-interface SessionEssenceInterface
+interface SwiftInterface
 {
-    # implements ...
+    # implements ... 
 }

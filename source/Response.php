@@ -8,6 +8,8 @@
 
 namespace Panda;
 
+use Panda\Foundation\ClientResponseAbstract;
+
 /**
  *  Panda Response
  *

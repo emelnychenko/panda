@@ -1,7 +1,17 @@
 <?php
-
+/**
+ *  Panda PHP Foundation, Packages and Framework
+ *
+ *  @package Panda
+ *  @author  Eugen Melnychenko
+ */
 namespace Panda\Foundation;
 
+/**
+ *  Panda Foundation Sesison Essence Abstract
+ *
+ *  @subpackage Framework
+ */
 abstract class SessionEssenceAbstact extends EssenceWriteableAbstract implements SessionEssenceInterface
 {
     protected $session;
@@ -13,40 +23,33 @@ abstract class SessionEssenceAbstact extends EssenceWriteableAbstract implements
         $this->session = $session;
         $this->storage = $storage;
 
-        $this->open();
-
-        $this->container = array_key_exists(
-            $this->storage, $_SESSION
-        ) ? $_SESSION[$this->storage] : array();
-
-        $this->close();
+        $this->procedure(function() {
+            $this->container = array_key_exists(
+                $this->storage, $_SESSION
+            ) ? $_SESSION[$this->storage] : array();
+        });
     }
 
     public function save()
     {
-        $this->open();
-
-        $_SESSION[$this->session] = $this->container; 
-
-        $this->close();
+        $this->procedure(function() {
+            $_SESSION[$this->session] = $this->container; 
+        });
     }
 
     public function remove()
     {
-        $this->open();
-
-        unset($_SESSION[$this->session_id], $this->container);
-
-        $this->close();
+        $this->procedure(function() {
+            unset($_SESSION[$this->session_id], $this->container);
+        });
     }
 
-    protected function open()
+    protected function procedure($callback)
     {
-        session_name($this->session); session_start();
-    }
+        session_name($this->session); session_start();   
 
-    protected function close()
-    {
+        call_user_func($callback);
+
         session_write_close();
     }
 }

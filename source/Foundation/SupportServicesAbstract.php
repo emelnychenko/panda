@@ -5,20 +5,14 @@
  *  @package Panda
  *  @author  Eugen Melnychenko
  */
-
-namespace Panda;
-
-use Panda\Foundation\SupportServicesAbstract;
-use Panda\Foundation\SingletonProviderInterface;
-use Panda\Foundation\SingletonProviderExpansion;
-use Panda\Foundation\TechnicalProviderExpansion;
+namespace Panda\Foundation;
 
 /**
- *  Panda Support
+ *  Panda Foundation Sesison Essence Interface
  *
  *  @subpackage Framework
  */
-class Support extends SupportServicesAbstract implements SupportInterface, SingletonProviderInterface
+abstract class SupportServicesAbstract implements SupportServicesInterface
 {
     /**
      *  @var array
@@ -57,6 +51,5 @@ class Support extends SupportServicesAbstract implements SupportInterface, Singl
         return null;
     }
 
-    use SingletonProviderExpansion;
     use TechnicalProviderExpansion;
 }

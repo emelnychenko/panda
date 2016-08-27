@@ -18,16 +18,16 @@ abstract class ControllerNativeAbstract extends FlotationInstanceAbstract implem
     /**
      *  @var \Panda\Foundation\Http\ClientRequestedInterface
      */ 
-    protected $request;
+    protected $support;
 
     /**
      *  Create instance
      *
      *  @var \Panda\Foundation\Http\ClientRequestedInterface $request
      */
-    public function __construct(ClientRequestedInterface $request)
+    public function __construct(SupportServicesInterface $support)
     {
-        $this->request = $request; 
+        $this->support = $support; 
     }
 
     /**
@@ -42,10 +42,21 @@ abstract class ControllerNativeAbstract extends FlotationInstanceAbstract implem
         if (
             $input === null
         ) {
-            return $this->request;
+            return $this->support('request');
         }
 
-        return $this->request->input($input);
+        return $this->support('request')->input($input);
+    }
+
+    public function support($service = null)
+    {
+        if (
+            $service === null
+        ) {
+            return $this->support;
+        }
+
+        return $this->support->get($service);
     }
 }
 

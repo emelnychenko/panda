@@ -15,7 +15,7 @@ use Panda\Foundation\SessionEssenceAbstact;
  *
  *  @subpackage Framework
  */
-class Session extends SessionEssenceAbstact
+class Session extends SessionEssenceAbstact implements SessionInterface
 {
     # extended ... 
 }

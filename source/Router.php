@@ -23,13 +23,11 @@ class Router extends RoutingDispatchAbstract implements RouterInterface, Singlet
     /**
      *  Factory layer.
      *
-     *  @var Panda\Request $request
-     *
      *  @return Panda\Router
      */
-    public static function factory(Request $request)
+    public static function factory()
     {
-        return new static($request);
+        return new static();
     }
 
     use SingletonProviderExpansion;

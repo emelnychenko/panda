@@ -18,9 +18,7 @@ interface RouterInterface
     /**
      *  Factory layer.
      *
-     *  @var Panda\Request $request
-     *
      *  @return Panda\Router
      */
-    public static function factory(Request $request);
+    public static function factory();
 }

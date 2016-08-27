@@ -8,14 +8,12 @@
 
 namespace Panda;
 
-use Panda\Foundation\SessionEssenceAbstact;
-
 /**
  *  Panda Session
  *
  *  @subpackage Framework
  */
-class Session extends SessionEssenceAbstact
+interface SessionInterface
 {
     # extended ... 
 }

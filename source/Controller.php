@@ -38,5 +38,10 @@ abstract class Controller extends ControllerNativeAbstract implements Controller
             json_encode($content, JSON_PRETTY_PRINT), $status, $headers
         ); 
     }
+
+    public function swift($path, array $container = array(), $prevent = false)
+    {
+        return $this->support('swift')->compile($path, $container, $prevent);
+    }
 }
 

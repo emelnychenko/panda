@@ -7,6 +7,7 @@
  */
 
 namespace Panda;
+  
 
 /**
  *  Panda Bootstrap
@@ -15,6 +16,9 @@ namespace Panda;
  */
 class Bootstrap
 {
+    /**
+     *  @var mixed $config
+     */ 
     protected function __construct($config)
     {
         $this
@@ -22,7 +26,12 @@ class Bootstrap
             ->putapp($config)
         ;
     }
-
+ 
+    /**
+     *  @var mixed $config
+     *
+     *  @return Panda\Bootstrap
+     */ 
     protected function config(&$config)
     {
         $config = is_array($config) ? $config : include($config);
@@ -40,13 +49,17 @@ class Bootstrap
         return $this;
     }
 
+    /**
+     *  @var mixed $config
+     */ 
     protected function putapp($config)
     {
         $support = Support::singleton()->append(array(
-            'request'       => Request::singleton(), 
-            'ladder'        =>  Ladder::singleton(),
-            'router'        =>  Router::singleton(), 
-            'config'        =>  $config
+            'request'   => Request::singleton(), 
+            'ladder'    =>  Ladder::singleton(),
+            'router'    =>  Router::singleton(),
+            'swift'     =>   Swift::singleton(), 
+            'config'    =>  $config
         ));
 
         $this->package($support, $config);
@@ -54,7 +67,13 @@ class Bootstrap
         echo $this->execute($support);
     }
 
-    protected function package(Support $support, $config)
+    /**
+     *  @var Panda\SupportInterface $support
+     *  @var mixed $config
+     *
+     *  @return Panda\Bootstrap
+     */ 
+    protected function package(SupportInterface $support, $config)
     {
         if (
             array_key_exists('plugin_dir', $config)
@@ -73,15 +92,23 @@ class Bootstrap
                 new $boostrap($support);
             }
         }
+
+        return $this;
     }
 
+    /**
+     *  @var Panda\SupportInterface $support
+     */ 
     protected function execute($support)
     {
-        return $support->get('router')->run(
-            $support->get('request')
-        );
+        return $support->get('router')->run($support);
     }
 
+    /**
+     *  @var mixed $config
+     *
+     *  @return Panda\Bootstrap
+     */ 
     public static function make($config)
     {
         return new static($config);

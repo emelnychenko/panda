@@ -12,7 +12,7 @@ namespace Panda\Foundation;
  *
  *  @subpackage Framework
  */
-interface SessionEssenceInterface
+interface SupportServicesInterface
 {
     # implements ...
 }

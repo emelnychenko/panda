@@ -12,6 +12,7 @@ use Panda\Foundation\EssenceReadableAbstract;
 
 use Panda\Foundation\SingletonProviderInterface;
 use Panda\Foundation\SingletonProviderExpansion;
+use Panda\Foundation\TechnicalProviderExpansion;
 
 /**
  *  Panda Ladder
@@ -30,6 +31,11 @@ class Ladder extends EssenceReadableAbstract implements LadderInterface, Singlet
             'association'   => array()
         );
     }
+
+    public static function factory()
+    {
+        return new static();
+    }
     
     /**
      *  Register autoloader matches.
@@ -41,19 +47,11 @@ class Ladder extends EssenceReadableAbstract implements LadderInterface, Singlet
      */
     public function add($association, $equal = null)
     {
-        if (
-            is_array($association) && is_null($equal)
-        ) {
-            foreach ($association as $_association => $_equal) {
-                $this->container['association'][$_association]  = $_equal;
-                $this->container['collection'][]                = preg_quote($_association, '/');
-            }
-        } elseif (
-            is_string($association) && is_string($equal)
-        ) {
-            $this->container['association'][$association]   = $equal;
-            $this->container['collection'][]                = preg_quote($association, '/');
-        }
+        $this->tpe_pair_iterator($association, $equal, function($key, $equal) {
+            $this->container['association'][$key]   = $equal;
+            $this->container['collection'][]        = preg_quote($key, '/');
+        });
+
         /**
          *  Update comparsion regexp
          */
@@ -81,14 +79,17 @@ class Ladder extends EssenceReadableAbstract implements LadderInterface, Singlet
             $autoloader_slice   = preg_replace(
                     $this->container['comparison'], '', $class
                 );
+
             $class_file_path    = sprintf(
                     '%s/%s.php',
                     $autoloader_path,
                     str_replace('\\', '/', $autoloader_slice)
                 );
+
             file_exists($class_file_path) ? include($class_file_path) : null;
         }
     }
 
     use SingletonProviderExpansion;
+    use TechnicalProviderExpansion;
 }

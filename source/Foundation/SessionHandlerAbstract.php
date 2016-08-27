@@ -1,5 +1,10 @@
 <?php
-
+/**
+ *  Panda PHP Foundation, Packages and Framework
+ *
+ *  @package Panda
+ *  @author  Eugen Melnychenko
+ */
 namespace Panda\Foundation;
 
 abstract class StorageHandlerAbstract
