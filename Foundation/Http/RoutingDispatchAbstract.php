@@ -249,7 +249,7 @@ abstract class RoutingDispatchAbstract
             if (
                 $request->is($url)
             ) {
-                return $this->dispatch($essence, $request);
+                return $this->dispatch($essence, array(), $request);
             }
         }
     }
