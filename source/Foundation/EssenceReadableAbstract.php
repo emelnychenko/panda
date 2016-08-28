@@ -18,7 +18,12 @@ abstract class EssenceReadableAbstract implements EssenceReadableInterface
     /**
      *  @var array
      */
-    protected $shared;
+    protected $shared = array();
+
+    /**
+     *  @var array
+     */
+    protected $origin = array();
 
     /**
      *  Get container value by asoociation key.
@@ -118,16 +123,6 @@ abstract class EssenceReadableAbstract implements EssenceReadableInterface
     }
 
     /**
-     *  Get whole shared.
-     *
-     *  @return array
-     */
-    public function all()
-    {
-        return $this->shared;
-    }
-
-    /**
      *  Magic override get.
      *
      *  @var string $key
@@ -149,5 +144,33 @@ abstract class EssenceReadableAbstract implements EssenceReadableInterface
     public function __isset($key)
     {
         return array_key_exists($key, $this->shared);
+    }
+
+    /**
+     *  Need Addition Implementation
+     */ 
+    protected function __pull($key, $source)
+    {
+        $response = null; $key = is_numeric($key) ? $equal : $key;
+
+        if (strpos($key, '.') !== false) {
+            $keychain = explode('.', $key);
+            $response = $this->__pull_r($keychain, 0, count($keychain), $source);
+        } elseif (
+            isset($source[$key])
+        ) {
+            $response = $source[$key];
+        }
+        
+        return is_callable($response) ? call_user_func($response) : $response;
+    }
+
+    protected function __pull_r(array $keys, $index, $limit = 0, $source)
+    {
+        if ($index >= $limit) return $source;
+            
+        return isset($source[$keys[$index]]) ? $this->__pull_r(
+            $keys, $index + 1, $limit, $source[$keys[$index]]
+        ) : null;
     }
 }
