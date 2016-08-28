@@ -22,6 +22,6 @@ class EssenceReadableInstance extends EssenceReadableAbstract
      */
     public function __construct($container)
     {
-        $this->container = is_array($container) ? $container : func_get_args();
+        $this->shared = is_array($container) ? $container : func_get_args();
     }
 }

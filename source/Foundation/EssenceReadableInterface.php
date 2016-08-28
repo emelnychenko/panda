@@ -32,7 +32,7 @@ interface EssenceReadableInterface
      *
      *  @return array
      */
-    public function only($keys);
+    public function only($keys, $defaults = null);
 
     /**
      *  Get container values which not in key array.

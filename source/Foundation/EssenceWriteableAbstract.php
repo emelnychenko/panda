@@ -9,28 +9,28 @@
 namespace Panda\Foundation;
 
 /**
- *  Writeable Container Abstract
+ *  Writeable shared Abstract
  *
  *  @subpackage Foundation
  */
 abstract class EssenceWriteableAbstract extends EssenceReadableAbstract implements EssenceWriteableInterface
 {
     /**
-     *  Set container array data.
+     *  Set shared array data.
      *
-     *  @var array $container
+     *  @var array $shared
      *
      *  @return \Panda\Foundation\Support\EssenceWriteableAbstract
      */
-    public function add(array $container = null)
+    public function add(array $shared = null)
     {
-        $this->container = array_replace($this->container, $container);
+        $this->shared = array_replace($this->shared, $shared);
 
         return $this;
     }
 
     /**
-     *  Set container by key.
+     *  Set shared by key.
      *
      *  @var array $key
      *  @var array $equal
@@ -39,13 +39,13 @@ abstract class EssenceWriteableAbstract extends EssenceReadableAbstract implemen
      */
     public function set($key, $equal)
     {
-        $this->container[$key] = $equal;
+        $this->shared[$key] = $equal;
 
         return $this;
     }
 
     /**
-     *  Set magic container by key.
+     *  Set magic shared by key.
      *
      *  @var array $key
      *  @var array $equal

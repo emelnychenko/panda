@@ -22,7 +22,7 @@ interface EssenceWriteableInterface
      *
      *  @return \Panda\Foundation\Support\EssenceWriteableAbstract
      */
-    public function add(array $container = null);
+    public function add(array $shared = null);
 
     /**
      *  Set container by key.

@@ -18,10 +18,10 @@ class EssenceWriteableInstance extends EssenceWriteableAbstract
     /**
      *  Single setter - __construct.
      *
-     *  @var mixed  $container
+     *  @var mixed  $shared
      */
-    public function __construct(array $container = null)
+    public function __construct(array $shared = null)
     {
-        $this->container = is_array($container) ? $container : func_get_args();
+        $this->shared = is_array($shared) ? $shared : func_get_args();
     }
 }

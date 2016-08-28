@@ -18,12 +18,7 @@ abstract class EssenceReadableAbstract implements EssenceReadableInterface
     /**
      *  @var array
      */
-    protected $container;
-
-    /**
-     *  @var array
-     */
-    protected static $identity = 'container';
+    protected $shared;
 
     /**
      *  Get container value by asoociation key.
@@ -35,27 +30,47 @@ abstract class EssenceReadableAbstract implements EssenceReadableInterface
      */
     public function get($key, $default = null)
     {
-        return array_key_exists($key, $this->container) ? $this->container[$key] : $default;
+        return array_key_exists($key, $this->shared) ? $this->shared[$key] : $default;
     }
 
     /**
-     *  Get container values by key array.
+     *  Get shared values by key array.
      *
      *  @var mixed $keys
      *
      *  @return array
      */
-    public function only($keys)
+    public function only($keys, $defaults = null)
     {
-        $keys = is_array($keys) ? $keys : func_get_args();
+        if (
+            !is_array($keys)
+        ) {
+            $keys = func_get_args(); $defaults = null;
+        }
 
-        return array_intersect_key(
-            $this->container, array_flip($keys)
+        $collection = array_intersect_key(
+            $this->shared, array_flip($keys)
         );
+
+        if (
+            isset($defaults)
+        ) {
+            $combining = array_combine($keys, $defaults);
+
+            foreach($combining as $key => $default) {
+                if (
+                    !isset($collection[$key])
+                ) {
+                    $collection[$key] = $default;
+                }
+            }
+        }
+
+        return $collection;
     }
 
     /**
-     *  Get container values which not in key array.
+     *  Get shared values which not in key array.
      *
      *  @var mixed $keys
      *
@@ -66,7 +81,7 @@ abstract class EssenceReadableAbstract implements EssenceReadableInterface
         $keys = is_array($keys) ? $keys : func_get_args();
 
         return array_diff_key(
-            $this->container, array_flip($keys)
+            $this->shared, array_flip($keys)
         );
     }
 
@@ -103,13 +118,13 @@ abstract class EssenceReadableAbstract implements EssenceReadableInterface
     }
 
     /**
-     *  Get whole container.
+     *  Get whole shared.
      *
      *  @return array
      */
     public function all()
     {
-        return $this->container;
+        return $this->shared;
     }
 
     /**
@@ -133,6 +148,6 @@ abstract class EssenceReadableAbstract implements EssenceReadableInterface
      */
     public function __isset($key)
     {
-        return array_key_exists($key, $this->container);
+        return array_key_exists($key, $this->shared);
     }
 }
