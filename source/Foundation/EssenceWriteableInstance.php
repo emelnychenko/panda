@@ -24,4 +24,14 @@ class EssenceWriteableInstance extends EssenceWriteableAbstract
     {
         $this->shared = is_array($shared) ? $shared : func_get_args();
     }
+
+    /**
+     *  Get whole shared.
+     *
+     *  @return array
+     */
+    public function all()
+    {
+        return $this->shared;
+    }
 }

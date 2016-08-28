@@ -24,4 +24,14 @@ class EssenceReadableInstance extends EssenceReadableAbstract
     {
         $this->shared = is_array($container) ? $container : func_get_args();
     }
+
+    /**
+     *  Get whole shared.
+     *
+     *  @return array
+     */
+    public function all()
+    {
+        return $this->shared;
+    }
 }

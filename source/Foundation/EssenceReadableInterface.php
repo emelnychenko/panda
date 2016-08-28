@@ -62,13 +62,6 @@ interface EssenceReadableInterface
     public function has($keys);
 
     /**
-     *  Get whole container.
-     *
-     *  @return array
-     */
-    public function all();
-
-    /**
      *  Magic override get.
      *
      *  @var string $key
