@@ -55,6 +55,9 @@ class Bootstrap
     protected function putapp($config)
     {
         $support = Support::singleton()->append(array(
+            'database'  => Database::create(
+                array_key_exists('database', $config) ? $config['database'] : array()
+            ),
             'request'   => Request::singleton(), 
             'ladder'    =>  Ladder::singleton(),
             'router'    =>  Router::singleton(),
