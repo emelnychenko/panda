@@ -59,4 +59,3 @@ abstract class ControllerNativeAbstract extends FlotationInstanceAbstract implem
         return $this->support->get($service);
     }
 }
-

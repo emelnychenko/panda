@@ -29,7 +29,7 @@ interface ClientRequestedInterface
      *
      *  @return array
      */
-    public function only($keys, $default = null);
+    public function only($keys, $defaults = null);
 
     /**
      *  Get actual array dataset from main essence.
