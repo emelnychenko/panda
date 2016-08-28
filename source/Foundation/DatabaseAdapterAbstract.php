@@ -135,38 +135,38 @@ abstract class DatabaseAdapterAbstract implements DatabaseAdapterInterface
      *
      *  @return \Blink\Database\AdapterProvider
      */
-    // public function query($decission)
-    // {
-    //     return $this->__safe_execution(function($instance) use ($decission) {
-    //         if (
-    //             is_string($decission)
-    //         ) {
-    //             return QueryStatement::create(
-    //                 $instance->query($decission, PDO::FETCH_ASSOC), true
-    //             );
-    //         } elseif (
-    //             is_callable($decission)
-    //         ) {
-    //             $blueprint = QueryBlueprint::create();
+    public function query($decission)
+    {
+        return $this->__safe_execution(function($instance) use ($decission) {
+            if (
+                is_string($decission)
+            ) {
+                return DatabaseStateProvider::create(
+                    $instance->query($decission, PDO::FETCH_ASSOC), true
+                );
+            } elseif (
+                is_callable($decission)
+            ) {
+                $blueprint = DatabaseQueryBlueprint::create();
 
-    //             call_user_func($decission, $blueprint);
+                call_user_func($decission, $blueprint);
 
-    //             $query_req = $blueprint->blueprint();
+                $query_req = $blueprint->blueprint();
 
-    //             if (
-    //                 !empty($query_req)
-    //             ) {
-    //                 $statement = QueryStatement::create($instance->prepare(
-    //                     $query_req
-    //                 ));
+                if (
+                    !empty($query_req)
+                ) {
+                    $statement = DatabaseStateProvider::create($instance->prepare(
+                        $query_req
+                    ));
 
-    //                 return $statement->exec(
-    //                     $blueprint->binded()
-    //                 );
-    //             }
-    //         }
-    //     });
-    // }
+                    return $statement->exec(
+                        $blueprint->binded()
+                    );
+                }
+            }
+        });
+    }
 
     /**
      *  Method for handling transaction block. PDOException return $exception;
