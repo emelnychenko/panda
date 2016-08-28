@@ -8,15 +8,12 @@
 
 namespace Panda\Foundation;
 
-use PDO;
-use PDOStatement;
-
 /**
- *  Database State
+ *  Database MySQL Adapter
  *
  *  @subpackage Foundation
  */
-interface DatabaseStateInterface
+interface DatabaseMySQLInterface
 {
-    # implements ...
+    # implements
 }

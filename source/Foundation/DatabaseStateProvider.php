@@ -1,8 +1,9 @@
 <?php
 /**
- *  @category   Blink
- *  @author     Eugen Melnychenko
- *  @version    v1.0
+ *  Panda PHP Foundation, Packages and Framework
+ *
+ *  @package Panda
+ *  @author  Eugen Melnychenko
  */
 
 namespace Panda\Foundation;
@@ -11,9 +12,9 @@ use PDO;
 use PDOStatement;
 
 /**
- *  Adapter Layer of PDO Driver
+ *  Database State 
  *
- *  @package Database
+ *  @subpackage Foundation
  */
 class DatabaseStateProvider
 {

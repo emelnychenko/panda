@@ -1,20 +1,17 @@
 <?php
 /**
- *  @category   Blink
- *  @author     Eugen Melnychenko
- *  @version    v1.0
+ *  Panda PHP Foundation, Packages and Framework
+ *
+ *  @package Panda
+ *  @author  Eugen Melnychenko
  */
 
 namespace Panda\Foundation;
 
-use PDO;
-use PDOException;
-use Closure;
-
 /**
- *  Adapter Layer of PDO Driver
+ *  Database SQLite Adapter
  *
- *  @package Database
+ *  @subpackage Foundation
  */
 class DatabaseSQLiteAdapter extends DatabaseAdapterAbstract
 {

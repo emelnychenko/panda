@@ -8,19 +8,25 @@
 
 namespace Panda;
   
-use Panda\Foundation\EssenceWriteableAbstract;
+use Panda\Foundation\DatabaseAdapterAbstract;
+use Panda\Foundation\DatabaseMySQLAdapter;
+use Panda\Foundation\DatabaseSQLiteAdapter;
 
 /**
  *  Panda Bootstrap
  *
  *  @subpackage Framework
  */
-class Database extends EssenceWriteableAbstract implements DatabaseInterface 
+class Database implements DatabaseInterface 
 {
+    const MYSQL     = 'mysql';
+
+    const SQLITE    = 'sqlite';
+
     /**
      *  @var array
      */
-    protected $connection = array();
+    protected $connections = array();
     /**
      *  Append array composite of configuration.
      * 
@@ -28,13 +34,15 @@ class Database extends EssenceWriteableAbstract implements DatabaseInterface
      *
      *  @return \Blink\Database\ActiveRecordAdapter
      */
-    public static function create(array $conf_tree)
+    public static function create(array $configs)
     {
-        $instance = static::singleton();
-        foreach ($conf_tree as $connection => $conf_item) {
-            $instance->add($connection, $conf_item);
+        $singleton = static::singleton();
+
+        foreach($configs as $connection => $config) {
+            $singleton->append($connection, $config);
         }
-        return $instance;
+
+        return $singleton;
     }
     /**
      *  Append configuraiton with association key.
@@ -44,17 +52,27 @@ class Database extends EssenceWriteableAbstract implements DatabaseInterface
      *
      *  @return \Blink\Database\ActiveRecordAdapter
      */
-    public static function add($connection = 'default', array $connect_arr = null, &$prototype = null)
+    public function append($connection = 'default', $floating)
     {
         if (
-            array_key_exists('adapter', $connect_arr) && AdapterProviderFactory::verify($connect_arr['adapter'])
+            is_array($floating) && array_key_exists('adapter', $floating)
         ) {
-            return static::singleton()->__push(
-                $connection, AdapterProviderFactory::create(
-                    $connect_arr['adapter'], $connect_arr, $prototype, true
-                )
-            );
+            if (
+                $floating['adapter'] === static::MYSQL 
+            ) {
+                $this->connections[$connection] = DatabaseMySQLAdapter::factory($floating, true);
+            } elseif (
+                $floating['adapter'] === static::SQLITE 
+            ) {
+                $this->connections[$connection] = DatabaseSQLiteAdapter::factory($floating, true);
+            }
+        } elseif (
+            is_object($floating) && is_subclass_of(DatabaseAdapterAbstract::class) 
+        ) {
+            $this->connections[$connection] = $floating;
         }
+
+        return $this->connections[$connection];
     }
     /**
      *  Append MySQL configuraiton with association key.
@@ -64,10 +82,10 @@ class Database extends EssenceWriteableAbstract implements DatabaseInterface
      *
      *  @return \Blink\Database\ActiveRecordAdapter
      */
-    public static function mysql($connection = 'default', array $connect_arr = null, &$prototype = null)
+    public static function mysql($connection = 'default', array $config = null)
     {
-        return static::singleton()->__push(
-            $connection, AdapterProviderFactory::mysql($connect_arr, $prototype, true)
+        return static::singleton()->append(
+            $connection, array_replace($config, array('adapter' => static::ADAPTER_MYSQL))
         );
     }
     /**
@@ -78,12 +96,13 @@ class Database extends EssenceWriteableAbstract implements DatabaseInterface
      *
      *  @return \Blink\Database\ActiveRecordAdapter
      */
-    public static function sqlite($connection = 'default', array $connect_arr = null, &$prototype = null)
+    public static function sqlite($connection = 'default', array $config = null)
     {
-        return static::singleton()->__push(
-            $connection, AdapterProviderFactory::sqlite($connect_arr, $prototype, true)
+        return static::singleton()->append(
+            $connection, array_replace($config, array('adapter' => static::ADAPTER_SQLITE))
         );
     }
+
     /**
      *  Pull AdapterProvider instance.
      * 
@@ -93,32 +112,12 @@ class Database extends EssenceWriteableAbstract implements DatabaseInterface
      */
     public static function get($connection = 'default')
     {
-        return static::singleton()->__pull($connection);
+        $singleton = static::singleton();
+
+        return array_key_exists($connection, $singleton->connections) ?
+            $singleton->connections[$connection] : null;
     }
-    /**
-     *  Helper setter method connection.
-     * 
-     *  @var string $thread
-     *  @var AdapterProviderInterface $adapter
-     *
-     *  @return \Blink\Database\ActiveRecordAdapter
-     */
-    protected function __push($thread = 'default', AdapterProviderInterface $adapter)
-    {
-        $this->adapter[$thread] = $adapter;
-        return $this;
-    }
-    /**
-     *  Helper getter method.
-     * 
-     *  @var string $thread
-     *
-     *  @return \Blink\Database\AdapterProviderAbstract
-     */
-    protected function __pull($thread = 'default')
-    {
-        return array_key_exists($thread, $this->adapter) ? $this->adapter[$thread] : null;
-    }
+
     /**
      *  Singleton call.
      * 
@@ -135,7 +134,4 @@ class Database extends EssenceWriteableAbstract implements DatabaseInterface
         }
         return $instance;
     }
-    protected function __construct()  {}
-    protected function __wakeup()     {}
-    protected function __clone()      {}
 }

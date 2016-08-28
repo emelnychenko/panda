@@ -1,8 +1,9 @@
 <?php
 /**
- *  @category   Blink
- *  @author     Eugen Melnychenko
- *  @version    v1.0
+ *  Panda PHP Foundation, Packages and Framework
+ *
+ *  @package Panda
+ *  @author  Eugen Melnychenko
  */
 
 namespace Panda\Foundation;
@@ -12,9 +13,9 @@ use PDOException;
 use Closure;
 
 /**
- *  Adapter Layer of PDO Driver
+ *  Database Adapter
  *
- *  @package Database
+ *  @subpackage Foundation
  */
 abstract class DatabaseAdapterAbstract implements DatabaseAdapterInterface
 {
@@ -48,9 +49,9 @@ abstract class DatabaseAdapterAbstract implements DatabaseAdapterInterface
      * 
      *  @var array $conf
      */
-    public function __construct(array $conf = null)
+    public function __construct(array $config = null)
     {
-        $this->__conf_composite($conf, array(
+        $this->__conf_composite($config, array(
             'username' => 'username',
             'password' => 'password',
         ), 'base64_encode');
@@ -65,9 +66,9 @@ abstract class DatabaseAdapterAbstract implements DatabaseAdapterInterface
      *
      *  @return \Blink\Database\AdapterProvider
      */
-    public static function factory(array $conf = null, &$prototype = null, $connect = true)
+    public static function factory(array $config = null, $connect = true)
     {
-        $prototype = new static($conf);
+        $prototype = new static($config);
 
         if ($connect) $prototype->connect();
 

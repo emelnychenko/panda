@@ -8,10 +8,6 @@
 
 namespace Panda\Foundation;
 
-use PDO;
-use PDOException;
-use Closure;
-
 /**
  *  Database Query Blueprint
  *

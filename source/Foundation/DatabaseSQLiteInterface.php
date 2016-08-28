@@ -8,15 +8,12 @@
 
 namespace Panda\Foundation;
 
-use PDO;
-use PDOStatement;
-
 /**
- *  Database State
+ *  Database SQLite Adapter
  *
  *  @subpackage Foundation
  */
-interface DatabaseStateInterface
+interface DatabaseSQLiteInterface
 {
     # implements ...
 }
