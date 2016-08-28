@@ -22,24 +22,24 @@ class SwiftPage extends EssenceWriteableAbstract implements SwiftPageInterface
     protected $prevent      = null;
     protected $fill         = array();
     protected $render       = null;
-    protected $blurprinted  = false;
-    protected $temprorary   = null;
+    protected $layouted     = false;
+    protected $layout       = null;
 
     public function __construct(SwiftInterface $swift, $page, $container = [], $prevent = false)
     {
         $this->swift        = $swift;
         $this->page         = $page;
         $this->prevent      = $prevent;
-        $this->container    = $container;
+        $this->shared       = $container;
     }
 
-    public function blueprint($page)
+    public function layout($page)
     {
         if (
             !$this->prevent
         ) {
-            $this->blurprinted  = true;
-            $this->temprorary   = $page;
+            $this->layouted     = true;
+            $this->layout       = $page;
         }
 
         return $this;
@@ -67,12 +67,12 @@ class SwiftPage extends EssenceWriteableAbstract implements SwiftPageInterface
 
     public function part($page)
     {
-        return $this->exctract($page);
+        return $this->extract($page);
     }
 
     public function inner()
     {
-        if ($this->blurprinted) 
+        if ($this->layouted) 
             return $this->content;
     }
 
@@ -90,9 +90,9 @@ class SwiftPage extends EssenceWriteableAbstract implements SwiftPageInterface
             return $this->render = $this->content;
         }
 
-        if ($this->blurprinted) {
+        if ($this->layouted) {
             $this->prevent  = true;
-            $this->content  = $this->extract($this->temprorary);  
+            $this->content  = $this->extract($this->layout);  
 
             return $this->render = $this->content;
         }

@@ -122,11 +122,17 @@ abstract class ClientRequestedAbstract implements ClientRequestedInterface
      *
      *  @return array
      */
-    public function only($keys)
+    public function only($keys, $default = null)
     {
-        $keys = is_array($keys) ? $keys : func_get_args();
+        if (
+            is_array($keys)
+        ) {
+            return $this->source()->only($keys, $default); 
+        }
 
-        return $this->source()->only($keys);
+        return $this->source()->only(
+            func_get_args()
+        );
     }
 
     /**

@@ -25,7 +25,7 @@ class Ladder extends EssenceReadableAbstract implements LadderInterface, Singlet
     {
         spl_autoload_register(array($this, 'spl'));
 
-        $this->container = array(
+        $this->shared = array(
             'comparison'    => '',
             'collection'    => array(),
             'association'   => array()
@@ -48,16 +48,16 @@ class Ladder extends EssenceReadableAbstract implements LadderInterface, Singlet
     public function add($association, $equal = null)
     {
         $this->tpe_pair_iterator($association, $equal, function($key, $equal) {
-            $this->container['association'][$key]   = $equal;
-            $this->container['collection'][]        = preg_quote($key, '/');
+            $this->shared['association'][$key]   = $equal;
+            $this->shared['collection'][]        = preg_quote($key, '/');
         });
 
         /**
          *  Update comparsion regexp
          */
-        $this->container['comparison'] = sprintf(
+        $this->shared['comparison'] = sprintf(
             '/^(%s)/', implode(
-                '|', $this->container['collection']
+                '|', $this->shared['collection']
             )
         );
         return $this;
@@ -72,12 +72,12 @@ class Ladder extends EssenceReadableAbstract implements LadderInterface, Singlet
     public function spl($class, $param = null)
     {
         if (
-            !empty($this->container['comparison']) && preg_match($this->container['comparison'], $class, $namespace)
+            !empty($this->shared['comparison']) && preg_match($this->shared['comparison'], $class, $namespace)
         ) {
             $namespace          = current($namespace);
-            $autoloader_path    = $this->container['association'][$namespace];
+            $autoloader_path    = $this->shared['association'][$namespace];
             $autoloader_slice   = preg_replace(
-                    $this->container['comparison'], '', $class
+                    $this->shared['comparison'], '', $class
                 );
 
             $class_file_path    = sprintf(

@@ -24,7 +24,7 @@ abstract class SessionEssenceAbstact extends EssenceWriteableAbstract implements
         $this->storage = $storage;
 
         $this->procedure(function() {
-            $this->container = array_key_exists(
+            $this->shared = array_key_exists(
                 $this->storage, $_SESSION
             ) ? $_SESSION[$this->storage] : array();
         });
@@ -33,14 +33,14 @@ abstract class SessionEssenceAbstact extends EssenceWriteableAbstract implements
     public function save()
     {
         $this->procedure(function() {
-            $_SESSION[$this->session] = $this->container; 
+            $_SESSION[$this->session] = $this->shared; 
         });
     }
 
     public function remove()
     {
         $this->procedure(function() {
-            unset($_SESSION[$this->session_id], $this->container);
+            unset($_SESSION[$this->session_id], $this->shared);
         });
     }
 
