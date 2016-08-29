@@ -30,17 +30,22 @@ abstract class SessionEssenceAbstact extends EssenceWriteableAbstract implements
         });
     }
 
+    public function update(array $dataset)
+    {
+        $this->add($dataset)->save();
+    }
+
     public function save()
     {
         $this->procedure(function() {
-            $_SESSION[$this->session] = $this->shared; 
+            $_SESSION[$this->storage] = $this->shared; 
         });
     }
 
     public function remove()
     {
         $this->procedure(function() {
-            unset($_SESSION[$this->session_id], $this->shared);
+            unset($_SESSION[$this->storage], $this->shared);
         });
     }
 

@@ -39,9 +39,23 @@ abstract class Controller extends ControllerNativeAbstract implements Controller
         ); 
     }
 
-    public function swift($path, array $container = array(), $prevent = false)
+    public function swift(
+        $path, 
+        array $container    = array(), 
+        $prevent            = false, 
+        $status             = 200, 
+        array $headers      = array()
+    ) {
+        return $this->html(
+            $this->support('swift')->compile(
+                $path, $container, $prevent
+            )->render(), $status, $headers
+        );
+    }
+
+    public function redirect($url, $status = 303, array $headers = array())
     {
-        return $this->support('swift')->compile($path, $container, $prevent);
+        return Response::redirect($url, $status, $headers);
     }
 }
 

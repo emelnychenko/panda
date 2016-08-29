@@ -134,6 +134,18 @@ abstract class ClientRequestedAbstract implements ClientRequestedInterface
     }
 
     /**
+     *  Verify if values exist.
+     *
+     *  @var mixed $key
+     *
+     *  @return array
+     */
+    public function exists($keys)
+    {
+        return $this->source()->exists($keys);
+    }
+
+    /**
      *  Get actual array dataset from main essence.
      *
      *  @return array

@@ -21,5 +21,41 @@ abstract class Processor extends ProcessorEventAbstract implements ProcessorInte
     {
         return new Session($container);
     }
+
+    public function html($content, $status = 200, array $headers = array())
+    {
+        return Response::html($content, $status, $headers); 
+    }
+
+    public function text($content, $status = 200, array $headers = array())
+    {
+        return Response::text($content, $status, $headers); 
+    }
+
+    public function json($content, $status = 200, array $headers = array())
+    {
+        return Response::json(
+            json_encode($content, JSON_PRETTY_PRINT), $status, $headers
+        ); 
+    }
+
+    public function swift(
+        $path, 
+        array $container    = array(), 
+        $prevent            = false, 
+        $status             = 200, 
+        array $headers      = array()
+    ) {
+        return $this->html(
+            $this->support('swift')->compile(
+                $path, $container, $prevent
+            )->render(), $status, $headers
+        );
+    }
+
+    public function redirect($url, $status = 303, array $headers = array())
+    {
+        return Response::redirect($url, $status, $headers);
+    }
 }
 

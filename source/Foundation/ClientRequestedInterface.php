@@ -23,6 +23,15 @@ interface ClientRequestedInterface
     public function source();
 
     /**
+     *  Verify if values exist.
+     *
+     *  @var mixed $key
+     *
+     *  @return array
+     */
+    public function exists($keys);
+
+    /**
      *  Get only array keys from main essence.
      *
      *  @var mixed $key

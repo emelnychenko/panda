@@ -80,4 +80,19 @@ class Response extends ClientResponseAbstract implements ResponseInterface
             $content, $status, array_replace($headers, array('Content-Type' => 'application/xml; charset=utf-8'))
         );
     }
+
+    /**
+     *  Create http redirect.
+     *
+     *  @var integer $status
+     *  @var array   $headers
+     *
+     *  @return Panda\Response
+     */
+    public static function redirect($url, $status = 303, array $headers = array())
+    {
+        return static::create(
+            '', $status, array_replace($headers, array('Location' => $url))
+        );
+    }
 }
