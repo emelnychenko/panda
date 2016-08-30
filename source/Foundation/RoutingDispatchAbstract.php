@@ -222,9 +222,9 @@ abstract class RoutingDispatchAbstract
         $request     = $support->get('request');
         $current_url = $request->url();
 
-        foreach($this->routes->all() as $url => $essence) {
+        foreach($this->routes->all() as $essence) {
             if (
-                preg_match($this->prepare_address($url), $current_url, $matches)
+                preg_match($this->prepare_address($essence['url']), $current_url, $matches)
             ) {
                 array_shift($matches); $matches = array_filter($matches);
 
@@ -244,10 +244,10 @@ abstract class RoutingDispatchAbstract
         foreach(
             array_merge(
                 $this->denied->except('*'), $this->denied->only('*')
-            ) as $url => $essence
+            ) as $essence
         ) {
             if (
-                $request->is($url)
+                $request->is($essence['url'])
             ) {
                 return $this->dispatch($essence, array(), $support);
             }
@@ -346,7 +346,7 @@ abstract class RoutingDispatchAbstract
      */
     protected function append($url, $handler, $argument = 'routes')
     {
-        $container = array('handler' => $handler);
+        $container = array('handler' => $handler, 'url' => $url);
 
         foreach (array('processor', 'namespace') as $thread) {
             if (
@@ -356,7 +356,7 @@ abstract class RoutingDispatchAbstract
             }
         }
 
-        $this->{$argument}->set($url, $container);
+        $this->{$argument}->set(uniqid(), $container);
     }
 
     /**
