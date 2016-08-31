@@ -93,7 +93,7 @@ class Form implements FormInterface
                 );
             }
 
-            $attr = isset($attr) ? $attr : null;
+            $attr = isset($attr) ? $attr : array();
 
             return $this->input[$name] = Multi::factory(
                 $type, $name, $options, array_replace($this->default, $attr), $value
