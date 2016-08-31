@@ -57,7 +57,7 @@ class Validation
         return preg_replace('/^[a-zA-Z0-9]+$/i', '', $equal);
     }
 
-    public static function alphanum($equal)
+    public static function alnum($equal)
     {
         return static::alphanumeric($equal);
     }
