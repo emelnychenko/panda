@@ -21,26 +21,26 @@ abstract class ActiveRecord extends EssenceWriteableAbstract implements ActiveRe
     /**
      *  @var string
      */ 
-    protected $adapter      = 'default';
+    protected static $adapter   = 'default';
 
     /**
      *  @var string
      */ 
-    protected $table        = null;
+    protected $table            = null;
 
     /**
      *  String - one primary. Array - pair oriented.
      *
      *  @var mixed
      */ 
-    protected $primary      = 'id';
+    protected $primary          = 'id';
 
     /**
      *  Basic scale implementation of one autoincrements.
      *
      *  @var mixed
      */ 
-    protected $increment    = 'id';
+    protected $increment        = 'id';
 
     /**
      *  Watch primary key on insertion. And selection.
@@ -147,7 +147,7 @@ abstract class ActiveRecord extends EssenceWriteableAbstract implements ActiveRe
             is_array($primary) ? $primary : array($this->primary => $primary)
         );
 
-        $result = $this->query(function($query) use ($primaries) {
+        $result = static::query(function($query) use ($primaries) {
             $query->select(
                 $this->columns
             )->from(
@@ -169,7 +169,7 @@ abstract class ActiveRecord extends EssenceWriteableAbstract implements ActiveRe
     {
         $this->intable  = true;
 
-        $result = $this->query(function($query) use ($condition, $order, $offset) {
+        $result = static::query(function($query) use ($condition, $order, $offset) {
             $query->select(
                 $this->columns
             )->from(
@@ -195,7 +195,7 @@ abstract class ActiveRecord extends EssenceWriteableAbstract implements ActiveRe
     {
         $this->intable  = true;
 
-        $result = $this->query(function($query) use ($condition, $order, $offset, $limit) {
+        $result = static::query(function($query) use ($condition, $order, $offset, $limit) {
             $query->select(
                 $this->columns
             )->from(
@@ -223,7 +223,7 @@ abstract class ActiveRecord extends EssenceWriteableAbstract implements ActiveRe
     {
         $this->intable = true;
 
-        $result = $this->query(function($query){
+        $result = static::query(function($query){
             $query->select($this->columns)->from($this->table);
         })->all();
 
@@ -239,7 +239,7 @@ abstract class ActiveRecord extends EssenceWriteableAbstract implements ActiveRe
 
             $primaries = $this->scale_primary($diffed);
 
-            $this->query(function($query) use ($primaries, $diffed) {
+            static::query(function($query) use ($primaries, $diffed) {
                 $query->update(
                     $this->table
                 )->set(
@@ -271,7 +271,7 @@ abstract class ActiveRecord extends EssenceWriteableAbstract implements ActiveRe
                     $diffed[$this->scale_column($this->updated_at)] = $this->scale_timestamp(); 
                 }
 
-                $this->query(function($query) use ($primaries, $diffed) {
+                static::query(function($query) use ($primaries, $diffed) {
                     $query->update(
                         $this->table
                     )->set(
@@ -291,7 +291,7 @@ abstract class ActiveRecord extends EssenceWriteableAbstract implements ActiveRe
                 $diffed[$this->scale_column($this->created_at)] = $this->scale_timestamp(); 
             }
 
-            $adapter = $this->adapter();
+            $adapter = static::adapter();
 
             $adapter->query(function($query) use ($diffed) {
                 $query->insert(
@@ -319,7 +319,7 @@ abstract class ActiveRecord extends EssenceWriteableAbstract implements ActiveRe
         $primaries  = $this->scale_primary($diffed);
 
         if ($this->intable) {
-            $this->query(function($query) use ($primaries) {
+            static::query(function($query) use ($primaries) {
                 $query->delete()->from(
                     $this->table
                 )->where(
@@ -336,14 +336,19 @@ abstract class ActiveRecord extends EssenceWriteableAbstract implements ActiveRe
         return null;
     }
 
-    public function query($query)
+    public static function transaction($transaction, &$exception)
     {
-        return $this->adapter()->query($query);
+        return static::adapter()->transaction($transaction, $exception);
     }
 
-    public function adapter()
+    public static function query($query)
     {
-        return Database::get($this->adapter);
+        return static::adapter()->query($query);
+    }
+
+    public static function adapter()
+    {
+        return Database::get(static::$adapter);
     }
 
     /**
