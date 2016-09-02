@@ -194,26 +194,6 @@ interface InputInterface
     public function sanitize();
 
     /**
-     *  Similar sanitize()
-     *
-     *  @return \Panda\Form\Input
-     */
-    public function clear();
-
-    /**
-     *  Reset input configurator by keys
-     *
-     *  @var array $keys
-     *
-     *  @return \Panda\Form\Input
-     */
-    public function cleanup(
-        $keys = [
-            'attr', 'filter', 'report', 'value', 'error'
-        ]
-    );
-
-    /**
      *  Apending filter variables by key
      *
      *  @var mixed $type
@@ -221,6 +201,7 @@ interface InputInterface
      *  @return \Panda\Form\Input
      */
     public function filter($filter, $rule = null);
+    
     /**
      *  Get all filter map
      *
