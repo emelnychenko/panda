@@ -85,7 +85,7 @@ class Database implements DatabaseInterface
     public static function mysql($connection = 'default', array $config = null)
     {
         return static::singleton()->append(
-            $connection, array_replace($config, array('adapter' => static::ADAPTER_MYSQL))
+            $connection, array_replace($config, array('adapter' => static::MYSQL))
         );
     }
     /**
@@ -99,7 +99,7 @@ class Database implements DatabaseInterface
     public static function sqlite($connection = 'default', array $config = null)
     {
         return static::singleton()->append(
-            $connection, array_replace($config, array('adapter' => static::ADAPTER_SQLITE))
+            $connection, array_replace($config, array('adapter' => static::SQLITE))
         );
     }
 
@@ -127,11 +127,10 @@ class Database implements DatabaseInterface
     {
         static $instance = null;
         
-        if (
-            $instance === null
-        ) {
+        if ($instance === null) {
             $instance = new static();
         }
+
         return $instance;
     }
 }
