@@ -82,6 +82,14 @@ class Form implements FormInterface
             return $this->input[$type];
         }
 
+        $mask_multi = is_string($type) && is_string($name) && is_array($options) && (
+            (
+                is_scalar($attr) && is_null($value)
+            ) || (
+                is_array($attr)  && is_scalar($value)
+            )
+        );
+
         if (
             in_array($type, array(Multi::SELECT, Multi::RADIO, Multi::CHECKBOX), true)
         ) {
@@ -93,23 +101,24 @@ class Form implements FormInterface
                 );
             }
 
-            $attr = isset($attr) ? $attr : null;
+            $attr = isset($attr) ? $attr : array();
 
             return $this->input[$name] = Multi::factory(
                 $type, $name, $options, array_replace($this->default, $attr), $value
             );
         }
 
-        if (
-            is_scalar($options) && $attr === null
-        ) {
+        # single input
+        if (is_scalar($options) && $attr === null) {
             return $this->input[$name] = Input::factory(
                 $type, $name, $this->default, $options
             );
         }
 
         return $this->input[$name] = Input::factory(
-            $type, $name, array_replace($this->default, $options), $attr
+            $type, $name, array_replace(
+                $this->default, is_array($options) ? $options : array()
+            ), $attr
         );
     }
 

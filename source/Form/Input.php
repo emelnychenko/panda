@@ -349,11 +349,21 @@ class Input implements InputInterface
      */
     public function set($value)
     {
-        $this->value = htmlspecialchars(
-            stripslashes(
-                trim($value)
-            )
-        );
+        if (
+            is_scalar($value)
+        ) {
+            $this->value = htmlspecialchars(
+                stripslashes(
+                    trim(
+                        $value
+                    )
+                )
+            );
+        } elseif (
+            $value === null
+        ) {
+            $this->value = $value;
+        }
 
         return $this;
     }
@@ -425,61 +435,6 @@ class Input implements InputInterface
                     Sanitation::class, $filter 
                 ], $mixed);
             }
-        }
-
-        return $this;
-    }
-
-    /**
-     *  Similar sanitize()
-     *
-     *  @return \Panda\Form\Input
-     */
-    public function clear()
-    {
-        return $this->sanitize();
-    }
-
-    /**
-     *  Reset input configurator by keys
-     *
-     *  @var array $keys
-     *
-     *  @return \Panda\Form\Input
-     */
-    public function cleanup(
-        $keys = [
-            'attr', 'filter', 'report', 'value', 'error'
-        ]
-    ) {
-        if (
-            in_array('attr', $keys, true)
-        ) {
-            $this->attr = [];
-        }
-
-        if (
-            in_array('filter', $keys, true)
-        ) {
-            $this->filter = [];
-        }
-
-        if (
-            in_array('report', $keys, true)
-        ) {
-            $this->report = []; $this->valid = true;
-        }
-
-        if (
-            in_array('value', $keys, true)
-        ) {
-            $this->value = null;
-        }
-
-        if (
-            in_array('error', $keys, true)
-        ) {
-            $this->error = null;
         }
 
         return $this;
