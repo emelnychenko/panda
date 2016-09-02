@@ -351,6 +351,18 @@ abstract class ActiveRecord extends EssenceWriteableAbstract implements ActiveRe
         return Database::get(static::$adapter);
     }
 
+    public function __array()
+    {
+        return $this->shared;
+    }
+
+    public function __call($method, $argument)
+    {
+        if ($method === 'array') {
+            return $this->__array();
+        }
+    }
+
     /**
      *  Compile array to ActiveRecord model.
      * 
