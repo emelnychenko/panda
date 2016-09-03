@@ -4,6 +4,7 @@
  *
  *  @package Panda
  *  @author  Eugen Melnychenko
+ *  @since   v1.1.0
  */
 
 namespace Panda\Http;
@@ -13,7 +14,7 @@ use Panda\Alloy\StorageInterface        as Storage;
 use Panda\Essence\WriteableAbstract     as Essence;
 
 /**
- *  Http Cookie
+ *  Http Cookie Abstract
  *
  *  @subpackage Http
  */

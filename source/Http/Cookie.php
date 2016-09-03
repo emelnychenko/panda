@@ -4,12 +4,13 @@
  *
  *  @package Panda
  *  @author  Eugen Melnychenko
+ *  @since   v1.1.0
  */
 
 namespace Panda\Http;
 
 /**
- *  Http Cookie Interface
+ *  Http Cookie
  *
  *  @subpackage Http
  */
