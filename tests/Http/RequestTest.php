@@ -3,6 +3,8 @@
 use PHPUnit\Framework\TestCase;
 
 use Panda\Http\Request;
+use Panda\Http\Cookie;
+use Panda\Http\Session;
 use Panda\Essence\Readable;
 
 class RequestTest extends TestCase
@@ -18,16 +20,24 @@ class RequestTest extends TestCase
         $this->assertArrayHasKey('foo', $request->arrayable());
     }
 
+    /**
+     *  @runInSeparateProcess
+     */
     public function testBranches()
     {
         $injection  = ['foo' => 'bar'];
         $request    = new Request($injection, $injection, $injection, $injection, $injection);
 
-        foreach (['query', 'request', 'files', 'server', 'cookie'] as $branch) {
+        foreach (['query', 'request', 'files', 'server'] as $branch) {
             $this->assertInstanceOf(Readable::class, $request->{$branch});
             $this->assertInstanceOf(Readable::class, $request->{$branch}());
             $this->assertTrue(is_string($request->{$branch}('foo')));
         }
+
+        $this->assertInstanceOf(Readable::class, $request->cookie);
+        $this->assertInstanceOf(Readable::class, $request->cookie());
+        $this->assertInstanceOf(Cookie::class, $request->cookie('foo'));
+        $this->assertInstanceOf(Session::class, $request->session('foo'));
     }
 
     public function testRequestComparison()
