@@ -4,7 +4,7 @@
  *
  *  @package Panda
  *  @author  Eugen Melnychenko
- *  @since   v1.1.0
+ *  @since   v1.2.0
  */
 
 namespace Panda\Essence;
@@ -39,7 +39,7 @@ abstract class WriteableAbstract extends ReadableAbstract
      *  Set magic shared by key.
      *
      *  @var scalar $key
-     *  @var mixed $equal
+     *  @var mixed  $equal
      *
      *  @return \Panda\Essence\WriteableAbstract
      */
@@ -97,7 +97,7 @@ abstract class WriteableAbstract extends ReadableAbstract
      *  Set magic shared by key.
      *
      *  @var scalar $key
-     *  @var mixed $equal
+     *  @var mixed  $equal
      *
      *  @return \Panda\Essence\WriteableAbstract
      */

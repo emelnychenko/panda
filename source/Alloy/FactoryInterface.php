@@ -4,7 +4,7 @@
  *
  *  @package Panda
  *  @author  Eugen Melnychenko
- *  @since   v1.1.0
+ *  @since   v1.2.0
  */
 
 namespace Panda\Alloy;
