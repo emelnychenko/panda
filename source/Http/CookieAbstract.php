@@ -23,32 +23,37 @@ abstract class CookieAbstract extends Essence implements Factory, Storage
     /**
      *  @var string
      */
-    protected $name         = 'panda.cookie';
+    protected $name             = 'panda.cookie';
+
+    /**
+     *  @var string (json|php)
+     */
+    protected $serialization    = 'json';
 
     /**
      *  @var integer
      */
-    protected $expire       = 0;
+    protected $expire           = 0;
 
     /**
      *  @var string
      */
-    protected $path         = '/';
+    protected $path             = '/';
 
     /**
      *  @var string
      */
-    protected $domain       = null;
+    protected $domain           = null;
 
     /**
      *  @var bool
      */
-    protected $secure       = false;
+    protected $secure           = false;
 
     /**
      *  @var bool
      */
-    protected $http         = true;
+    protected $http             = true;
 
     /**
      *  @var string
@@ -81,7 +86,10 @@ abstract class CookieAbstract extends Essence implements Factory, Storage
             array_key_exists($name, $_COOKIE) ? $_COOKIE[$name] : null
         );
 
-        if ($decoded = json_decode($input, true) && json_last_error() === 0) {
+        $decoded = $this->serialization === 'php' ? 
+            @unserialize($input, true) : @json_decode($input, true);
+
+        if ($decoded !== false) {
             $this->replace(is_array($decoded) ? $decoded : ['equal' => $decoded]);
         }
     }
@@ -250,7 +258,8 @@ abstract class CookieAbstract extends Essence implements Factory, Storage
      */
     public function save()
     {
-        $this->input = json_encode($this->shared);
+        $this->input = $this->serialization === 'php' ? 
+            serialize($this->shared) : json_encode($this->shared);
 
         setcookie(
             $this->name, $this->input, $this->expire, $this->path, $this->domain, $this->secure, $this->http
