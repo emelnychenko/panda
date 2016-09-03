@@ -11,7 +11,7 @@ namespace Panda\Alloy;
 /**
  *  Factory Alloy
  *
- *  @subpackage Foundation
+ *  @subpackage Alloy
  */
 interface FactoryInterface
 {
