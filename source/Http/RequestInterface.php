@@ -37,7 +37,7 @@ interface RequestInterface
     public function request($key = null, $default = null);
 
     /**
-     *  Get cookie essence, cookie param.
+     *  Get cookie essence, cookie layer model.
      *
      *  @var mixed $key
      *  @var mixed $default
@@ -45,6 +45,15 @@ interface RequestInterface
      *  @return mixed
      */
     public function cookie($key = null, $default = null);
+
+    /**
+     *  Get session layer model
+     *
+     *  @var mixed $key
+     *
+     *  @return \Panda\Http\Session
+     */
+    public function session($key = null);
 
     /**
      *  Get files essence, files param.
