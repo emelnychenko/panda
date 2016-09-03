@@ -156,7 +156,7 @@ class Request extends Essence implements RequestInterface, Factory
     }
 
     /**
-     *  Get cookie essence, cookie param.
+     *  Get cookie essence, cookie layer model.
      *
      *  @var mixed $key
      *  @var mixed $default
@@ -169,7 +169,21 @@ class Request extends Essence implements RequestInterface, Factory
             return $this->cookie;
         }
 
-        return $this->cookie->get($key, $default);
+        return Cookie::factory(
+            $key, $this->cookie->get($key, $default)
+        );
+    }
+
+    /**
+     *  Get session layer model
+     *
+     *  @var mixed $key
+     *
+     *  @return \Panda\Http\Session
+     */
+    public function session($key = null)
+    {
+        return Session::factory($key);
     }
 
     /**
