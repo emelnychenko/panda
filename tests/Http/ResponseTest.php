@@ -5,7 +5,7 @@ use PHPUnit\Framework\TestCase;
 use Panda\Http\Response;
 use Panda\Essence\Writeable;
 
-class CookieTest extends TestCase
+class ResponseTest extends TestCase
 {
     protected $content  = 'Hello test.';
 
