@@ -6,14 +6,14 @@
  *  @author  Eugen Melnychenko
  */
 
-namespace Panda\Foundation;
+namespace Panda\Joint;
 
 /**
  *  Database Query Blueprint
  *
  *  @subpackage Foundation
  */
-class DatabaseQueryBlueprint
+class Query
 {
     /**
      *  @var string
@@ -174,9 +174,11 @@ class DatabaseQueryBlueprint
      */
     public function join($table, $alias, array $condition, $glue = "INNER")
     {
-        $condition_in = $this->__implode_assoarr($condition, "%s = %s");
-        
-        $this->__include_assign($glue, array("INNER", "LEFT", "RIGHT", "OUTER"), "INNER");
+        $condition_in = [];
+
+        foreach ($condition as $column => $equal) {
+            array_push(sprintf("%s = %s", $column, $equal));
+        }
         
         $this->join[] = sprintf(
                 "%s JOIN %s AS %s ON %s", $glue, $table, $alias, implode(", ", $condition_in)
@@ -193,9 +195,13 @@ class DatabaseQueryBlueprint
      */
     public function set($column, $equal = null)
     {
-        return $this->__divide_assign($column, $equal, function($column, $equal) {
+        $columns = is_array($column) ? $column : [$column => $equal];
+
+        foreach ($columns as $column => $equal) {
             $this->set[$column] = $this->bind($equal);
-        });
+        }
+
+        return $this;
     }
     
     /**
@@ -206,9 +212,13 @@ class DatabaseQueryBlueprint
      */
     public function where($column, $equal = null)
     {
-        return $this->__divide_assign($column, $equal, function($column, $equal) {
+        $columns = is_array($column) ? $column : [$column => $equal];
+
+        foreach ($columns as $column => $equal) {
             $this->where[] = is_string($column) && isset($equal) ? $this->__equal($column, $equal) : $column;
-        });
+        }
+
+        return $this;
     }
     
     /**
@@ -218,9 +228,13 @@ class DatabaseQueryBlueprint
      */
     public function group($column)
     {
-        return $this->__divide_assign($column, null, function($column) {
+        $columns = is_array($column) ? $column : [$column];
+        
+        foreach ($columns as $column) {
             $this->group[] = $column;
-        });
+        }
+
+        return $this;
     }
     
     /**
@@ -231,9 +245,13 @@ class DatabaseQueryBlueprint
      */
     public function having($column, $equal = null)
     {
-        return $this->__divide_assign($column, $equal, function($column, $equal) {
+        $columns = is_array($column) ? $column : [$column => $equal];
+        
+        foreach ($columns as $column => $sort) {
             $this->having[] = is_string($column) && isset($equal) ? $column : $this->__equal($column, $equal);
-        });
+        }
+
+        return $this;
     }
     
     /**
@@ -244,9 +262,13 @@ class DatabaseQueryBlueprint
      */
     public function order($column, $sort = "ASC")
     {
-        return $this->__divide_assign($column, $sort, function($column, $sort) {
+        $columns = is_array($column) ? $column : [$column => $sort];
+
+        foreach ($columns as $column => $sort) {
             $this->order[] = sprintf("%s %s", $column, $sort);
-        });
+        }
+
+        return $this;
     }
     
     /**
@@ -472,6 +494,4 @@ class DatabaseQueryBlueprint
         
         return null;
     }
-
-    use BlueprintArchitectTrait;
 }
