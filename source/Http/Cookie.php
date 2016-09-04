@@ -16,5 +16,5 @@ namespace Panda\Http;
  */
 class Cookie extends CookieAbstract
 {
-    # implements
+    //
 }
