@@ -6,18 +6,17 @@
  *  @author  Eugen Melnychenko
  */
 
-namespace Panda;
-  
-use Panda\Foundation\DatabaseAdapterAbstract;
-use Panda\Foundation\DatabaseMySQLAdapter;
-use Panda\Foundation\DatabaseSQLiteAdapter;
+namespace Panda\Joint;
+
+use Panda\Joint\SQL\MySQL;
+use Panda\Joint\SQL\SQLite;
 
 /**
  *  Panda Bootstrap
  *
  *  @subpackage Framework
  */
-class Database implements DatabaseInterface 
+class SQL
 {
     const MYSQL     = 'mysql';
 
@@ -60,14 +59,14 @@ class Database implements DatabaseInterface
             if (
                 $floating['adapter'] === static::MYSQL 
             ) {
-                $this->connections[$connection] = DatabaseMySQLAdapter::factory($floating, true);
+                $this->connections[$connection] = MySQL::factory($floating, true);
             } elseif (
                 $floating['adapter'] === static::SQLITE 
             ) {
-                $this->connections[$connection] = DatabaseSQLiteAdapter::factory($floating, true);
+                $this->connections[$connection] = SQLite::factory($floating, true);
             }
         } elseif (
-            is_object($floating) && is_subclass_of(DatabaseAdapterAbstract::class) 
+            is_object($floating) && is_subclass_of(SQLAbstract::class) 
         ) {
             $this->connections[$connection] = $floating;
         }
