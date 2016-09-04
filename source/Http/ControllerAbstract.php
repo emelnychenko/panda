@@ -4,19 +4,42 @@
  *
  *  @package Panda
  *  @author  Eugen Melnychenko
+ *  @since   v1.2.0
  */
 
-namespace Panda;
+namespace Panda\Http;
 
-use Panda\Foundation\ControllerNativeAbstract;
+use Panda\Deploy\Applique               as Applique;
+use Panda\Essence\FloatedAbstract       as Floated;
+use Panda\Alloy\FactoryInterface        as Factory;
+use Panda\Http\Session                  as Session;
+use Panda\Http\Cookie                   as Cookie;
+use Panda\Swift\View                    as View;
 
 /**
- *  Panda Controller
+ *  Http Controller Abstract
  *
- *  @subpackage Framework
+ *  @subpackage Http
  */
-abstract class Controller extends ControllerNativeAbstract implements ControllerInterface
+abstract class ControllerAbstract extends Floated implements Factory
 {
+    protected $applique;
+
+    public function __construct(Applique $applique = null)
+    {
+        $this->applique = $applique;
+    }
+
+    public static function factory(Applique $applique = null)
+    {
+        return new static($applique);
+    }
+
+    public function request()
+    {
+        return $this->applique->router()->request();
+    }
+
     public function session($container = 'panda.app')
     {
         return new Session($container);
@@ -58,4 +81,3 @@ abstract class Controller extends ControllerNativeAbstract implements Controller
         return Response::redirect($url, $status, $headers);
     }
 }
-
