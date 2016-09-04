@@ -11,6 +11,7 @@ namespace Panda\Deploy;
 
 use Panda\Essence\Writeable     as Essence;
 use Panda\Bootloader            as Bootloader;
+use Panda\Essence\Defender      as Defender;
 
 /**
  *  Applique Deployment Layer
@@ -41,6 +42,8 @@ class Applique
         if ($config !== null) {
             $this->config($this->path($config), 'push');
         }
+
+        Defender::lock($this->config->get('secret', null));
     }
 
     public function config($key = null, $action = 'pull')
@@ -63,15 +66,6 @@ class Applique
     public static function init($chroot, $config = null)
     {
         return new static($chroot, $config);
-    }
-
-    public function scene($scene)
-    {
-        $scenes = is_array($scene) ? $scene : [$scene];
-
-        foreach ($scenes as $scene) {
-            include $this->cwd . $scene;
-        }
     }
 
     public function path($path)
