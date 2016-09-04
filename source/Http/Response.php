@@ -319,13 +319,9 @@ class Response implements Factory
             return $header->get($keys);
         }
 
-        if (is_array($keys)  && $equal === null) {
-            $header->replace($keys, $equal);
-        }
-
-        if ($keys !== null  && $equal !== null) {
-            $header->set($keys, $equal);
-        }
+        $header->replace(
+            is_array($keys) ? $keys : [$keys => $equal]
+        );
 
         return $this;
     }
