@@ -12,6 +12,7 @@ namespace Panda\Deploy;
 use Panda\Essence\Writeable     as Essence;
 use Panda\Bootloader            as Bootloader;
 use Panda\Essence\Defender      as Defender;
+use Panda\Joint\SQL             as SQL;
 
 /**
  *  Applique Deployment Layer
@@ -44,6 +45,7 @@ class Applique
         }
 
         Defender::lock($this->config->get('secret', null));
+           SQL::create($this->config->get('database', []));
     }
 
     public function config($key = null, $action = 'pull')
