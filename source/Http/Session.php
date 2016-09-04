@@ -16,5 +16,5 @@ namespace Panda\Http;
  */
 class Session extends SessionAbstract
 {
-    # implements
+    //
 }
