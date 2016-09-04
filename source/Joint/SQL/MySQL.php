@@ -6,14 +6,16 @@
  *  @author  Eugen Melnychenko
  */
 
-namespace Panda\Foundation;
+namespace Panda\Joint\SQL;
+
+use Panda\Joint\SQLAbstract;
 
 /**
  *  Database MySQL Adapter
  *
  *  @subpackage Foundation
  */
-class DatabaseMySQLAdapter extends DatabaseAdapterAbstract implements DatabaseMySQLInterface
+class MySQL extends SQLAbstract
 {
     /**
      *  @var string

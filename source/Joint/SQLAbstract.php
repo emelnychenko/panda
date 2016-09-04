@@ -6,7 +6,10 @@
  *  @author  Eugen Melnychenko
  */
 
-namespace Panda\Foundation;
+namespace Panda\Joint;
+
+use Panda\Joint\Query;
+use Panda\Joint\Statement;
 
 use PDO;
 use PDOException;
@@ -17,7 +20,7 @@ use Closure;
  *
  *  @subpackage Foundation
  */
-abstract class DatabaseAdapterAbstract implements DatabaseAdapterInterface
+abstract class SQLAbstract
 {
     /**
      *  @var string
@@ -142,13 +145,13 @@ abstract class DatabaseAdapterAbstract implements DatabaseAdapterInterface
             if (
                 is_string($decission)
             ) {
-                return DatabaseStateProvider::create(
+                return Statement::create(
                     $instance->query($decission, PDO::FETCH_ASSOC), true
                 );
             } elseif (
                 is_callable($decission)
             ) {
-                $blueprint = DatabaseQueryBlueprint::create();
+                $blueprint = Query::create();
 
                 call_user_func($decission, $blueprint);
 
@@ -157,7 +160,7 @@ abstract class DatabaseAdapterAbstract implements DatabaseAdapterInterface
                 if (
                     !empty($query_req)
                 ) {
-                    $statement = DatabaseStateProvider::create($instance->prepare(
+                    $statement = Statement::create($instance->prepare(
                         $query_req
                     ));
 
