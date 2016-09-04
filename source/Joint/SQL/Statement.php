@@ -6,7 +6,7 @@
  *  @author  Eugen Melnychenko
  */
 
-namespace Panda\Foundation;
+namespace Panda\Joint\SQL;
 
 use PDO;
 use PDOStatement;
@@ -16,7 +16,7 @@ use PDOStatement;
  *
  *  @subpackage Foundation
  */
-class DatabaseStateProvider
+class Statement
 {
     /**
      *  @var \PDOStatement
