@@ -4,16 +4,17 @@
  *
  *  @package Panda
  *  @author  Eugen Melnychenko
+ *  @since   v1.2.0
  */
 
-namespace Panda\Foundation;
+namespace Panda\Http;
 
 /**
- *  Routing Dispatch Interface
+ *  Http Router Interface
  *
- *  @subpackage Foundation
+ *  @subpackage Http
  */
-interface RoutingDispatchInterface 
+interface RouterInterface
 {
     /**
      *  Register route with pattern rules.
@@ -22,7 +23,7 @@ interface RoutingDispatchInterface
      *  @var mixed $url
      *  @var mixed $handler
      *
-     *  @return \Panda\Foundation\Http\RoutingDispatchAbstract
+     *  @return \Panda\Http\Router
      */
     public function add($pattern, $url, $handler = null);
 
@@ -32,7 +33,7 @@ interface RoutingDispatchInterface
      *  @var mixed $url
      *  @var mixed $handler
      *
-     *  @return \Panda\Foundation\Http\RoutingDispatchAbstract
+     *  @return \Panda\Http\Router
      */
     public function any($url, $handler = null);
 
@@ -42,7 +43,7 @@ interface RoutingDispatchInterface
      *  @var mixed $url
      *  @var mixed $handler
      *
-     *  @return \Panda\Foundation\Http\RoutingDispatchAbstract
+     *  @return \Panda\Http\Router
      */
     public function get($url, $handler = null);
 
@@ -52,7 +53,7 @@ interface RoutingDispatchInterface
      *  @var mixed $url
      *  @var mixed $handler
      *
-     *  @return \Panda\Foundation\Http\RoutingDispatchAbstract
+     *  @return \Panda\Http\Router
      */
     public function post($url, $handler = null);
 
@@ -62,7 +63,7 @@ interface RoutingDispatchInterface
      *  @var mixed $url
      *  @var mixed $handler
      *
-     *  @return \Panda\Foundation\Http\RoutingDispatchAbstract
+     *  @return \Panda\Http\Router
      */
     public function put($url, $handler = null);
 
@@ -72,7 +73,7 @@ interface RoutingDispatchInterface
      *  @var mixed $url
      *  @var mixed $handler
      *
-     *  @return \Panda\Foundation\Http\RoutingDispatchAbstract
+     *  @return \Panda\Http\Router
      */
     public function delete($url, $handler = null);
 
@@ -82,18 +83,18 @@ interface RoutingDispatchInterface
      *  @var mixed $url
      *  @var mixed $handler
      *
-     *  @return \Panda\Foundation\Http\RoutingDispatchAbstract
+     *  @return \Panda\Http\Router
      */
     public function deny($url = '*', $handler = null);
 
     /**
      *  Append processors.
      *
-     *  @var array $processors
+     *  @var array $guard
      *
-     *  @return \Panda\Foundation\Http\RoutingDispatchAbstract
+     *  @return \Panda\Http\Router
      */
-    public function processor(array $processors);
+    public function guard(array $guard);
 
     /**
      *  Proceed group.
@@ -101,15 +102,14 @@ interface RoutingDispatchInterface
      *  @var array $group
      *  @var Closure $group
      *
-     *  @return \Panda\Foundation\Http\RoutingDispatchAbstract
+     *  @return \Panda\Http\Router
      */
-    public function group(array $group, Closure $callback);
+    public function group(array $group, callable $callback);
 
     /**
      *  Dispatch router logic.
      *
      *  @return mixed
      */
-    public function run(ClientRequestedInterface $request);
+    public function run();
 }
-
