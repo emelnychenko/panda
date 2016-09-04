@@ -4,18 +4,19 @@
  *
  *  @package Panda
  *  @author  Eugen Melnychenko
+ *  @since   v1.2.0
  */
-namespace Panda;
 
-use Panda\Foundation\EssenceWriteableAbstract;
-use Panda\Foundation\TechnicalProviderExpansion;
+namespace Panda\Swift;
+
+use Panda\Essense\WriteableAbstract     as Essense;
 
 /**
- *  Panda Swift Page
+ *  Swift Page
  *
- *  @subpackage Framework
+ *  @subpackage Swift
  */
-class SwiftPage extends EssenceWriteableAbstract implements SwiftPageInterface
+class Page extends Essense implements PageInterface
 {
     protected $swift        = null;
     protected $page         = null;
@@ -35,9 +36,7 @@ class SwiftPage extends EssenceWriteableAbstract implements SwiftPageInterface
 
     public function layout($page)
     {
-        if (
-            !$this->prevent
-        ) {
+        if ($this->prevent === false) {
             $this->layouted     = true;
             $this->layout       = $page;
         }
@@ -47,9 +46,7 @@ class SwiftPage extends EssenceWriteableAbstract implements SwiftPageInterface
 
     public function hold($key, $default = '')
     {
-        if (
-            array_key_exists($key, $this->fill)
-        ) {
+        if (array_key_exists($key, $this->fill)) {
             return $this->fill[$key];
         }
 
@@ -58,9 +55,11 @@ class SwiftPage extends EssenceWriteableAbstract implements SwiftPageInterface
 
     public function fill($key, $value = null)
     {
-        $this->tpe_pair_iterator($key, $value, function($key, $value) {
+        $keys = is_array($key) ? $key : [$key => $value];
+
+        foreach ($keys as $key => $value) {
             $this->fill[$key] = $value;
-        });
+        }
 
         return $this;
     }
@@ -78,9 +77,7 @@ class SwiftPage extends EssenceWriteableAbstract implements SwiftPageInterface
 
     public function render()
     {
-        if (
-            isset($this->render)
-        ) {
+        if ($this->render !== null) {
             return $this->render;
         }
 
@@ -123,6 +120,4 @@ class SwiftPage extends EssenceWriteableAbstract implements SwiftPageInterface
         include $this->swift->finder($page);
         return ob_get_clean();
     }
-
-    use TechnicalProviderExpansion;
 }

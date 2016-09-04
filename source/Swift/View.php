@@ -4,27 +4,26 @@
  *
  *  @package Panda
  *  @author  Eugen Melnychenko
+ *  @since   v1.2.0
  */
 
-namespace Panda;
+namespace Panda\Swift;
 
-use Panda\Foundation\SingletonProviderInterface;
-use Panda\Foundation\SingletonProviderExpansion;
-use Panda\Foundation\TechnicalProviderExpansion;
+use Panda\Essense\WriteableAbstract     as Essense;
 
 /**
- *  Panda Swift
+ *  Swift View
  *
- *  @subpackage Framework
+ *  @subpackage Swift
  */
-class Swift implements SwiftInterface, SingletonProviderInterface
+class View implements ViewInterface
 {
     /**
      *  @var array
      */ 
     protected $pools = array();
 
-    public function append($dir, $extension = null)
+    public function register($dir, $extension = null)
     {
         $this->tpe_pair_iterator($dir, $extension, function($dir, $extension) {
             $this->pools[$dir] = $extension;
@@ -33,9 +32,7 @@ class Swift implements SwiftInterface, SingletonProviderInterface
 
     public function compile($file, array $container = array(), $prevent = false)
     {
-        return new SwiftPage(
-            $this, $file, $container, $prevent
-        );   
+        return new Page($this, $file, $container, $prevent);   
     }
 
     public function finder($file)
@@ -43,14 +40,11 @@ class Swift implements SwiftInterface, SingletonProviderInterface
         foreach ($this->pools as $dir => $extension) {
             $filepath = sprintf('%s/%s.%s', $dir, $file, $extension);
 
-            if (
-                file_exists($filepath)
-            ) {
+            if (file_exists($filepath)) {
                 return $filepath;
             }
         }
-    }
 
-    use SingletonProviderExpansion;
-    use TechnicalProviderExpansion;
+        return null;
+    }
 }
