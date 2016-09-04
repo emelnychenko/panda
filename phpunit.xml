@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         bootstrap="panda.autoloader.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false">
+    <testsuites>
+        <testsuite name="Essence Tests">
+            <directory suffix="Test.php">./tests/Essence</directory>
+        </testsuite>
+    </testsuites>
+    <testsuites>
+        <testsuite name="Http Tests">
+            <directory suffix="Test.php">./tests/Http</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
