@@ -4,22 +4,19 @@
  *
  *  @package Panda
  *  @author  Eugen Melnychenko
+ *  @since   v1.2.0
  */
 
 namespace Panda;
 
-use Panda\Foundation\EssenceReadableAbstract;
-
-use Panda\Foundation\SingletonProviderInterface;
-use Panda\Foundation\SingletonProviderExpansion;
-use Panda\Foundation\TechnicalProviderExpansion;
+use Panda\Essence\ReadableAbstract as Essence;
 
 /**
- *  Panda Ladder
+ *  Bootloader
  *
- *  @subpackage Framework
+ *  @subpackage *
  */
-class Ladder extends EssenceReadableAbstract implements LadderInterface, SingletonProviderInterface
+class Bootloader extends Essence implements BootloaderInterface
 {
     public function __construct()
     {
@@ -43,14 +40,16 @@ class Ladder extends EssenceReadableAbstract implements LadderInterface, Singlet
      *  @var mixed  $namespace
      *  @var mixed  $path
      *  
-     *  @return \Panda\Ladder
+     *  @return \Panda\Bootloader
      */
-    public function add($association, $equal = null)
+    public function load($namespace, $dir = null)
     {
-        $this->tpe_pair_iterator($association, $equal, function($key, $equal) {
-            $this->shared['association'][$key]   = $equal;
-            $this->shared['collection'][]        = preg_quote($key, '/');
-        });
+        $namespaces = is_array($namespace) ? $namespace : [$namespace => $dir];
+
+        foreach ($namespaces as $namespace => $dir) {
+            $this->shared['association'][$namespace]    = $dir;
+            $this->shared['collection'][]               = preg_quote($namespace, '/');
+        };
 
         /**
          *  Update comparsion regexp
@@ -89,7 +88,4 @@ class Ladder extends EssenceReadableAbstract implements LadderInterface, Singlet
             file_exists($class_file_path) ? include($class_file_path) : null;
         }
     }
-
-    use SingletonProviderExpansion;
-    use TechnicalProviderExpansion;
 }
