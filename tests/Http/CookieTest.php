@@ -8,7 +8,7 @@ class CookieTest extends TestCase
 {
     protected $name     = 'app';
 
-    protected $input    = '{"foo":"bard"}';
+    protected $input    = '{"foo":"bar"}';
 
     protected $expire   = '3600';
 
