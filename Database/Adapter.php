@@ -6,10 +6,7 @@
  *  @author  Eugen Melnychenko
  */
 
-namespace Panda\Joint;
-
-use Panda\Joint\Query;
-use Panda\Joint\Statement;
+namespace Panda\Database;
 
 use PDO;
 use PDOException;
@@ -18,9 +15,9 @@ use Closure;
 /**
  *  Database Adapter
  *
- *  @subpackage Foundation
+ *  @subpackage Database
  */
-abstract class SQLAbstract
+abstract class Adapter
 {
     /**
      *  @var string
@@ -142,31 +139,21 @@ abstract class SQLAbstract
     public function query($decission)
     {
         return $this->__safe_execution(function($instance) use ($decission) {
-            if (
-                is_string($decission)
-            ) {
-                return Statement::create(
+            if (is_string($decission)) {
+                return Statement::factory(
                     $instance->query($decission, PDO::FETCH_ASSOC), true
                 );
-            } elseif (
-                is_callable($decission)
-            ) {
-                $blueprint = Query::create();
+            } elseif (is_callable($decission)) {
+                $quering = Quering::factory();
 
-                call_user_func($decission, $blueprint);
+                call_user_func($decission, $quering);
 
-                $query_req = $blueprint->blueprint();
+                $query = $quering->__toString();
 
-                if (
-                    !empty($query_req)
-                ) {
-                    $statement = Statement::create($instance->prepare(
-                        $query_req
-                    ));
+                if (empty($query) === false) {
+                    $statement = Statement::factory($instance->prepare($query));
 
-                    return $statement->exec(
-                        $blueprint->binded()
-                    );
+                    return $statement->exec($quering->bind());
                 }
             }
         });
@@ -180,7 +167,7 @@ abstract class SQLAbstract
      *
      *  @return bool
      */
-    public function transaction(Closure $callback, &$exception = null)
+    public function transaction(callable $callback, &$exception = null)
     {
         return $this->__safe_execution(function($instance) use ($callback, &$exception) {
             $exception = null;
