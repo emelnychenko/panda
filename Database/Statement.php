@@ -6,15 +6,15 @@
  *  @author  Eugen Melnychenko
  */
 
-namespace Panda\Joint\SQL;
+namespace Panda\Database;
 
 use PDO;
 use PDOStatement;
 
 /**
- *  Database State 
+ *  Database Statement
  *
- *  @subpackage Foundation
+ *  @subpackage Database
  */
 class Statement
 {
@@ -45,7 +45,7 @@ class Statement
      *
      *  @return \Blink\Database\QueryStatement
      */
-    public static function create(PDOStatement $statement, $executed = false)
+    public static function factory(PDOStatement $statement, $executed = false)
     {
         return new static($statement, $executed);
     }
