@@ -10,11 +10,11 @@
 namespace Panda\Essence;
 
 /**
- *  Floated Essence
+ *  Swimmer Essence
  *
  *  @subpackage Essence
  */
-class Floated extends FloatedAbstract
+class Swimmer extends SwimmerAbstract
 {
     //
 }

@@ -10,25 +10,25 @@
 namespace Panda\Essence;
 
 /**
- *  Readable Essence
+ *  Swimmer Essence Abstract
  *
  *  @subpackage Essence
  */
-abstract class FloatedAbstract
+abstract class SwimmerAbstract
 {
     /**
      *  @var bool
      */ 
-    protected $pass = false;
+    protected $passed = false;
 
     /**
      *  Set false for skipping.
      *
-     *  @return \Panda\Essence\FloatedAbstract
+     *  @return \Panda\Essence\SwimmerAbstract
      */ 
     public function prevent()
     {
-        $this->skipped = false;
+        $this->passed = false;
 
         return $this;
     }
@@ -36,11 +36,11 @@ abstract class FloatedAbstract
     /**
      *  Set true for skipping.
      *
-     *  @return \Panda\Essence\FloatedAbstract
+     *  @return \Panda\Essence\SwimmerAbstract
      */ 
     public function pass()
     {
-        $this->pass = true;
+        $this->passed = true;
 
         return $this;
     }
@@ -48,7 +48,7 @@ abstract class FloatedAbstract
     /**
      *  Set true for skipping.
      *
-     *  @return \Panda\Essence\FloatedAbstract
+     *  @return \Panda\Essence\SwimmerAbstract
      */ 
     public function next()
     {
@@ -62,6 +62,6 @@ abstract class FloatedAbstract
      */ 
     public function passed()
     {
-        return $this->pass;
+        return $this->passed;
     }
 }
