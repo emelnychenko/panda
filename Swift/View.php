@@ -25,9 +25,11 @@ class View implements ViewInterface
 
     public function register($dir, $extension = null)
     {
-        $this->tpe_pair_iterator($dir, $extension, function($dir, $extension) {
+        $arrayable = is_array($dir) ? $dir : [$dir => $extension];
+
+        foreach ($arrayable as $dir => $extension) {
             $this->pools[$dir] = $extension;
-        });
+        }
     }
 
     public function compile($file, array $container = array(), $prevent = false)

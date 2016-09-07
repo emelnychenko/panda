@@ -9,14 +9,14 @@
 
 namespace Panda\Swift;
 
-use Panda\Essense\WriteableAbstract     as Essense;
+use Panda\Essence\WriteableAbstract     as Essence;
 
 /**
  *  Swift Page
  *
  *  @subpackage Swift
  */
-class Page extends Essense implements PageInterface
+class Page extends Essence implements PageInterface
 {
     protected $swift        = null;
     protected $page         = null;
@@ -26,7 +26,7 @@ class Page extends Essense implements PageInterface
     protected $layouted     = false;
     protected $layout       = null;
 
-    public function __construct(SwiftInterface $swift, $page, $container = [], $prevent = false)
+    public function __construct(ViewInterface $swift, $page, $container = [], $prevent = false)
     {
         $this->swift        = $swift;
         $this->page         = $page;
