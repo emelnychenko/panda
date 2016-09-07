@@ -6,16 +6,16 @@
  *  @author  Eugen Melnychenko
  */
 
-namespace Panda\Joint\SQL;
+namespace Panda\Database\Adapter;
 
-use Panda\Joint\SQLAbstract;
+use Panda\Database\Adapter;
 
 /**
  *  Database SQLite Adapter
  *
- *  @subpackage Foundation
+ *  @subpackage Database
  */
-class SQLite extends SQLAbstract
+class SQLite extends Adapter
 {
     /**
      *  @var string
