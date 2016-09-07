@@ -194,13 +194,22 @@ class Request extends Essence implements RequestInterface, Factory
      *
      *  @return mixed
      */
+    public function file($key, $default = null)
+    {
+        return $this->files->get($key, $default);
+    }
+
+    /**
+     *  Get files essence, files param.
+     *
+     *  @var mixed $key
+     *  @var mixed $default
+     *
+     *  @return mixed
+     */
     public function files($key = null, $default = null)
     {
-        if ($key === null) {
-            return $this->files;
-        }
-
-        return $this->files->get($key, $default);
+        return $this->files;
     }
 
     /**
