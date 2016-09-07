@@ -2,11 +2,11 @@
     "name": "panda-bear/framework",
     "autoload": {
         "psr-4": { 
-            "Panda\\": ["source/"]
+            "Panda\\": ""
         },
         "files": ["panda.procedures.php"]
     },
     "require": {
-        "php": ">=5.4.0"
+        "php": ">=5.5.0"
     }
 }
