@@ -243,7 +243,7 @@ class Router implements RouterInterface, Factory
      */
     public function run(Applique $applique = null)
     {
-        $url = $this->request->url();
+        $url = $this->request()->url();
         $all = array_merge(
             $this->route->all(), $this->error->except('*'), $this->error->only('*')
         );
@@ -347,7 +347,7 @@ class Router implements RouterInterface, Factory
     protected function capture($url)
     {
         $xor = str_replace(
-            ['/', '[', ']', '*'], ['\/', '(|', ')', '.?*'], $url
+            ['/', '[', ']', '*'], ['\/', '(|', ')', '(.*?)'], $url
         );
 
         $all = preg_replace(
