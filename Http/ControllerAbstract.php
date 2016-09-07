@@ -10,7 +10,7 @@
 namespace Panda\Http;
 
 use Panda\Deploy\Applique               as Applique;
-use Panda\Essence\FloatedAbstract       as Floated;
+use Panda\Essence\SwimmerAbstract       as Swimmer;
 use Panda\Alloy\FactoryInterface        as Factory;
 use Panda\Http\Session                  as Session;
 use Panda\Http\Cookie                   as Cookie;
@@ -21,7 +21,7 @@ use Panda\Swift\View                    as View;
  *
  *  @subpackage Http
  */
-abstract class ControllerAbstract extends Floated implements Factory
+abstract class ControllerAbstract extends Swimmer implements Factory
 {
     protected $applique;
 
@@ -62,16 +62,16 @@ abstract class ControllerAbstract extends Floated implements Factory
         ); 
     }
 
-    public function swift(
+    public function view(
         $path, 
-        array $container    = array(), 
+        array $shared       = [], 
         $prevent            = false, 
         $status             = 200, 
-        array $headers      = array()
+        array $headers      = []
     ) {
         return $this->html(
-            $this->support('swift')->compile(
-                $path, $container, $prevent
+            $this->applique->view()->compile(
+                $path, $shared, $prevent
             )->render(), $status, $headers
         );
     }
