@@ -20,6 +20,16 @@ use Closure;
 abstract class Adapter
 {
     /**
+     *  @const MYSQL
+     */ 
+    const MYSQL     = 'mysql';
+
+    /**
+     *  @const SQLITE
+     */
+    const SQLITE    = 'sqlite';
+
+    /**
      *  @var string
      */
     protected $provider;

@@ -18,10 +18,6 @@ use Panda\Database\Adapter\SQLite;
  */
 class Manager
 {
-    const MYSQL     = 'mysql';
-
-    const SQLITE    = 'sqlite';
-
     /**
      *  @var array
      */
@@ -57,11 +53,11 @@ class Manager
             is_array($floating) && array_key_exists('adapter', $floating)
         ) {
             if (
-                $floating['adapter'] === static::MYSQL 
+                $floating['adapter'] === Adapter::MYSQL 
             ) {
                 $this->connections[$connection] = MySQL::factory($floating, true);
             } elseif (
-                $floating['adapter'] === static::SQLITE 
+                $floating['adapter'] === Adapter::SQLITE 
             ) {
                 $this->connections[$connection] = SQLite::factory($floating, true);
             }
@@ -84,7 +80,7 @@ class Manager
     public static function mysql($connection = 'default', array $config = null)
     {
         return static::singleton()->append(
-            $connection, array_replace($config, array('adapter' => static::MYSQL))
+            $connection, array_replace($config, array('adapter' => Adapter::MYSQL))
         );
     }
     /**
@@ -98,7 +94,7 @@ class Manager
     public static function sqlite($connection = 'default', array $config = null)
     {
         return static::singleton()->append(
-            $connection, array_replace($config, array('adapter' => static::SQLITE))
+            $connection, array_replace($config, array('adapter' => Adapter::SQLITE))
         );
     }
 
