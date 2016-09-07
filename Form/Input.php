@@ -350,13 +350,21 @@ class Input implements InputInterface
     public function set($value)
     {
         if (
-            is_scalar($value)
+            is_scalar($value) && $this->type !== 'textarea'
         ) {
             $this->value = htmlspecialchars(
                 stripslashes(
                     trim(
                         $value
                     )
+                )
+            );
+        } elseif (
+            is_scalar($value) && $this->type === 'textarea'
+        ) {
+            $this->value = stripslashes(
+                trim(
+                    $value
                 )
             );
         } elseif (
