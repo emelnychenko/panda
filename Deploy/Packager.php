@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  Panda PHP Foundation, Packages and Framework
  *
@@ -6,7 +7,6 @@
  *  @author  Eugen Melnychenko
  *  @since   v1.3.0
  */
-
 namespace Panda\Deploy;
 
 /**
@@ -16,10 +16,20 @@ namespace Panda\Deploy;
  */
 class Packager
 {
+    /**
+     *  @var string
+     */ 
     protected $dir      = null;
 
+    /**
+     *  @var array
+     */ 
     protected $packages = [];
 
+    /**
+     *  @var string $dir
+     *  @var array  $packages
+     */
     public function __construct($dir, $packages = [])
     {
         $this->dir = $dir;
@@ -31,13 +41,17 @@ class Packager
         $this->packages = $packages;
     }
 
+    /**
+     *  @var string $dir
+     *  @var array  $packages
+     */
     public static function init($dir, $packages = [])
     {
         return new static($dir, $packages);
     }
 
     /**
-     *  Return whole shared result.
+     *  Include all packages.
      *
      *  @return array
      */
@@ -49,9 +63,6 @@ class Packager
             if (file_exists($bootstrap)) {
                 include $bootstrap;
             } 
-                
         }
     }
 }
-
-// Module::sign();
