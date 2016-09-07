@@ -6,17 +6,17 @@
  *  @author  Eugen Melnychenko
  */
 
-namespace Panda\Joint;
+namespace Panda\Database;
 
-use Panda\Joint\SQL\MySQL;
-use Panda\Joint\SQL\SQLite;
+use Panda\Database\Adapter\MySQL;
+use Panda\Database\Adapter\SQLite;
 
 /**
- *  Panda Bootstrap
+ *  Database Manager
  *
- *  @subpackage Framework
+ *  @subpackage Database
  */
-class SQL
+class Manager
 {
     const MYSQL     = 'mysql';
 
@@ -33,7 +33,7 @@ class SQL
      *
      *  @return \Blink\Database\ActiveRecordAdapter
      */
-    public static function create(array $configs)
+    public static function factory(array $configs)
     {
         $singleton = static::singleton();
 
