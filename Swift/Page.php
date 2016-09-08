@@ -18,12 +18,39 @@ use Panda\Essence\WriteableAbstract     as Essence;
  */
 class Page extends Essence implements PageInterface
 {
+    /**
+     *  @var \Panda\Swift\ViewInterface
+     */ 
     protected $swift        = null;
+
+    /**
+     *  @var string
+     */ 
     protected $page         = null;
+
+    /**
+     *  @var bool
+     */ 
     protected $prevent      = null;
+
+    /**
+     *  @var array
+     */ 
     protected $fill         = array();
+
+    /**
+     *  @var string
+     */ 
     protected $render       = null;
+
+    /**
+     *  @var bool
+     */ 
     protected $layouted     = false;
+
+    /**
+     *  @var string
+     */ 
     protected $layout       = null;
 
     public function __construct(ViewInterface $swift, $page, $container = [], $prevent = false)
