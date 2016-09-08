@@ -53,6 +53,8 @@ class Packager
     /**
      *  Include all packages.
      *
+     *  @var \Panda\Deploy\Applique $app
+     *
      *  @return array
      */
     public function unpack(Applique $app)

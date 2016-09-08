@@ -13,6 +13,10 @@ use Panda\Essence\Writeable     as Essence;
 use Panda\Bootloader            as Bootloader;
 use Panda\Essence\Defender      as Defender;
 use Panda\Database\Manager      as Database;
+use Panda\Http\Router           as Router;
+use Panda\Http\Request          as Request;
+use Panda\Swift\View            as View;
+use Panda\Console\Bamboo        as Bamboo;
 
 /**
  *  Applique Deployment Layer
@@ -22,27 +26,45 @@ use Panda\Database\Manager      as Database;
 class Applique
 {
     /**
-     *  
-     */ 
+     *  @var string
+     */
     protected $chroot;
 
+    /**
+     *  @var array
+     */
     protected $config;
 
+    /**
+     *  @var array
+     */
     protected $invoke;
 
+    /**
+     *  @var array
+     */
     protected $hoster;
 
+    /**
+     *  @var string $chroot
+     *  @var array  $config
+     */
     public function __construct($chroot, $config = null)
     {
-        chdir($chroot);
+        chdir($chroot .= '/');
 
         $this->chroot = $chroot;
         $this->config = Essence::factory();
         $this->invoke = Essence::factory();
         $this->hoster = Essence::factory();
+        $request      = Request::factory(); 
         
         $this->register([
-            'loader' => Bootloader::class
+            'loader' => Bootloader::class,
+            'request'=> $request,
+            'router' => Router::factory($request),
+            'bamboo' => Bamboo::class,
+            'view'   =>   View::class
         ]);
 
         if ($config !== null) {
@@ -53,37 +75,56 @@ class Applique
         Database::factory($this->config->get('database', []));
     }
 
-    public function config($key = null, $action = 'pull')
-    {
-        if ($action === 'pull') {
-            if ($key === null) {
-                return $this->config;
-            }       
-
-            return $this->config->get($key, null);
-        }
-
-        if ($action === 'push') {
-            foreach (glob($key) as $path) {
-                $this->config->replace(include $path);
-            }
-        }
-    }
-
+    /**
+     *  @var string $chroot
+     *  @var string $config
+     *
+     *  @return mixed
+     */
     public static function init($chroot, $config = null)
     {
         return new static($chroot, $config);
     }
 
-    public function path($path)
+    /**
+     *  @var string $key
+     *  @var string $action
+     *
+     *  @return mixed
+     */
+    public function config($key = null, $action = 'pull')
+    {
+        if ($action === 'push') {
+            foreach (glob($key) as $path) {
+                $this->config->replace(include $path);
+            }
+
+            return $this;
+        }
+
+
+        if ($key === null) {
+            return $this->config;
+        }
+
+        return $this->config->get($key, null);
+    }
+
+    /**
+     *  @var string $path
+     *
+     *  @return string
+     */
+    public function path($path = null)
     {
         return $this->chroot . $path;
     }
 
     /**
-     *  Return whole shared result.
+     *  @var string $invoke
+     *  @var mixed  $service
      *
-     *  @return array
+     *  @return \Panda\Deploy\Applique
      */
     public function register($invoke, $service = null)
     {
@@ -102,11 +143,11 @@ class Applique
     }
 
     /**
-     *  Return whole shared result.
+     *  @var string $invoke
      *
-     *  @return array
+     *  @return mixed
      */
-    public function invoke($invoke)
+    public function invoke($invoke, $default = null)
     {
         $hosted = $this->invoke->get($invoke, null);
 
@@ -114,7 +155,7 @@ class Applique
             return null;
         }
 
-        $service = $this->hoster->get($hosted);
+        $service = $this->hoster->get($hosted, $default);
 
         if ($service === null) {
             $service = new $hosted;
@@ -125,6 +166,11 @@ class Applique
         return $service;
     }
 
+    /**
+     *  @var string $invoke
+     *
+     *  @return mixed
+     */
     public function load($namespace, $dir = null)
     {
         $this->invoke('loader')->load($namespace, $dir);
@@ -132,24 +178,45 @@ class Applique
         return $this;
     }
 
-    public function get($key, $default)
+    /**
+     *  @var string $method
+     *  @var array  $argument
+     *
+     *  @return mixed
+     */
+    public function get($key, $default = null)
     {
-        return $this->invoke($key);
+        return $this->invoke($key, $default);
     }
 
+    /**
+     *  @var string $method
+     *
+     *  @return mixed
+     */
     public function __get($key)
     {
         return $this->get($key);
     }
 
+    /**
+     *  @var string $method
+     *  @var array  $argument
+     *
+     *  @return mixed
+     */
     public function __call($method, $argument)
     {
         return $this->invoke($method);
     }
 
+    /**
+     *  @var \Panda\Deploy\Applique $app
+     *
+     *  @return string
+     */
     public static function send(Applique $app)
     {
         echo php_sapi_name() === 'cli' ? $app->bamboo()->run($app) : $app->router()->run($app);
     }
 }
-
