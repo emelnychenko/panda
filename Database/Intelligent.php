@@ -104,7 +104,7 @@ abstract class Intelligent extends Essence
             return null;
         }
 
-        $factory->indatabase === true;
+        $factory->indatabase = true;
 
         return $factory->originate($result);
     }
@@ -121,7 +121,7 @@ abstract class Intelligent extends Essence
             return null;
         }
 
-        $factory->indatabase === true;
+        $factory->indatabase = true;
 
         return $factory->originate($result);
     }
@@ -138,7 +138,7 @@ abstract class Intelligent extends Essence
             return null;
         }
 
-        $factory->indatabase === true;
+        $factory->indatabase = true;
 
         foreach ($results as $result) {
             array_push($factories, clone $factory->originate($result));
@@ -159,7 +159,7 @@ abstract class Intelligent extends Essence
             return null;
         }
 
-        $factory->indatabase === true;
+        $factory->indatabase = true;
 
         foreach ($results as $result) {
             array_push($factories, clone $factory->originate($result));
@@ -218,13 +218,14 @@ abstract class Intelligent extends Essence
             $this->timestamp(true, 'updated_at');
         }
 
-        $shared = $this->diff(); $condition = $this->primary($shared);
+        $primary    = [$this->primary => $this->get($this->primary)];
+        $shared     = array_replace($this->diff(), $primary); $condition = $this->primary($shared);
 
         if (empty($shared) === true) {
             return $this;
         }
 
-        $this->query(function($q) use ($shared) {
+        $this->query(function($q) use ($shared, $condition) {
             $q->update($this->table)->set($shared)->where($condition);
         });
 
@@ -239,9 +240,10 @@ abstract class Intelligent extends Essence
             return $this;
         }
 
-        $shared = $this->shared; $condition = $this->primary($shared);
+        $primary    = [$this->primary => $this->get($this->primary)];
+        $shared     = array_replace($this->diff(), $primary); $condition = $this->primary($shared);
 
-        $this->query(function($q) use ($shared) {
+        $this->query(function($q) use ($condition) {
             $q->delete()->from($this->table)->where($condition);
         });
 

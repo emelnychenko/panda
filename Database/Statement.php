@@ -83,7 +83,7 @@ class Statement
      *
      *  @return \Blink\Database\QueryStatement
      */
-    public function exec(array $bind = array())
+    public function exec(array $bind = null)
     {
         if (
             !$this->executed
