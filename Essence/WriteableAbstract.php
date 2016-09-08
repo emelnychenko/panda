@@ -63,8 +63,6 @@ abstract class WriteableAbstract extends ReadableAbstract
     }
 
     /**
-     *  Set magic shared by key.
-     *
      *  @var mixed $key
      *  @var mixed $equal
      *
@@ -94,10 +92,11 @@ abstract class WriteableAbstract extends ReadableAbstract
     }
 
     /**
-     *  Set magic shared by key.
-     *
-     *  @var scalar $key
-     *  @var mixed  $equal
+     *  @var array   $key
+     *  @var mixed   $value
+     *  @var numeric $index
+     *  @var numeric $limit
+     *  @var array   $source
      *
      *  @return \Panda\Essence\WriteableAbstract
      */

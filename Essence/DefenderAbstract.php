@@ -22,10 +22,10 @@ abstract class DefenderAbstract
     const CHIPER = 'AES-256-CBC';
 
     /**
-     *  Set true for skipping.
+     *  @var string $input
      *
-     *  @return \Panda\Essence\FloatedAbstract
-     */ 
+     *  @return \Panda\Essence\DefenderAbstract
+     */
     public static function encrypt($input)
     {
         $defender = static::lock();
@@ -38,10 +38,10 @@ abstract class DefenderAbstract
     }
 
     /**
-     *  Set true for skipping.
+     *  @var string $input
      *
-     *  @return \Panda\Essence\FloatedAbstract
-     */ 
+     *  @return \Panda\Essence\DefenderAbstract
+     */
     public static function decrypt($input)
     {
         $defender = static::lock();
@@ -54,10 +54,11 @@ abstract class DefenderAbstract
     }
 
     /**
-     *  Return floating desiccion
+     *  @var mixed $secret
+     *  @var mixed $force
      *
-     *  @return bool
-     */ 
+     *  @return null
+     */
     public static function lock($secret = null, $force = false)
     {
         static $lock = null;
@@ -70,10 +71,8 @@ abstract class DefenderAbstract
     }
 
     /**
-     *  Return floating desiccion
-     *
-     *  @return bool
-     */ 
+     *  @return null
+     */
     public static function unlock()
     {
         static::lock(null, true);
