@@ -305,9 +305,9 @@ class Quering
      */ 
     public function bind($column = null, $equal = null)
     {
-        if ($column === null) {
-            return $this->bind;
-        }
+        // if ($column === null) {
+        //     return $this->bind;
+        // }
 
         $hash = ':' . uniqid();
 
@@ -320,6 +320,11 @@ class Quering
         $this->bind[$column] = $equal;
 
         return $this;
+    }
+
+    public function binded()
+    {
+        return $this->bind;
     }
 
     /**
@@ -350,7 +355,7 @@ class Quering
                 $this->joining('INSERT INTO', 'table',    ', '),
                 $columns,
                 $this->joining('VALUES', $values,         ', '),
-            ];
+            ]; 
         }
 
         if ($this->statement === static::UPDATE) {

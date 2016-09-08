@@ -1,5 +1,14 @@
 {
     "name": "panda-bear/framework",
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "Eugen Melnychenko",
+            "email": "eugen.melnychenko@gmail.com",
+            "homepage": "http://melny.in/",
+            "role": "Developer"
+        }
+    ],
     "autoload": {
         "psr-4": { 
             "Panda\\": ""

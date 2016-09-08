@@ -163,7 +163,7 @@ abstract class Adapter
                 if (empty($query) === false) {
                     $statement = Statement::factory($instance->prepare($query));
 
-                    return $statement->exec($quering->bind());
+                    return $statement->exec($quering->binded());
                 }
             }
         });
