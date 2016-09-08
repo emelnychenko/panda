@@ -240,8 +240,7 @@ abstract class Intelligent extends Essence
             return $this;
         }
 
-        $primary    = is_array($this->primary) ? $this->primary : [$this->primary => $this->get($this->primary)];
-        $shared     = array_replace($this->diff(), $primary); $condition = $this->primary($shared);
+        $shared = $this->origin; $condition = $this->primary($shared);
 
         $this->query(function($q) use ($condition) {
             $q->delete()->from($this->table)->where($condition);
