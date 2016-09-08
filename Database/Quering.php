@@ -63,6 +63,11 @@ class Quering
     /**
      *  @var array
      */
+    protected $join     = [];
+
+    /**
+     *  @var array
+     */
     protected $having    = [];
 
     /**
@@ -191,9 +196,32 @@ class Quering
     }
 
     /**
+     *  @var string $table
+     *  @var string $alias
+     *  @var array  $condition
+     *  @var string $glue
+     *
+     *  @return \Panda\Database\Quering
+     */
+    public function join($table, $alias, array $conditions, $modifier = "INNER")
+    {
+        $condition = [];
+
+        foreach ($conditions as $column => $equal) {
+            array_push($condition, sprintf("%s = %s", $column, $equal));
+        }
+        
+        $this->join[] = sprintf(
+                "%s JOIN %s AS %s ON %s", $modifier, $table, $alias, implode(", ", $condition)
+            );
+        
+        return $this;
+    }
+
+    /**
      *  Get, set $this->where value.
      *
-     *  @return mixed
+     *  @return \Panda\Database\Quering
      */ 
     public function where($columns = null, $equal = null)
     {
@@ -338,6 +366,7 @@ class Quering
             $container = [
                 $this->joining('SELECT',    'columns',  ', '),
                 $this->joining('FROM',      'table',    ', '),
+                implode(' ', $this->join),
                 $this->joining('WHERE',     'where',    ' AND '),
                 $this->joining("GROUP BY",  'group',    ', '),
                 $this->joining("HAVING",    'having',   ' AND '),
@@ -366,6 +395,7 @@ class Quering
             $container = [
                 $this->joining('UPDATE',    'table',  ', '),
                 $this->joining('SET',       $shared,    ', '),
+                implode(' ', $this->join),
                 $this->joining('WHERE',     'where',    ' AND '),
                 $this->joining("GROUP BY",  'group',    ', '),
                 $this->joining("HAVING",    'having',   ' AND '),
@@ -379,6 +409,7 @@ class Quering
             $container = [
                 'DELETE',
                 $this->joining('FROM',      'table',    ', '),
+                implode(' ', $this->join),
                 $this->joining('WHERE',     'where',    ' AND '),
                 $this->joining("GROUP BY",  'group',    ', '),
                 $this->joining("HAVING",    'having',   ' AND '),
