@@ -275,7 +275,8 @@ class Router implements RouterInterface, Factory
         if (array_key_exists('guard', $essence)) {
             foreach ($this->guard->only($essence['guard']) as $guard) {
                 $instance = $guard::factory($applique);
-                $response = $instance->inspect();
+                
+                $response = call_user_func_array([$instance, 'inspect'], $matches);
 
                 if ($instance->passed() === false) {
                     return $response; 
