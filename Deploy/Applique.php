@@ -71,7 +71,7 @@ class Applique
             $this->config($this->path($config), 'push');
         }
 
-        Defender::lock($this->config->get('secret', null));
+        Defender::configure($this->config->get('defender', null));
         Database::factory($this->config->get('database', []));
     }
 
