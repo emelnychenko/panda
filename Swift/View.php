@@ -9,6 +9,7 @@
 
 namespace Panda\Swift;
 
+use Panda\Error\Narrator;
 use Panda\Essense\WriteableAbstract     as Essense;
 
 /**
@@ -47,6 +48,6 @@ class View implements ViewInterface
             }
         }
 
-        return null;
+        throw new Narrator('File "' . $file . '" not found.');
     }
 }
