@@ -113,7 +113,7 @@ abstract class DefenderAbstract
         }
 
         if (array_key_exists('secret', $conf) === true) {
-            static::secret($conf['cert']['secret']); 
+            static::secret($conf['secret']); 
             static::usage(static::SECRET);
 
             return;
@@ -146,11 +146,11 @@ abstract class DefenderAbstract
     {
         static $key = null;
 
-        if ($key === null && $force === false) {
-            return $lock;
+        if ($secret === null && $force === false) {
+            return $key;
         }
 
-        $lock = $key;
+        $key = $secret;
     }
 
     /**

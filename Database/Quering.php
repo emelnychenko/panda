@@ -286,9 +286,11 @@ class Quering
     public function order($column = null, $sort = 'asc') 
     {
         if ($column !== null) {
-            $column = is_array($column) ? $column : [$column => 'asc'];
+            $columns = is_array($column) ? $column : [$column => 'asc'];
 
-            $this->order = array_merge($this->order, $column);
+            foreach ($columns as $column => $sort) {
+                array_push($this->order, sprintf('%s %s', $column, $sort));
+            }
         }
 
         return $this;
