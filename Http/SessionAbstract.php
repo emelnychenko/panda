@@ -12,7 +12,7 @@ namespace Panda\Http;
 use Panda\Alloy\FactoryInterface    as Factory;
 use Panda\Alloy\StorageInterface    as Storage;
 use Panda\Essence\Writeable         as Essence;
-use Panda\Essence\Defender          as Defender;
+use Panda\Secure\Guard              as Guard;
 
 /**
  *  Http Session Abstract
@@ -46,7 +46,7 @@ abstract class SessionAbstract extends Essence implements Factory, Storage
         $this->name = $name = isset($name) ? $name : $this->name;
 
         $this->enclosed(function() use ($name) {
-            $this->input = $input = array_key_exists($name, $_SESSION) ? Defender::decrypt($_SESSION[$name]) : null;
+            $this->input = $input = array_key_exists($name, $_SESSION) ? Guard::decrypt($_SESSION[$name]) : null;
 
             $decoded = $this->serialization === 'php' ? 
                 @unserialize($input) : @json_decode($input, true);
@@ -95,7 +95,7 @@ abstract class SessionAbstract extends Essence implements Factory, Storage
      */
     public function save()
     {
-        $this->input = $input = Defender::encrypt(
+        $this->input = $input = Guard::encrypt(
             $this->serialization === 'php' ? 
                 serialize($this->shared) : json_encode($this->shared)
         );

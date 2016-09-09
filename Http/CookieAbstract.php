@@ -12,7 +12,7 @@ namespace Panda\Http;
 use Panda\Alloy\FactoryInterface        as Factory;
 use Panda\Alloy\StorageInterface        as Storage;
 use Panda\Essence\WriteableAbstract     as Essence;
-use Panda\Essence\Defender              as Defender;
+use Panda\Secure\Guard                  as Guard;
 
 /**
  *  Http Cookie Abstract
@@ -83,8 +83,8 @@ abstract class CookieAbstract extends Essence implements Factory, Storage
         $this->domain   = $domain;
         $this->secure   = $secure;
 
-        $this->input    = $input = isset($input) ? Defender::decrypt($input) : (
-            array_key_exists($name, $_COOKIE) ? Defender::decrypt($_COOKIE[$name]) : null
+        $this->input    = $input = isset($input) ? Guard::decrypt($input) : (
+            array_key_exists($name, $_COOKIE) ? Guard::decrypt($_COOKIE[$name]) : null
         );
 
         $decoded = $this->serialization === 'php' ? 
@@ -259,7 +259,7 @@ abstract class CookieAbstract extends Essence implements Factory, Storage
      */
     public function save()
     {
-        $this->input = $input = Defender::encrypt(
+        $this->input = $input = Guard::encrypt(
             $this->serialization === 'php' ? 
                 serialize($this->shared) : json_encode($this->shared)
         );
