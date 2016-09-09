@@ -55,4 +55,65 @@ class Bamboo implements Factory
     {
         return 'Hello Panda Bamboo.' . PHP_EOL;
     }
+
+    // private $routes;
+    // public function add($event, $handler = null)
+    // {
+    //     bexp_uni_set($event, $handler, function($event, $handler) {
+    //         if (
+    //             is_object(
+    //                 $handler
+    //             ) && get_class($handler) === 'Closure'
+    //         ) {
+    //             $this->routes[] = [
+    //                 'identity'  => $event,
+    //                 'handler'   => 'closure',
+    //                 'closure'   => $handler,
+    //             ]; 
+    //         } else {
+    //             list($constroller, $action) = explode('#', $handler);
+    //             $this->routes[] = [
+    //                 'identity'      => $event,
+    //                 'handler'       => 'event',
+    //                 'controller'    => $constroller,
+    //                 'action'        => $action,
+    //             ]; 
+    //         }
+    //     });
+    // }
+    // public function run()
+    // {
+    //     $argv   = $GLOBALS['argv'];
+    //     $argc   = $GLOBALS['argc'];
+    //     if (
+    //         $argc >= 2 && !empty($this->routes)
+    //     ) {
+    //         foreach ($this->routes as $container) {
+    //             if (
+    //                 $container['identity'] === $argv[1]
+    //             ) {
+    //                 $matches = array_slice($argv, 2);
+    //                 if (
+    //                     $container['handler'] === 'closure'
+    //                 ) {
+    //                     return factory(
+    //                             'Blink\Http\Router\Reversed'
+    //                         )->call(
+    //                             $container['closure'], 
+    //                             null, 
+    //                             $matches
+    //                         );
+    //                 } 
+    //                 return factory(
+    //                         'Blink\Http\Router\Reversed'
+    //                     )->call(
+    //                         $container['controller'], 
+    //                         $container['action'], 
+    //                         $matches
+    //                     );
+    //             }
+    //         }
+    //     }
+    //     return text('error#404') . "\n";
+    // }
 }
