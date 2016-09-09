@@ -11,7 +11,7 @@ namespace Panda\Deploy;
 
 use Panda\Essence\Writeable     as Essence;
 use Panda\Bootloader            as Bootloader;
-use Panda\Essence\Defender      as Defender;
+use Panda\Secure\Guard          as Guard;
 use Panda\Database\Manager      as Database;
 use Panda\Http\Router           as Router;
 use Panda\Http\Request          as Request;
@@ -71,7 +71,7 @@ class Applique
             $this->config($this->path($config), 'push');
         }
 
-        Defender::configure($this->config->get('defender', null));
+        Guard::register($this->config->get('defender', null));
         Database::factory($this->config->get('database', []));
     }
 
