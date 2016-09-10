@@ -232,7 +232,7 @@ class Quering
         );
 
         foreach ($columns as $column => $equal) {
-            $this->where[] = is_numeric($column) ? $column : sprintf(
+            $this->where[] = is_numeric($column) ? $equal : sprintf(
                 '%s = %s', $column, $this->bind($equal)
             );
         }
@@ -254,7 +254,7 @@ class Quering
         );
 
         foreach ($columns as $column => $equal) {
-            $this->having[] = is_numeric($column) ? $column : sprintf(
+            $this->having[] = is_numeric($column) ? $equal : sprintf(
                 '%s = %s', $column, $this->bind($equal)
             );
         }
