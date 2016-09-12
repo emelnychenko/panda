@@ -324,7 +324,7 @@ class Request extends Essence implements RequestInterface, Factory
      */
     public function host()
     {
-        return $this->server('SERVER_NAME', 'localhost');
+        return $this->server('HTTP_HOST', 'localhost');
     }
 
     /**
