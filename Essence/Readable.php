@@ -12,16 +12,16 @@ namespace Panda\Essence;
 use Panda\Alloy\FactoryInterface as Factory;
 
 /**
- *  Readable Essence
+ *  Readable Essence 
  *
  *  @subpackage Essence
  */
 class Readable extends ReadableAbstract implements Factory
 {
     /**
-     *  New instance.
-     *
-     *  @var mixed  $shared
+     *  New Instance
+     * 
+     *  @param mixed $shared 
      */
     public function __construct($shared = null)
     {
@@ -33,7 +33,7 @@ class Readable extends ReadableAbstract implements Factory
     /**
      *  Factory instance.
      *
-     *  @var mixed  $shared
+     *  @param mixed $shared 
      */
     public static function factory($shared = null)
     {
