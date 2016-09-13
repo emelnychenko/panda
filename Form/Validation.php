@@ -19,7 +19,7 @@ class Validation
 {
     public static function integer($equal)
     {
-        return filter_var($equal, FILTER_VALIDATE_INT);
+        return (bool) filter_var($equal, FILTER_VALIDATE_INT);
     }
 
     public static function int($equal)
@@ -39,22 +39,22 @@ class Validation
 
     public static function float($equal)
     {
-        return filter_var($equal, FILTER_VALIDATE_FLOAT);
+        return (bool) filter_var($equal, FILTER_VALIDATE_FLOAT);
     }
 
     public static function ip($equal)
     {
-        return filter_var($equal, FILTER_VALIDATE_IP);
+        return (bool) filter_var($equal, FILTER_VALIDATE_IP);
     }
 
     public static function alpha($equal)
     {
-        return preg_replace('/^[a-zA-Z]+$/i', '', $equal);
+        return (bool) preg_replace('/^[a-zA-Z]+$/i', '', $equal);
     }
 
     public static function alphanumeric($equal)
     {
-        return preg_replace('/^[a-zA-Z0-9]+$/i', '', $equal);
+        return (bool) preg_replace('/^[a-zA-Z0-9]+$/i', '', $equal);
     }
 
     public static function alnum($equal)
@@ -64,12 +64,12 @@ class Validation
 
     public static function email($equal)
     {
-        return filter_var($equal, FILTER_VALIDATE_EMAIL);
+        return (bool) filter_var($equal, FILTER_VALIDATE_EMAIL);
     }
 
     public static function url()
     {
-        return filter_var($equal, FILTER_VALIDATE_URL);
+        return (bool) filter_var($equal, FILTER_VALIDATE_URL);
     }
 
     public static function regexp($equal, $pattern)
