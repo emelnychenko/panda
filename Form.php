@@ -173,6 +173,34 @@ class Form implements FormInterface
      *
      *  @return \Panda\Form\Input
      */
+    public function time($name = null, $attr = array(), $value = null)
+    {
+        return $this->input(Input::TIME, $name, $attr, $value);   
+    }
+
+    /**
+     *  comment ...
+     *
+     *  @var string $name
+     *  @var mixed  $attr
+     *  @var mixed  $value
+     *
+     *  @return \Panda\Form\Input
+     */
+    public function date($name = null, $attr = array(), $value = null)
+    {
+        return $this->input(Input::DATE, $name, $attr, $value);   
+    }
+
+    /**
+     *  comment ...
+     *
+     *  @var string $name
+     *  @var mixed  $attr
+     *  @var mixed  $value
+     *
+     *  @return \Panda\Form\Input
+     */
     public function password($name = null, $attr = array(), $value = null)
     {
         return $this->input(Input::PASSWORD, $name, $attr, $value);
