@@ -56,6 +56,16 @@ class Input implements InputInterface
     const FILE              = 'file';
 
     /**
+     *  @const EMAIL
+     */ 
+    const DATE              = 'date';
+
+    /**
+     *  @const EMAIL
+     */ 
+    const TIME              = 'time';
+
+    /**
      *  @var string
      */ 
     protected $type         = 'text';
@@ -162,6 +172,38 @@ class Input implements InputInterface
     {
         return new static(
             static::TEXT, $name, $attr, $value
+        );
+    }
+
+    /**
+     *  comment ...
+     *
+     *  @var string $name
+     *  @var mixed  $attr
+     *  @var mixed  $value
+     *
+     *  @return \Panda\Form\Input
+     */
+    public static function time($name, $attr = [], $value = null)
+    {
+        return new static(
+            static::TIME, $name, $attr, $value
+        );
+    }
+
+    /**
+     *  comment ...
+     *
+     *  @var string $name
+     *  @var mixed  $attr
+     *  @var mixed  $value
+     *
+     *  @return \Panda\Form\Input
+     */
+    public static function date($name, $attr = [], $value = null)
+    {
+        return new static(
+            static::DATE, $name, $attr, $value
         );
     }
 

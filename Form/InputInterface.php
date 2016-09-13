@@ -69,6 +69,28 @@ interface InputInterface
      *
      *  @return \Panda\Form\Input
      */
+    public static function time($name, $attr = [], $value = null);
+
+    /**
+     *  comment ...
+     *
+     *  @var string $name
+     *  @var mixed  $attr
+     *  @var mixed  $value
+     *
+     *  @return \Panda\Form\Input
+     */
+    public static function date($name, $attr = [], $value = null);
+
+    /**
+     *  comment ...
+     *
+     *  @var string $name
+     *  @var mixed  $attr
+     *  @var mixed  $value
+     *
+     *  @return \Panda\Form\Input
+     */
     public static function email($name, $attr = [], $value = null);
 
     /**
