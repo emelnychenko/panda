@@ -9,6 +9,7 @@
 
 namespace Panda\Http\Controller;
 
+use Panda\Deploy\Applique               as Applique;
 use Panda\Http\ControllerAbstract       as Controller;
 
 /**
@@ -18,5 +19,12 @@ use Panda\Http\ControllerAbstract       as Controller;
  */
 abstract class GuardAbstract extends Controller
 {
+    public function __construct(Applique $applique = null)
+    {
+        $this->applique = $applique;
+
+        $applique->register(get_called_class(), $this);
+    }
+
     abstract public function inspect();
 }
