@@ -74,7 +74,7 @@ class Input implements Factory
      */
     public function set($equal)
     {
-        $this->equal = trim($equal);
+        $this->equal = strip_tags(trim($equal));
 
         return $this;
     }
