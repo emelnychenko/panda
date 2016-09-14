@@ -13,7 +13,7 @@ use Panda\Form\Data\Input as Input;
 use Panda\Essence\ReadableAbstract;
 
 /**
- *  Panda Form
+ *  Panda Form Data Abstract
  *
  *  @subpackage Form
  */
@@ -33,11 +33,6 @@ class DataAbstract extends ReadableAbstract implements Factory
      *  @var array
      */ 
     protected $shared       = [];
-
-    public function __construct()
-    {
-        //
-    }
 
     /**
      *  comment ...
@@ -65,7 +60,7 @@ class DataAbstract extends ReadableAbstract implements Factory
      *
      *  @return mixed
      */
-    public function input($name = null, $equal = null)
+    public function input($name, $equal = null)
     {
         return $this->shared[$name] = Input::factory($equal);
     }
