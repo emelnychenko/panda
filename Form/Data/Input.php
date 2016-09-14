@@ -74,19 +74,24 @@ class Input implements Factory
      */
     public function set($equal)
     {
-        $this->equal = $equal;
+        $this->equal = trim($equal);
 
         return $this;
     }
 
     /**
-     * @param scalar
+     *  @param scalar
      */
     public function __construct($equal = null)
     {
         $this->equal = $equal;
     }
 
+    /**
+     *  @param scalar
+     *
+     *  @return \Panda\Form\Data\Input
+     */
     public static function factory($equal = null)
     {
         return new static($equal);

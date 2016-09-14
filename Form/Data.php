@@ -9,9 +9,9 @@
 namespace Panda\Form;
 
 /**
- *  Panda Form
+ *  Panda Form Data
  *
- *  @subpackage Framework
+ *  @subpackage Form
  */
 class Data extends DataAbstract
 {
