@@ -16,27 +16,94 @@ namespace Panda\Mail;
  */
 class Smtp
 {
-    private $socket;
-    private $host;
-    private $port       = 25;
-    private $timeout    = 1;
-    private $debug      = false;
-    private $auth       = 'login';
+    /**
+     *  @var resource
+     */
+    protected $socket;
 
-    private $prefix;
-    private $secure;
+    /**
+     *  @var string
+     */
+    protected $host;
 
-    private $username;
-    private $password;
+    /**
+     *  @var numeric
+     */
+    protected $port       = 25;
 
-    private $type           = 'text';
-    private $headers        = [];
-    private $sender         = [];
-    private $reply_to       = [];
-    private $receivers      = [];
-    private $subject;
-    private $message;
+    /**
+     *  @var numeric
+     */
+    protected $timeout    = 1;
 
+    /**
+     *  @var bool
+     */
+    protected $debug      = false;
+
+    /**
+     *  @var string
+     */
+    protected $auth       = 'login';
+
+    /**
+     *  @var string
+     */
+    protected $prefix;
+
+    /**
+     *  @var string
+     */
+    protected $secure;
+
+    /**
+     *  @var string
+     */
+    protected $username;
+
+    /**
+     *  @var string
+     */
+    protected $password;
+
+    /**
+     *  @var string
+     */
+    protected $type           = 'text';
+
+    /**
+     *  @var array
+     */
+    protected $headers        = [];
+
+    /**
+     *  @var array
+     */
+    protected $sender         = [];
+
+    /**
+     *  @var array
+     */
+    protected $reply_to       = [];
+
+    /**
+     *  @var array
+     */
+    protected $receivers      = [];
+
+    /**
+     *  @var string
+     */
+    protected $subject;
+
+    /**
+     *  @var string
+     */
+    protected $message;
+
+    /**
+     *  @var resource
+     */
     public function __construct(array $configuration = null)
     {
         if (
