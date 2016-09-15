@@ -56,6 +56,18 @@ class File
      * 
      *  @return mixed
      */
+    public function name()
+    {
+        return $this->file->name;
+    }
+
+    /**
+     *  #
+     * 
+     *  @param numeric $size
+     * 
+     *  @return mixed
+     */
     public function file()
     {
         return $this->file;
@@ -91,16 +103,6 @@ class File
     public function error()
     {
         return $this->file->error;
-    }
-
-    /**
-     *  
-     * 
-     *  @return \Panda\Essence|Readable
-     */
-    public function size()
-    {
-        return $this->file->size;
     }
 
     /**
