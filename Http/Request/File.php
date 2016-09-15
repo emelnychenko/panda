@@ -66,16 +66,9 @@ class File
      * 
      *  @return mixed
      */
-    public function mime(array $mime = null)
+    public function file()
     {
-        if ($mime === null) {
-            return $this->mime;
-        }
-
-
-        $this->mime = $mime;
-
-        return $this;
+        return $this->file;
     }
 
     /**
@@ -85,37 +78,49 @@ class File
      * 
      *  @return mixed
      */
-    public function size($size = null)
+    public function size()
     {
-        if ($size === null) {
-            return $this->size;
-        }
-
-
-        $this->size = $size;
-
-        return $this;
+        return $this->file->size;
     }
 
+    /**
+     *  
+     * 
+     *  @return \Panda\Essence|Readable
+     */
+    public function mime()
+    {
+        return $this->file->type;
+    }
 
     /**
-     *  #
+     *  
      * 
-     *  @return \Panda\Http\Request\File
+     *  @return \Panda\Essence|Readable
      */
-    public function validate()
+    public function error()
     {
-        $this->valid = true;
+        return $this->file->error;
+    }
 
-        if ($this->size > 0 && $this->file->size > $this->size) {
-            $this->valid = false;
-        }
+    /**
+     *  
+     * 
+     *  @return \Panda\Essence|Readable
+     */
+    public function size()
+    {
+        return $this->file->size;
+    }
 
-        if ($this->mime !== null && in_array($this->file->type, $this->mime, true) == false) {
-            $this->valid = false;
-        }
-
-        return $this;
+    /**
+     *  
+     * 
+     *  @return \Panda\Essence|Readable
+     */
+    public function temp()
+    {
+        return $this->file->tmp_name;
     }
 
     /**
@@ -133,7 +138,9 @@ class File
      */
     public function put($destination)
     {
-        move_uploaded_file($this->file->tmp_name, $destination);
+        move_uploaded_file(
+            $this->temp(), $destination
+        );
 
         return $destination;
     }
