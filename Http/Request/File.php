@@ -23,16 +23,6 @@ class File
     protected $file;
 
     /**
-     *  @var integer
-     */
-    protected $size = 0;
-
-    /**
-     *  @var array
-     */
-    protected $mime;
-
-    /**
      *  @var bool
      */
     protected $valid    = true;
