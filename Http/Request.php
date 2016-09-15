@@ -9,6 +9,7 @@
 
 namespace Panda\Http;
 
+use Panda\Http\Request\File             as File;
 use Panda\Alloy\FactoryInterface        as Factory;
 use Panda\Essence\Readable              as Essence;
 
@@ -196,7 +197,9 @@ class Request extends Essence implements RequestInterface, Factory
      */
     public function file($key, $default = null)
     {
-        return $this->files->get($key, $default);
+        return File::factory(
+            $this->files->get($key, [])
+        );
     }
 
     /**
