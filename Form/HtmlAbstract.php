@@ -45,6 +45,10 @@ class HtmlAbstract extends DataAbstract
             return $this->shared[$name];
         }
 
+        if ($type === 'select') {
+            return $this->shared[$name] = Multi::factory($name, $type, array_replace($this->default, $attr), $equal);
+        }
+
         return $this->shared[$name] = Input::factory($name, $type, array_replace($this->default, $attr), $equal);
     }
     
@@ -166,6 +170,18 @@ class HtmlAbstract extends DataAbstract
     public function checkbox($name, $attr = [], $equal = null)
     {
         return $this->input($name, Input::CHECKBOX, $attr, $equal);
+    }
+
+    /**
+     *  @var string $name
+     *  @var mixed  $attr
+     *  @var mixed  $equal
+     *
+     *  @return \Panda\Form\Base\Input
+     */
+    public function select($name, $attr = [], $equal = null)
+    {
+        return $this->input($name, Multi::SELECT, $attr, $equal);
     }
 
     // public function select($name = null, $options = [], $attr = [], $value = null)
