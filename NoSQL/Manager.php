@@ -6,10 +6,10 @@
  *  @author  Eugen Melnychenko
  */
 
-namespace Panda\Database;
+namespace Panda\NoSQL;
 
-use Panda\Database\Adapter\MySQL;
-use Panda\Database\Adapter\SQLite;
+use Panda\Error\Narrator;
+use Panda\NoSQL\Adapter\Redis;
 
 /**
  *  Database Manager
@@ -53,48 +53,33 @@ class Manager
             is_array($floating) && array_key_exists('adapter', $floating)
         ) {
             if (
-                $floating['adapter'] === Adapter::MYSQL 
+                $floating['adapter'] === Adapter::REDIS 
             ) {
-                $this->connections[$connection] = MySQL::factory($floating, true);
-            } elseif (
-                $floating['adapter'] === Adapter::SQLITE 
-            ) {
-                $this->connections[$connection] = SQLite::factory($floating, true);
+                $this->connections[$connection] = Redis::factory($floating, true);
             }
         } elseif (
-            is_object($floating) && is_subclass_of(SQLAbstract::class) 
+            is_object($floating) && is_subclass_of(Adapter::class) 
         ) {
             $this->connections[$connection] = $floating;
+        } else {
+            throw new Narrator('Invalid NoSQL configuration instance.');
         }
 
         return $this->connections[$connection];
     }
+
     /**
-     *  Append MySQL configuraiton with association key.
+     *  Append Redis configuraiton with association key.
      * 
      *  @var array $connection
      *  @var array $connect_arr
      *
      *  @return \Blink\Database\ActiveRecordAdapter
      */
-    public static function mysql($connection = 'default', array $config = null)
+    public static function redis($connection = 'default', array $config = null)
     {
         return static::singleton()->append(
             $connection, array_replace($config, array('adapter' => Adapter::MYSQL))
-        );
-    }
-    /**
-     *  Append SQLite configuraiton with association key.
-     * 
-     *  @var array $connection
-     *  @var array $connect_arr
-     *
-     *  @return \Blink\Database\ActiveRecordAdapter
-     */
-    public static function sqlite($connection = 'default', array $config = null)
-    {
-        return static::singleton()->append(
-            $connection, array_replace($config, array('adapter' => Adapter::SQLITE))
         );
     }
 

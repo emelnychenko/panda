@@ -17,6 +17,7 @@ use Panda\Http\Router           as Router;
 use Panda\Http\Request          as Request;
 use Panda\Swift\View            as View;
 use Panda\Console\Bamboo        as Bamboo;
+use Panda\NoSQL\Manager         as NoSQL;
 
 /**
  *  Applique Deployment Layer
@@ -71,7 +72,8 @@ class Applique
             $this->config($this->path($config), 'push');
         }
 
-        Guard::register($this->config->get('defender', null));
+           Guard::register($this->config->get('defender', null));
+           NoSQL::factory($this->config->get('nosql', []));
         Database::factory($this->config->get('database', []));
     }
 
