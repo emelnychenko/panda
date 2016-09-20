@@ -73,7 +73,7 @@ class Client implements Factory
     /**
      *  @var string
      */ 
-    protected $header;
+    protected $header   = [];
 
     /**
      *  @var string
@@ -87,7 +87,7 @@ class Client implements Factory
         }
 
         $this->query  = Essence::factory();
-        $this->header = Essence::factory();
+        // $this->header = Essence::factory();
 
         preg_match('/^(http|https):\/\/([a-z0-9A-Z\-\.]+)(\:[0-9]+|)/i', $url, $matches);
 
@@ -96,7 +96,7 @@ class Client implements Factory
         $fullpath = str_replace($null, '', $url);
 
         if ($this->port !== '') {
-            strtok($this->port, ':'); $this->port = strtok(':');
+            $this->port = str_replace(':', '', $this->port);
         }
 
         if ($port !== null) $this->port = $port;
@@ -132,12 +132,12 @@ class Client implements Factory
         return $this;
     }
 
-    public function header($key, $equal = null)
-    {
-        $this->header->set($key, $equal);
+    // public function header($key, $equal = null)
+    // {
+    //     $this->header->set($key, $equal);
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function ca($path)
     {
@@ -200,6 +200,12 @@ class Client implements Factory
         return $this;
     }
 
+    public function header($header)
+    {
+        $this->header = [$header];
+        return $this;
+    }
+
     public function get()
     {
         return $this->send('GET');
@@ -239,7 +245,7 @@ class Client implements Factory
         curl_setopt_array($curl, [
             CURLOPT_URL             => $this->url(),
             CURLOPT_RETURNTRANSFER  => 1,
-            // CURLOPT_HTTPHEADER      => $this->header,
+            CURLOPT_HTTPHEADER      => $this->header,
             CURLOPT_CONNECTTIMEOUT  => $this->timeout,
             CURLOPT_TIMEOUT         => $this->timeout,
         ]);
