@@ -107,6 +107,16 @@ abstract class ReadableAbstract
     }
 
     /**
+     *  Return shared
+     *
+     *  @return array
+     */
+    public function shared()
+    {
+        return $this->shared;
+    }
+
+    /**
      *  Return shared as array
      *
      *  @return array

@@ -42,6 +42,11 @@ abstract class Redis extends Essence implements Factory, Storage
     protected $separator    = '::';
 
     /**
+     *  @var string
+     */
+    protected $typing       = 'essence';
+
+    /**
      *  @var numeric
      */
     protected $ttl          = 3600;
@@ -51,17 +56,17 @@ abstract class Redis extends Essence implements Factory, Storage
      */
     protected $shared       = [];
 
-    /**
-     *  @var array
-     */
-    protected $origin       = [];
+    public function __construct($key = null)
+    {
+        $this->key($key);
+    }
 
     /**
      *  @return \Panda\NoSQL\RedisAbstract
      */
-    public static function factory()
+    public static function factory($key = null)
     {
-        return new static();
+        return new static($key);
     }
 
     /**
@@ -69,13 +74,11 @@ abstract class Redis extends Essence implements Factory, Storage
      */
     public static function find($key = null)
     {
-        $adapter = ($factory = static::factory())->adapter();
+        $adapter = ($factory = static::factory($key))->adapter();
 
-        $factory->originate(
-            $adapter->get(
-                $factory->key($key)
-            )
-        );
+        $factory->originate($adapter->get(
+            $factory->key
+        ));
 
         return $factory;
     }
@@ -100,8 +103,6 @@ abstract class Redis extends Essence implements Factory, Storage
     {
         $this->adapter()->set($this->key, $this->shared, time() + $this->ttl);
 
-        $this->originate($this->shared);
-
         return $this;
     }
 
@@ -115,6 +116,33 @@ abstract class Redis extends Essence implements Factory, Storage
         return $this;
     }
 
+    public function set($shared, $equal = null)
+    {
+        if ($this->typing === 'essence') {
+            return parent::set($shared, $equal);
+        }
+
+        $this->shared = $shared;
+
+        return $this;
+    }
+
+     /**
+     *  @param  mixied $shared
+     * 
+     *  @return \Panda\NoSQL\RedisAbstract
+     */
+    public function originate($shared = null)
+    {
+        if (
+            (is_array($shared) === true && $this->typing === 'essence') || $this->typing !== 'essence'
+        ) {
+            $this->shared = $shared;
+        }
+
+        return $this;
+    }
+
     /**
      *  Exchange basic key
      * 
@@ -124,23 +152,9 @@ abstract class Redis extends Essence implements Factory, Storage
      */
     public function key($key = null)
     {
-        return $this->key = $key === null ? $this->key : sprintf('%s::%s', $this->key, $key);
-    }
-
-    /**
-     *  @param  mixied $shared
-     * 
-     *  @return \Panda\NoSQL\RedisAbstract
-     */
-    public function originate($shared = null)
-    {
-        if (is_array($shared) === true) {
-            $this->shared = $shared;
-        }
-
-        $this->origin = $this->shared;
-
-        return $this;
+        return $this->key = $key === null ? $this->key : sprintf(
+            '%s%s%s', $this->key, $this->separator, $key
+        );
     }
 
     /**
@@ -163,3 +177,4 @@ abstract class Redis extends Essence implements Factory, Storage
         return $adapter->adapter();
     }
 }
+

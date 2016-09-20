@@ -75,6 +75,11 @@ class Client implements Factory
      */ 
     protected $header;
 
+    /**
+     *  @var string
+     */ 
+    protected $body;
+
     public function __construct($url = null, $port = null)
     {
         if (filter_var($url, FILTER_VALIDATE_URL) === false) {
@@ -189,9 +194,42 @@ class Client implements Factory
         return $this;
     }
 
+    public function body($content)
+    {
+        $this->body = $content;
+        return $this;
+    }
+
     public function get()
     {
         return $this->send('GET');
+    }
+
+    public function post($body = null)
+    {
+        if ($body !== null) {
+            $this->body = $body;
+        }
+
+        return $this->send('POST');
+    }
+
+    public function put($body = null)
+    {
+        if ($body !== null) {
+            $this->body = $body;
+        }
+
+        return $this->send('PUT');
+    }
+
+    public function delete($body = null)
+    {
+        if ($body !== null) {
+            $this->body = $body;
+        }
+
+        return $this->send('DELETE');
     }
 
     public function send($method = 'GET')
@@ -217,6 +255,23 @@ class Client implements Factory
                     CURLOPT_CAINFO          => $this->ca,
                 ]);
             }
+        }
+
+        if ($method === 'POST') {
+            curl_setopt_array($curl, [
+                CURLOPT_POST            => 1,
+                CURLOPT_POSTFIELDS      => $this->body,
+            ]);
+        } elseif ($method === 'PUT') {
+            curl_setopt_array($curl, [
+                CURLOPT_CUSTOMREQUEST   => "PUT",
+                CURLOPT_POSTFIELDS      => $this->body,
+            ]);
+        } elseif ($method === 'DELETE') {
+            curl_setopt_array($curl, [
+                    CURLOPT_CUSTOMREQUEST   => "DELETE",
+                    CURLOPT_POSTFIELDS      => $this->body,
+                ]);
         }
 
         $response   = curl_exec($curl);

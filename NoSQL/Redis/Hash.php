@@ -46,8 +46,6 @@ abstract class Hash extends \Panda\NoSQL\Redis
     {
         $this->adapter()->hSet($this->key, $this->table, $this->shared);
 
-        $this->originate($this->shared);
-
         return $this;
     }
 
