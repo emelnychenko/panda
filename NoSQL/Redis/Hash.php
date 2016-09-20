@@ -9,14 +9,12 @@
 
 namespace Panda\NoSQL\Redis;
 
-use Panda\NoSQL\RedisAbstract as Redis;
-
 /**
  *  NoSQL Redis Abstract
  *
  *  @subpackage NoSQL
  */
-abstract class Hash extends Redis
+abstract class Hash extends \Panda\NoSQL\Redis
 {
     /**
      *  @var string
