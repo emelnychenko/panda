@@ -157,7 +157,7 @@ class Smtp
                             $this->reply_to($value);
                             $this->sender($value);
                         }
-                        
+
                         break;
                 }
             }
@@ -166,7 +166,7 @@ class Smtp
 
     /**
      *  Change host server.
-     *  
+     *
      *  @var string $host
      */
     public function host($host)
@@ -182,7 +182,7 @@ class Smtp
 
     /**
      *  Change port.
-     *  
+     *
      *  @var numeric $port
      */
     public function port($port)
@@ -198,7 +198,7 @@ class Smtp
 
     /**
      *  Change auth type.
-     *  
+     *
      *  @var string $port
      */
     public function auth($auth)
@@ -214,7 +214,7 @@ class Smtp
 
     /**
      *  Change secure type: ssl || tls.
-     *  
+     *
      *  @var string $secure
      */
     public function secure($secure)
@@ -230,7 +230,7 @@ class Smtp
 
     /**
      *  Change content type: text || html.
-     *  
+     *
      *  @var string $type
      */
     public function type($type)
@@ -246,7 +246,7 @@ class Smtp
 
     /**
      *  Use debug echo?.
-     *  
+     *
      *  @var bool $debug
      */
     public function debug($debug)
@@ -262,7 +262,7 @@ class Smtp
 
     /**
      *  Set username for auth.
-     *  
+     *
      *  @var string $username
      */
     public function username($username)
@@ -278,7 +278,7 @@ class Smtp
 
     /**
      *  Set password for auth.
-     *  
+     *
      *  @var string $password
      */
     public function password($password)
@@ -294,7 +294,7 @@ class Smtp
 
     /**
      *  Set sender address "FROM".
-     *  
+     *
      *  @var string $address
      *  @var mixed $name
      */
@@ -317,7 +317,7 @@ class Smtp
 
     /**
      *  Set receivers addresses "TO".
-     *  
+     *
      *  @var mixed $addresses
      *  @var mixed $name
      */
@@ -346,7 +346,7 @@ class Smtp
 
     /**
      *  Set reply to addresses "REPLY_TO".
-     *  
+     *
      *  @var mixed $addresses
      *  @var mixed $name
      */
@@ -375,7 +375,7 @@ class Smtp
 
     /**
      *  Accept headers.
-     *  
+     *
      *  @var mixed $headers
      */
     public function headers($headers)
@@ -397,7 +397,7 @@ class Smtp
 
     /**
      *  Store subject.
-     *  
+     *
      *  @var string $subject
      */
     public function subject($subject)
@@ -413,7 +413,7 @@ class Smtp
 
     /**
      *  Store message.
-     *  
+     *
      *  @var string $message
      */
     public function message($message)
@@ -429,7 +429,7 @@ class Smtp
 
     /**
      *  Create address and name format.
-     *  
+     *
      *  @var string $message
      *  @var mixed $message
      */
@@ -446,7 +446,7 @@ class Smtp
 
     /**
      *  Send message.
-     *  
+     *
      *  @var mixed $subject
      *  @var mixed $message
      */
@@ -467,7 +467,7 @@ class Smtp
         if (
             isset($message)
         ) {
-            $this->text($message);
+            $this->message($message);
         }
 
         /**
@@ -685,8 +685,8 @@ class Smtp
          *  Format mail message
          */
         $content    = sprintf(
-                "%s\r\n\r\n%s", 
-                implode("\r\n", $headers), 
+                "%s\r\n\r\n%s",
+                implode("\r\n", $headers),
                 $this->message
             );
 
@@ -708,6 +708,8 @@ class Smtp
      */
     private function send_command($command_name, $command, $expected_response = 250)
     {
+
+        $data = '';
         /**
          *  Write command to socket.
          */
