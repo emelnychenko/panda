@@ -24,34 +24,34 @@ abstract class Intelligent extends Essence
      */
     protected $adapter      = 'default';
 
-    /** 
-     *  @var string 
-     */ 
+    /**
+     *  @var string
+     */
     protected $table;
 
-    /** 
-     *  @var bool 
-     */ 
+    /**
+     *  @var bool
+     */
     protected $increment    = true;
 
-    /** 
-     *  @var mixed 
-     */ 
+    /**
+     *  @var mixed
+     */
     protected $timestamp    = false;
 
-    /** 
-     *  @var string 
-     */ 
+    /**
+     *  @var string
+     */
     protected $datetime     = 'Y-m-d H:i:s';
 
-    /** 
-     *  @var string 
-     */ 
+    /**
+     *  @var string
+     */
     protected $date         = 'Y-m-d';
 
-    /** 
-     *  @var string 
-     */ 
+    /**
+     *  @var string
+     */
     protected $time         = 'H:i:s';
 
     /**
@@ -170,8 +170,8 @@ abstract class Intelligent extends Essence
 
     public function select(Quering $query = null, $column = ['*'])
     {
-        $query = $query === null ? Quering::factory() : $query; 
-        
+        $query = $query === null ? Quering::factory() : $query;
+
         return $query->select($column)->from($this->table);
     }
 
@@ -194,7 +194,7 @@ abstract class Intelligent extends Essence
         });
 
         if ($this->increment === true) {
-            $this->{$this->primary} = $this->adapter()->id(); 
+            $this->{$this->primary} = $this->adapter()->id();
         }
 
         $this->originate();
@@ -218,7 +218,16 @@ abstract class Intelligent extends Essence
             $this->timestamp(true, 'updated_at');
         }
 
-        $primary    = [$this->primary => $this->get($this->primary)];
+        if (is_array($this->primary)) {
+            $primary = [];
+
+            foreach ($this->primary as $pk) {
+                $primary[$pk] = $this->get($pk);
+            }
+        } else {
+            $primary    = [$this->primary => $this->get($this->primary)];
+        }
+
         $shared     = array_replace($this->diff(), $primary); $condition = $this->primary($shared);
 
         if (empty($shared) === true) {
@@ -315,16 +324,16 @@ abstract class Intelligent extends Essence
 
         if ($this->timestamp === true || $this->timestamp === 'datetime') {
             $timestamp = date($this->datetime);
-        } 
-        
+        }
+
         if ($this->timestamp === 'date') {
             $timestamp = date($this->date);
-        } 
-        
+        }
+
         if ($this->timestamp === 'time') {
             $timestamp = date($this->time);
-        } 
-        
+        }
+
         if ($this->timestamp === 'unix') {
             $timestamp = date('U');
         }
