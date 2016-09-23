@@ -250,7 +250,10 @@ class Router implements RouterInterface, Factory
 
         foreach($all as $identifier => $essence) {
             if (preg_match($this->capture($essence['url']), $url, $matches)) {
-                array_shift($matches); $matches = array_filter($matches);
+                
+                array_shift($matches); foreach ($matches as $key => $value) {
+                    if ($value === '') unset($matches[$key]);
+                }
 
                 $response = $this->dispatch($essence, $matches, $applique);
                 $floated  = is_subclass_of($response, 'Panda\Http\ControllerAbstract');

@@ -228,7 +228,7 @@ abstract class Intelligent extends Essence
             $primary    = [$this->primary => $this->get($this->primary)];
         }
 
-        $shared     = array_replace($this->diff(), $primary); $condition = $this->primary($shared);
+        $shared = array_replace($this->diff(), $primary); $condition = $this->primary($shared);
 
         if (empty($shared) === true) {
             return $this;
