@@ -40,6 +40,11 @@ abstract class Intelligent extends Essence
     protected $timestamp    = false;
 
     /**
+     *  @var mixed
+     */
+    protected $primary      = 'id';
+
+    /**
      *  @var string
      */
     protected $datetime     = 'Y-m-d H:i:s';
@@ -77,7 +82,7 @@ abstract class Intelligent extends Essence
     /**
      *  @var string
      */
-    protected $indatabase   = false;
+    protected $indb         = false;
 
     public static function factory()
     {
@@ -86,88 +91,141 @@ abstract class Intelligent extends Essence
 
     public static function create($shared = null, $equal = null)
     {
-        return static::factory()->insert($shared, $equal);
+        return static::factory()->insert(
+            $shared, $equal
+        );
+    }
+
+    /**
+     *  Custom request template for select one unit
+     * 
+     *  @param  callable $callback 
+     *  
+     *  @return mixed
+     */
+    public static function one_query(callable $callback)
+    {
+        $fetch = (
+            $self = static::factory()
+        )->query(
+            function($q) use ($callback, $self) {
+                call_user_func($callback, $q, $self);
+            }
+        )->one();
+
+        if (empty($fetch) === true) return null;
+
+        $self->indb = true;
+
+        return $self->originate($fetch);
     }
 
     public static function find($primary)
     {
-        $factory = static::factory();
+        return static::one_query(function($q, $self) use ($primary) {
+            $where = is_array($primary) ? $primary : [
+                $self->primary => $primary
+            ];
 
-        $primary = is_array($primary) ? $primary : [$factory->primary => $primary];
-        $primary = $factory->primary($primary);
-
-        $result  = $factory->query(function($q) use ($factory, $primary) {
-            $factory->select($q)->where($primary)->limit(1);
-        })->one();
-
-        if (empty($result) === true) {
-            return null;
-        }
-
-        $factory->indatabase = true;
-
-        return $factory->originate($result);
+            $self->select(
+                $q
+            )->where(
+                $self->primary($where)
+            )->limit(1);
+        });
     }
 
+    /**
+     *  Use template for select one unit
+     * 
+     *  @param  callable $callback 
+     *  
+     *  @return mixed
+     */
     public static function one($condition = null, $order = null, $offset = null)
     {
-        $factory = static::factory();
+        return static::one_query(
+            function($q, $self) use ($condition, $order, $offset) {
+                $self->select($q)
+                    ->where($condition)
+                    ->order($order)
+                    ->limit(1, $offset);
+            }
+        );
+    }
 
-        $result  = $factory->query(function($q) use ($factory, $condition, $order, $offset) {
-            $factory->select($q)->where($condition)->order($order)->limit(1, $offset);
-        })->one();
+    /**
+     *  Custom method for selection array of unit
+     * 
+     *  @param  callable $callback 
+     *  
+     *  @return mixed
+     */
+    public static function by_query(callable $callback)
+    {
+        $fetches = (
+            $self = static::factory()
+        )->query(
+            function($q) use ($callback, $self) {
+                call_user_func($callback, $q, $self);
+            }
+        )->all();
 
-        if (empty($result) === true) {
-            return null;
+        if (empty($fetches) === true) return null;
+
+        $collection = [];
+
+        $self->indb = true;
+
+        foreach ($fetches as $fetch) {
+            array_push($collection, clone $self->originate($fetch));
         }
 
-        $factory->indatabase = true;
+        return $collection;
 
-        return $factory->originate($result);
-    }
+    /**
+     *  Custom method for selection array of unit
+     * 
+     *  @param  callable $callback 
+     *  
+     *  @return mixed
+     */    }
 
     public static function by($condition = null, $order = null, $limit = null, $offset = null)
     {
-        $factory = static::factory(); $factories = [];
-
-        $results = $factory->query(function($q) use ($factory, $condition, $order, $limit, $offset) {
-            $factory->select($q)->where($condition)->order($order)->limit($limit, $offset);
-        })->all();
-
-        if (empty($results) === true) {
-            return null;
-        }
-
-        $factory->indatabase = true;
-
-        foreach ($results as $result) {
-            array_push($factories, clone $factory->originate($result));
-        }
-
-        return $factories;
+        return static::by_query(
+            function($q, $self) use ($condition, $order, $limit, $offset) {
+                $self->select($q)
+                    ->where($condition)
+                    ->order($order)
+                    ->limit($limit, $offset);
+            }
+        );
     }
 
+    /**
+     *  Custom method for selection all of unit
+     * 
+     *  @param  callable $callback 
+     *  
+     *  @return mixed
+     */
     public static function all()
     {
-        $factory = static::factory(); $factories = [];
-
-        $results = $factory->query(function($q) use ($factory) {
-            $factory->select($q);
-        })->all();
-
-        if (empty($results) === true) {
-            return null;
-        }
-
-        $factory->indatabase = true;
-
-        foreach ($results as $result) {
-            array_push($factories, clone $factory->originate($result));
-        }
-
-        return $factories;
+        return static::by_query(
+            function($q, $self) {
+                $self->select($q);
+            }
+        );
     }
 
+    /**
+     *  Custom method for selection array of unit
+     * 
+     *  @param  callable $callback 
+     *  
+     *  @return mixed
+     */
     public function select(Quering $query = null, $column = ['*'])
     {
         $query = $query === null ? Quering::factory() : $query;
@@ -177,12 +235,12 @@ abstract class Intelligent extends Essence
 
     public function insert($shared = null, $equal = null)
     {
-        if ($this->indatabase === true) {
-            return $this;
-        }
+        if ($this->indb === true) return $this;
 
         if ($shared !== null) {
-            $this->replace(is_array($shared) ? $shared : [$shared => $equal]);
+            $this->replace(
+                is_array($shared) ? $shared : [$shared => $equal]
+            );
         }
 
         if ($this->timestamp !== false) {
@@ -199,19 +257,19 @@ abstract class Intelligent extends Essence
 
         $this->originate();
 
-        $this->indatabase === true;
+        $this->indb === true;
 
         return $this;
     }
 
     public function update($shared = null, $equal = null)
     {
-        if ($this->indatabase === false) {
-            return $this;
-        }
+        if ($this->indb === false) return $this;
 
         if ($shared !== null) {
-            $this->replace(is_array($shared) ? $shared : [$shared => $equal]);
+            $this->replace(
+                is_array($shared) ? $shared : [$shared => $equal]
+            );
         }
 
         if ($this->timestamp !== false) {
@@ -245,9 +303,7 @@ abstract class Intelligent extends Essence
 
     public function delete()
     {
-        if ($this->indatabase === false) {
-            return $this;
-        }
+        if ($this->indb === false) return $this;
 
         $shared = $this->origin; $condition = $this->primary($shared);
 
@@ -255,14 +311,14 @@ abstract class Intelligent extends Essence
             $q->delete()->from($this->table)->where($condition);
         });
 
-        $this->indatabase === false;
+        $this->indb === false;
 
         return $this;
     }
 
     public function save()
     {
-        if ($this->indatabase === false) {
+        if ($this->indb === false) {
             return $this->insert();
         }
 
@@ -279,6 +335,13 @@ abstract class Intelligent extends Essence
         return $this->table;
     }
 
+    /**
+     *  
+     *  
+     *  @param  mixed $shared
+     *  
+     *  @return Intelligent
+     */
     public function fill($shared)
     {
         $this->replace($shared);
@@ -349,7 +412,9 @@ abstract class Intelligent extends Essence
 
     public function transaction(callable $callback, &$error = null)
     {
-        return $this->adapter()->transaction($callback, $error);
+        return $this->adapter()->transaction(
+            $callback, $error
+        );
     }
 
     public function query($q)

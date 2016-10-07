@@ -396,8 +396,8 @@ class Quering
 
             $container = [
                 $this->joining('UPDATE',    'table',  ', '),
-                $this->joining('SET',       $shared,    ', '),
                 implode(' ', $this->join),
+                $this->joining('SET',       $shared,    ', '),
                 $this->joining('WHERE',     'where',    ' AND '),
                 $this->joining("GROUP BY",  'group',    ', '),
                 $this->joining("HAVING",    'having',   ' AND '),
