@@ -97,8 +97,12 @@ class Applique
     public function config($key = null, $action = 'pull')
     {
         if ($action === 'push') {
-            foreach (glob($key) as $path) {
-                $this->config->replace(include $path);
+            if (is_array($key) === null) {
+                $this->config->replace($key);
+            } else {
+                foreach (glob($key) as $path) {
+                    $this->config->replace(include $path);
+                }
             }
 
             return $this;

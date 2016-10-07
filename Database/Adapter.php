@@ -177,23 +177,25 @@ abstract class Adapter
      *
      *  @return bool
      */
-    public function transaction(callable $callback, &$exception = null)
+    public function transaction(callable $callback, &$error = null)
     {
-        return $this->__safe_execution(function($instance) use ($callback, &$exception) {
-            $exception = null;
-
+        return $this->__safe_execution(function($connection) use ($callback, &$error) {
             try {
-                $instance->beginTransaction();
+                $connection->beginTransaction();
 
-                call_user_func($callback, $this);
+                $success = call_user_func($callback, $this);
 
-                $instance->commit();
+                if ($success === false) {
+                    $connection->rollBack(); return false;
+                }
+
+                $connection->commit();
 
                 return true;
-            } catch (PDOException $e) {
-                $instance->rollBack();
+            } catch (PDOException $pdoe) {
+                $connection->rollBack();
 
-                $exception = $e;
+                $error = $pdoe;
 
                 return false;
             }

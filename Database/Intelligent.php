@@ -347,9 +347,9 @@ abstract class Intelligent extends Essence
         return $this;
     }
 
-    public function transaction(callable $callback)
+    public function transaction(callable $callback, &$error = null)
     {
-        return $this->adapter()->transaction($callback);
+        return $this->adapter()->transaction($callback, $error);
     }
 
     public function query($q)
