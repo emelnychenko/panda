@@ -243,7 +243,7 @@ class Router implements RouterInterface, Factory
      */
     public function run(Applique $applique = null)
     {
-        $url = $this->request()->url();
+        $url = $this->request()->path();
         $all = array_merge(
             $this->route->all(), $this->error->except('*'), $this->error->only('*')
         );

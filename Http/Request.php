@@ -271,9 +271,21 @@ class Request extends Essence implements RequestInterface, Factory
      *
      *  @return string
      */
-    public function url()
+    public function path()
     {
         return strtok($this->uri(), '?');
+    }
+
+    /**
+     *  Get url path (without uri).
+     *
+     *  @return string
+     */
+    public function url($replace = null)
+    {
+        return sprintf(
+            "%s%s", $this->domain(), $replace !== null ? $replace : $this->path()
+        );
     }
 
     /**
@@ -367,9 +379,25 @@ class Request extends Essence implements RequestInterface, Factory
      *
      *  @return mixed
      */
-    public function method()
+    public function method($middleware = null, $param = null)
     {
-        return $this->server('REQUEST_METHOD', 'GET');
+        if ($middleware === null) {
+            return $this->server('REQUEST_METHOD', 'GET');
+        }
+
+        return call_user_func([
+            $this, sprintf("%s_%s", __FUNCTION__, $middleware)
+        ], $param);
+    }
+
+    /**
+     *  Get request method or verify if method is $question.
+     *
+     *  @return mixed
+     */
+    public function method_is($method)
+    {
+        return strtoupper($method) === $this->method();
     }
 
     /**
