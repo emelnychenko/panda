@@ -27,14 +27,19 @@ abstract class Hash extends \Panda\NoSQL\Redis
     public static function find($table = 'panda.table', $key = null)
     {
         $adapter = ($factory = static::factory())->adapter();
-
-        $factory->originate(
-            $factory->adapter()->hGet(
-                $factory->key($key), $table
-            )
+        $buffer  = $factory->adapter()->hGet(
+            $factory->key($key), $table
         );
-
+        
         $factory->table = $table;
+
+        if ($buffer === false) {
+            $factory->shared = $factory->scalar() === true ? null : [];
+
+            return $factory;
+        }
+
+        $factory->decode($buffer);
 
         return $factory;
     }
@@ -44,7 +49,9 @@ abstract class Hash extends \Panda\NoSQL\Redis
      */
     public function save()
     {
-        $this->adapter()->hSet($this->key, $this->table, $this->shared);
+        $this->adapter()->hSet(
+            $this->key, $this->table, $this->encode()
+        );
 
         return $this;
     }

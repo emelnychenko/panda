@@ -25,9 +25,8 @@ class Writeable extends WriteableAbstract implements Factory
      */
     public function __construct($shared = null)
     {
-        if (isset($shared)) {
-            $this->shared = is_array($shared) ? $shared : func_get_args();
-        }
+        $this->set($shared);
+        // $this->shared = $shared;
     }
 
     /**
@@ -47,6 +46,6 @@ class Writeable extends WriteableAbstract implements Factory
      */
     public function all()
     {
-        return $this->shared;
+        return $this->shared();
     }
 }

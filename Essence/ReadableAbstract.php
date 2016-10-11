@@ -16,10 +16,75 @@ namespace Panda\Essence;
  */
 abstract class ReadableAbstract
 {
+
+    /**
+     *  @const HASH
+     */
+    const HASH          = 'hash';
+
+    /**
+     *  @const SCALAR
+     */
+    const SCALAR        = 'scalar';
+
+    /**
+     *  @var string
+     */
+    protected $type     = 'hash';
+
+    /**
+     *  @var string
+     */
+    protected $serial   = 'json';
+
+    /**
+     *  @var string
+     */
+    protected $crypt    = true;
+
     /**
      *  @var array
      */
-    protected $shared = [];
+    protected $shared   = [];
+
+
+    /**
+     *  @return boolean
+     */
+    public function hash()
+    {
+        return $this->type === static::HASH;
+    }
+
+    /**
+     *  @return boolean
+     */
+    public function scalar()
+    {
+        return $this->type === static::SCALAR;
+    }
+
+    /**
+     *  @return boolean
+     */
+    protected function encode()
+    {
+        return DataStruct::encode(
+            $this->shared, $this->serial, $this->type, $this->crypt
+        );
+    }
+
+    /**
+     *  @return boolean
+     */
+    protected function decode($data)
+    {
+        $this->shared = DataStruct::decode(
+            $data, $this->serial, $this->type, $this->crypt
+        );
+
+        return $this;
+    }
 
     /**
      *  Get shared value by key.
@@ -31,6 +96,10 @@ abstract class ReadableAbstract
      */
     public function get($key, $default = null)
     {
+        if ($this->scalar() === true) {
+            return $this->shared;
+        }
+
         return array_key_exists($key, $this->shared) ? $this->shared[$key] : $default;
     }
 
@@ -44,6 +113,10 @@ abstract class ReadableAbstract
      */
     public function only($keys, $fillable = null)
     {
+        if ($this->scalar() === true) {
+            return $this;
+        }
+
         if (!is_array($keys)) {
             $keys       = func_get_args(); 
             $fillable   = null;
@@ -71,6 +144,10 @@ abstract class ReadableAbstract
      */
     public function except($keys)
     {
+        if ($this->scalar() === true) {
+            return $this->shared;
+        }
+
         $keys = is_array($keys) ? $keys : func_get_args();
 
         return array_diff_key(
@@ -87,6 +164,10 @@ abstract class ReadableAbstract
      */
     public function exists($keys)
     {
+        if ($this->scalar() === true) {
+            return isset($this->shared);
+        }
+
         $keys = is_array($keys) ? $keys : func_get_args();
 
         return sizeof($keys) === sizeof(
@@ -103,6 +184,10 @@ abstract class ReadableAbstract
      */
     public function has($key)
     {
+        if ($this->scalar() === true) {
+             return isset($this->shared);
+        }
+
         return array_key_exists($key, $this->shared);
     }
 
@@ -117,11 +202,11 @@ abstract class ReadableAbstract
     }
 
     /**
-     *  Return shared as array
+     *  Return shared
      *
      *  @return array
      */
-    public function arrayable()
+    public function data()
     {
         return $this->shared;
     }
@@ -147,6 +232,10 @@ abstract class ReadableAbstract
      */
     public function __isset($key)
     {
+        if ($this->scalar() === true) {
+             return isset($this->shared);
+        }
+
         return array_key_exists($key, $this->shared);
     }
 
@@ -159,6 +248,10 @@ abstract class ReadableAbstract
      */
     public function pull($key)
     {
+        if ($this->scalar() === true) {
+             return $this->shared;
+        }
+
         if (strpos($key, '.') === false) {
             return array_key_exists($key, $this->shared) ? $this->shared[$key] : null;
         }

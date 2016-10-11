@@ -86,15 +86,15 @@ class Redis extends Adapter
      */
     public function serialize($seriailizer = 'none')
     {
-        if ($seriailizer === static::SERIALIZE_NONE) {
-            $this->adapter->setOption(ExtRedis::OPT_SERIALIZER, ExtRedis::SERIALIZER_NONE);
-        } elseif ($seriailizer === static::SERIALIZE_PHP) {
-            $this->adapter->setOption(ExtRedis::OPT_SERIALIZER, ExtRedis::SERIALIZER_PHP);
-        } elseif ($seriailizer === static::SERIALIZE_IGBINARY) {
-            $this->adapter->setOption(ExtRedis::OPT_SERIALIZER, ExtRedis::SERIALIZER_IGBINARY);
-        } else {
-            throw new Narrator("Invalid Redis serializer option.");
-        }
+        // if ($seriailizer === static::SERIALIZE_NONE) {
+        //     $this->adapter->setOption(ExtRedis::OPT_SERIALIZER, ExtRedis::SERIALIZER_NONE);
+        // } elseif ($seriailizer === static::SERIALIZE_PHP) {
+        //     $this->adapter->setOption(ExtRedis::OPT_SERIALIZER, ExtRedis::SERIALIZER_PHP);
+        // } elseif ($seriailizer === static::SERIALIZE_IGBINARY) {
+        //     $this->adapter->setOption(ExtRedis::OPT_SERIALIZER, ExtRedis::SERIALIZER_IGBINARY);
+        // } else {
+        //     throw new Narrator("Invalid Redis serializer option.");
+        // }
 
         return $this;
     }

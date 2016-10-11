@@ -99,7 +99,7 @@ class Request extends Essence implements RequestInterface, Factory
         }
 
         parent::__construct(
-            $this->method() === 'GET' ? $this->query->arrayable() : $this->request->arrayable()
+            $this->method() === 'GET' ? $this->query->shared() : $this->request->shared()
         );
     }
 

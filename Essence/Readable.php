@@ -25,9 +25,7 @@ class Readable extends ReadableAbstract implements Factory
      */
     public function __construct($shared = null)
     {
-        if (isset($shared)) {
-            $this->shared = is_array($shared) ? $shared : func_get_args();
-        }
+        $this->shared = $shared;
     }
 
     /**

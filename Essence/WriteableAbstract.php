@@ -26,6 +26,12 @@ abstract class WriteableAbstract extends ReadableAbstract
      */
     public function set($keys, $equal = null)
     {
+        if ($this->scalar() === true) {
+             $this->shared = $keys;
+
+            return $this;
+        }
+
         if (is_array($keys) && $equal === null) {
             $this->shared = array_replace($this->shared, $keys);
         } else {
@@ -45,6 +51,10 @@ abstract class WriteableAbstract extends ReadableAbstract
      */
     public function __set($key, $equal)
     {
+        if ($this->scalar() === true) {
+             return $this->set($equal);
+        }
+
         return $this->set($key, $equal);
     }
 
@@ -55,8 +65,14 @@ abstract class WriteableAbstract extends ReadableAbstract
      *
      *  @return \Panda\Essence\WriteableAbstract
      */
-    public function replace(array $shared = [])
+    public function replace($shared = [])
     {
+        if ($this->scalar() === true) {
+            $this->set($shared);
+        
+            return $this;
+        }
+
         $this->shared = array_replace($this->shared, $shared);
 
         return $this;
@@ -70,6 +86,10 @@ abstract class WriteableAbstract extends ReadableAbstract
      */
     public function push($keys, $equal = null)
     {
+        if ($this->scalar() === true) {
+            return $this->set($keys);
+        }
+
         $makeable = function($key, $equal) {
             if (strpos($key, '.') === false) {
                 $this->shared[$key] = $equal;

@@ -60,6 +60,21 @@ abstract class Intelligent extends Essence
     protected $time         = 'H:i:s';
 
     /**
+     *  @var string
+     */
+    protected $type         = 'hash';
+
+    /**
+     *  @var string
+     */
+    protected $serial       = 'json';
+
+    /**
+     *  @var string
+     */
+    protected $crypt        = true;
+
+    /**
      *  @var array
      */
     protected $shared       = [];

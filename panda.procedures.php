@@ -2,6 +2,9 @@
 
 // Procedures call
 
+define("is",   "is");
+define("with", "with");
+
 if (
     !function_exists('panda_iterator')
 ) {

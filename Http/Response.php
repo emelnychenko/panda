@@ -333,7 +333,7 @@ class Response implements Factory
      */
     public function __toString()
     {
-        foreach ($this->header->arrayable() as $key => $equal) {
+        foreach ($this->header->shared() as $key => $equal) {
             header(sprintf('%s: %s', $key, $equal));
         }
 
