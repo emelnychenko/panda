@@ -164,7 +164,7 @@ class Client implements Factory
 
         $query  = [];
 
-        foreach ($this->query->arrayable() as $key => $value) {
+        foreach ($this->query->shared() as $key => $value) {
             array_push($query, sprintf('%s=%s', urldecode($key), urldecode($value)));
         }
 
