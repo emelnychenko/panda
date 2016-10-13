@@ -54,9 +54,15 @@ class Statement
      * 
      *  @return array
      */
-    public function one()
+    public function one($col = null)
     {
-        return $this->statement->fetch(PDO::FETCH_ASSOC);
+        $data = $this->statement->fetch(PDO::FETCH_ASSOC);
+
+        if ($col !== null) {
+            return array_key_exists($col, $data) ? $data[$col] : null;
+        }
+
+        return $data;
     }
     /**
      *  Override PDOStatement::fetchAll if query not executed.
