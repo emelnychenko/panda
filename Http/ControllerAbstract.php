@@ -25,19 +25,35 @@ abstract class ControllerAbstract extends Swimmer implements Factory
 {
     protected $applique;
 
-    public function __construct(Applique $applique = null)
+    public function __construct(Applique $app = null)
     {
-        $this->applique = $applique;
+        $this->applique = $app;
     }
 
-    public static function factory(Applique $applique = null)
+    public static function factory(Applique $app = null)
     {
-        return new static($applique);
+        return new static($app);
     }
 
-    public function request()
+    public function app()
     {
-        return $this->applique->router()->request();
+        return $this->applique;
+    }
+
+    public function invoke($service)
+    {
+        return $this->app()->invoke($service);
+    }
+
+    public function request($key = null, $def = null)
+    {
+        $request = $this->invoke('router')->request();
+
+        if ($key !== null) {
+            return $request->get($key, $def);
+        }
+
+        return $request;
     }
 
     public function session($container = 'panda.app')
@@ -70,7 +86,7 @@ abstract class ControllerAbstract extends Swimmer implements Factory
         array $headers      = []
     ) {
         return $this->html(
-            $this->applique->view()->compile(
+            $this->invoke('view')->compile(
                 $path, $shared, $prevent
             )->render(), $status, $headers
         );
