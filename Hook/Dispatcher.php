@@ -64,14 +64,18 @@ class Dispatcher
         ksort(
             $this->chain[$event]
         );
+        
+        $response = null;
 
         foreach ($this->chain[$event] as $prioriy => $events) {
             foreach ($events as $callable) {
-                call_user_func($callable, $payload->payload(), $payload);
+                $response = call_user_func($callable, $payload->payload(), $payload);
 
                 if ($payload->prevented()) break;
             }
         }
+        
+        return $response;
     }
 
     private function prioritize($priority = 500)
