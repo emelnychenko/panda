@@ -17,37 +17,37 @@ class Quering
 {
     /**
      *  @const SELECT
-     */ 
+     */
     const SELECT = 'SELECT';
 
     /**
      *  @const INSERT
-     */ 
+     */
     const INSERT = 'INSERT';
 
     /**
      *  @const UPDATE
-     */ 
+     */
     const UPDATE = 'UPDATE';
 
     /**
      *  @const DELETE
-     */ 
+     */
     const DELETE = 'DELETE';
 
     /**
      *  @var string
-     */ 
+     */
     protected $statement;
 
     /**
      *  @var string
-     */ 
+     */
     protected $table;
 
     /**
      *  @var array
-     */ 
+     */
     protected $columns  = [];
 
     /**
@@ -97,7 +97,7 @@ class Quering
 
     /**
      *  @return \Panda\SQL\Query
-     */ 
+     */
     public static function factory()
     {
         return new static;
@@ -107,7 +107,7 @@ class Quering
      *  Set SELECT statement.
      *
      *  @return \Panda\SQL\Query
-     */ 
+     */
     public function select($column = ['*'])
     {
         $this->columns = is_array($column) ? $column : func_get_args();
@@ -121,7 +121,7 @@ class Quering
      *  Set INSERT statement and table oriented.
      *
      *  @return \Panda\SQL\Query
-     */ 
+     */
     public function insert($table, $alias = null)
     {
         $this->statement = static::INSERT; $this->from($table, $alias);
@@ -133,7 +133,7 @@ class Quering
      *  Set UPDATE statement and table oriented.
      *
      *  @return \Panda\SQL\Query
-     */ 
+     */
     public function update($table, $alias = null)
     {
         $this->statement = static::UPDATE; $this->from($table, $alias);
@@ -145,7 +145,7 @@ class Quering
      *  Set DELETE statement.
      *
      *  @return \Panda\SQL\Query
-     */ 
+     */
     public function delete()
     {
         $this->statement = static::DELETE;
@@ -157,7 +157,7 @@ class Quering
      *  Get $this->statement value.
      *
      *  @return string
-     */ 
+     */
     public function statement()
     {
         return $this->statement;
@@ -167,7 +167,7 @@ class Quering
      *  Set table [, alias] value.
      *
      *  @return \Panda\SQL\Query
-     */ 
+     */
     public function from($table, $alias = null)
     {
         $this->table = $alias === null ? $table : sprintf('%s AS %s', $table, $alias);
@@ -210,11 +210,11 @@ class Quering
         foreach ($conditions as $column => $equal) {
             array_push($condition, sprintf("%s = %s", $column, $equal));
         }
-        
+
         $this->join[] = sprintf(
                 "%s JOIN %s AS %s ON %s", $modifier, $table, $alias, implode(", ", $condition)
             );
-        
+
         return $this;
     }
 
@@ -222,7 +222,7 @@ class Quering
      *  Get, set $this->where value.
      *
      *  @return \Panda\Database\Quering
-     */ 
+     */
     public function where($columns = null, $equal = null)
     {
         if ($columns === null) return $this;
@@ -244,7 +244,7 @@ class Quering
      *  Get, set $this->having value.
      *
      *  @return mixed
-     */ 
+     */
     public function having($columns = null, $equal = null)
     {
         if ($columns === null) return $this;
@@ -266,8 +266,8 @@ class Quering
      *  Get, set $this->group value.
      *
      *  @return mixed
-     */ 
-    public function group($column = null) 
+     */
+    public function group($column = null)
     {
         if ($column !== null) {
             $column = is_array($column) ? $column : [$column];
@@ -282,8 +282,8 @@ class Quering
      *  Get, set $this->order.
      *
      *  @return mixed
-     */ 
-    public function order($column = null, $sort = 'asc') 
+     */
+    public function order($column = null, $sort = 'asc')
     {
         if ($column !== null) {
             $columns = is_array($column) ? $column : [$column => 'asc'];
@@ -300,8 +300,8 @@ class Quering
      *  Get set $this->limit, and set $offset.
      *
      *  @return mixed
-     */ 
-    public function limit($limit = null, $offset = null) 
+     */
+    public function limit($limit = null, $offset = null)
     {
         if ($limit !== null) {
             $this->limit = $limit;
@@ -318,8 +318,8 @@ class Quering
      *  Get set $this->offset.
      *
      *  @return mixed
-     */ 
-    public function offset($offset = null) 
+     */
+    public function offset($offset = null)
     {
         if ($offset !== null) {
             $this->offset = $offset;
@@ -332,14 +332,14 @@ class Quering
      *  Get set $this->bind.
      *
      *  @return string
-     */ 
+     */
     public function bind($column = null, $equal = null)
     {
         // if ($column === null) {
         //     return $this->bind;
         // }
 
-        $hash = ':' . uniqid();
+        $hash = ':' . uniqid(rand(10000,99999));
 
         if ($equal === null) {
             $this->bind[$hash] = $column;
@@ -361,7 +361,7 @@ class Quering
      *  Gather query string.
      *
      *  @return string
-     */ 
+     */
     public function __toString()
     {
         if ($this->statement === static::SELECT) {
@@ -386,7 +386,7 @@ class Quering
                 $this->joining('INSERT INTO', 'table',    ', '),
                 $columns,
                 $this->joining('VALUES', $values,         ', '),
-            ]; 
+            ];
         }
 
         if ($this->statement === static::UPDATE) {
@@ -430,7 +430,7 @@ class Quering
      *  Joining helper method.
      *
      *  @return string
-     */ 
+     */
     protected function joining($clause, $property = null, $implode = ', ')
     {
         if ($property === null) return $clause;
