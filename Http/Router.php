@@ -24,37 +24,37 @@ class Router implements RouterInterface, Factory
 {
     /**
      *  @var string
-     */ 
+     */
     protected $separator    = '::';
 
     /**
      *  @var string
-     */ 
+     */
     protected $capture      = '[a-zA-Z0-9\$\-\_\.\+\!\*\'\(\)]+';
 
     /**
      *  @var \Panda\Essence\Writeable
-     */ 
+     */
     protected $route;
 
     /**
      *  @var \Panda\Essence\Writeable
-     */ 
+     */
     protected $error;
 
     /**
      *  @var \Panda\Essence\Writeable
-     */ 
+     */
     protected $guard;
 
     /**
      *  @var array
-     */ 
+     */
     protected $expansion = [];
 
     /**
      *  @var \Panda\Http\RequestInterface
-     */ 
+     */
     protected $request;
 
     /**
@@ -250,7 +250,7 @@ class Router implements RouterInterface, Factory
 
         foreach($all as $identifier => $essence) {
             if (preg_match($this->capture($essence['url']), $url, $matches)) {
-                
+
                 array_shift($matches); foreach ($matches as $key => $value) {
                     if ($value === '') unset($matches[$key]);
                 }
@@ -278,11 +278,11 @@ class Router implements RouterInterface, Factory
         if (array_key_exists('guard', $essence)) {
             foreach ($this->guard->only($essence['guard']) as $guard) {
                 $instance = $guard::factory($applique);
-                
+
                 $response = call_user_func_array([$instance, 'inspect'], $matches);
 
                 if ($instance->passed() === false) {
-                    return $response; 
+                    return $response;
                 }
             }
         }
@@ -290,12 +290,12 @@ class Router implements RouterInterface, Factory
         if (is_string($essence['handler'])) {
             list($controller, $event) = explode($this->separator, $essence['handler']);
 
-            $controller = array_key_exists('namespace', $essence) ? 
+            $controller = array_key_exists('namespace', $essence) ?
                 sprintf('%s\\%s', $essence['namespace'], $controller) : $controller;
 
             return call_user_func_array([$controller::factory($applique), $event], $matches);
         }
-        
+
         return call_user_func_array($essence['handler'], $matches);
     }
 
@@ -319,7 +319,7 @@ class Router implements RouterInterface, Factory
             if ($essence === 'error') {
                 $this->{$essence}->set($url, $shared);
             } else {
-                $this->{$essence}->set(uniqid(), $shared);
+                $this->{$essence}->set(uniqid(rand(100000,999999)), $shared);
             }
         }
     }
