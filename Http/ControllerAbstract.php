@@ -35,14 +35,18 @@ abstract class ControllerAbstract extends Swimmer implements Factory
         return new static($app);
     }
 
-    public function app()
+    public function app($service = null)
     {
+        if ($service !== null) {
+            return $this->applique->invoke($service);
+        }
+
         return $this->applique;
     }
 
     public function invoke($service)
     {
-        return $this->app()->invoke($service);
+        return $this->app($service);
     }
 
     public function request($key = null, $def = null)
@@ -63,26 +67,26 @@ abstract class ControllerAbstract extends Swimmer implements Factory
 
     public function html($content, $status = 200, array $headers = array())
     {
-        return Response::html($content, $status, $headers); 
+        return Response::html($content, $status, $headers);
     }
 
     public function text($content, $status = 200, array $headers = array())
     {
-        return Response::text($content, $status, $headers); 
+        return Response::text($content, $status, $headers);
     }
 
     public function json($content, $status = 200, array $headers = array())
     {
         return Response::json(
             json_encode($content, JSON_PRETTY_PRINT), $status, $headers
-        ); 
+        );
     }
 
     public function view(
-        $path, 
-        array $shared       = [], 
-        $prevent            = false, 
-        $status             = 200, 
+        $path,
+        array $shared       = [],
+        $prevent            = false,
+        $status             = 200,
         array $headers      = []
     ) {
         return $this->html(
