@@ -22,62 +22,62 @@ class Client implements Factory
 {
     /**
      *  @var string
-     */ 
+     */
     protected $protocol     = 'http';
 
     /**
      *  @var string
-     */ 
+     */
     protected $host         = '127.0.0.1';
 
     /**
      *  @var string
-     */ 
+     */
     protected $port         = 80;
 
     /**
      *  @var string
-     */ 
+     */
     protected $uri          = '/';
 
     /**
      *  @var string
-     */ 
+     */
     protected $url          = '/';
 
     /**
      *  @var string
-     */ 
+     */
     protected $hash;
 
     /**
      *  @var string
-     */ 
+     */
     protected $method   = 'GET';
 
     /**
      *  @var string
-     */ 
+     */
     protected $timeout  = 10;
 
     /**
      *  @var string
-     */ 
+     */
     protected $ca;
 
     /**
      *  @var string
-     */ 
+     */
     protected $query;
 
     /**
      *  @var string
-     */ 
-    protected $header   = [];
+     */
+    protected $header = [];
 
     /**
      *  @var string
-     */ 
+     */
     protected $body;
 
     public function __construct($url = null, $port = null)
@@ -86,7 +86,8 @@ class Client implements Factory
             throw new Narrator('Url parameter empty of not string');
         }
 
-        $this->query  = Essence::factory();
+        $this->query    = Essence::factory();
+        $this->header   = Essence::factory();
         // $this->header = Essence::factory();
 
         preg_match('/^(http|https):\/\/([a-z0-9A-Z\-\.]+)(\:[0-9]+|)/i', $url, $matches);
@@ -103,13 +104,13 @@ class Client implements Factory
 
         if ($this->port === '') {
             $this->port = $this->protocol === 'https' ? 443 : 80;
-        } 
+        }
 
         $this->uri      = ($uri  = strtok($fullpath, '#')) === false ? '/' : $uri;
 
         $this->hash     = ($hash = strtok('#')) === false ? null : $hash;
 
-        $this->url      = strtok($this->uri, '?');  
+        $this->url      = strtok($this->uri, '?');
 
         $query          = ($query = strtok('?')) === false ? null : $query;
 
@@ -200,9 +201,10 @@ class Client implements Factory
         return $this;
     }
 
-    public function header($header)
+    public function header($name, $equal = null)
     {
-        $this->header = [$header];
+        $this->header->set($name, $equal);
+
         return $this;
     }
 
@@ -238,6 +240,19 @@ class Client implements Factory
         return $this->send('DELETE');
     }
 
+    protected function join_h()
+    {
+        $shared = [];
+
+        foreach ($this->header->shared() as $name => $equal) {
+            array_push(
+                $shared, sprintf('%s: %s', $name, $equal)
+            );
+        }
+
+        return $shared;
+    }
+
     public function send($method = 'GET')
     {
         $curl = curl_init();
@@ -245,7 +260,7 @@ class Client implements Factory
         curl_setopt_array($curl, [
             CURLOPT_URL             => $this->url(),
             CURLOPT_RETURNTRANSFER  => 1,
-            CURLOPT_HTTPHEADER      => $this->header,
+            CURLOPT_HTTPHEADER      => $this->join_h(),
             CURLOPT_CONNECTTIMEOUT  => $this->timeout,
             CURLOPT_TIMEOUT         => $this->timeout,
         ]);
