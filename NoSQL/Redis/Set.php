@@ -16,10 +16,10 @@ namespace Panda\NoSQL\Redis;
  */
 abstract class Set extends \Panda\NoSQL\Redis
 {
-    /**
-     *  @var string
-     */
-    protected $table        = null;
+    public static function find($key = null)
+    {
+        return static::all($key);
+    }
 
     /**
      *  @return \Panda\NoSQL\RedisAbstract
@@ -56,7 +56,7 @@ abstract class Set extends \Panda\NoSQL\Redis
         $inset = array_search($val, $this->shared, true);
 
         if ($inset === false) {
-            array_push($this->shared, $this->shared);
+            array_push($this->shared, $val);
 
             $this->adapter()->sAdd($this->key, $val);
         }
