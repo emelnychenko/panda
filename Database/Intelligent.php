@@ -92,9 +92,11 @@ abstract class Intelligent extends Essence
 
     public static function create($shared = null, $equal = null)
     {
-        $this->objected($shared, $equal);
+        $unit = static::factory();
 
-        return static::factory()->insert(
+        $unit->objected($shared, $equal);
+
+        return $unit->insert(
             $shared, $equal
         );
     }
