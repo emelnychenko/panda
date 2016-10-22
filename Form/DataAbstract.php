@@ -8,6 +8,7 @@
 
 namespace Panda\Form;
 
+use Panda\Http\RequestInterface;
 use Panda\Alloy\Factory;
 use Panda\Form\Data\Input as Input;
 use Panda\Essence\ReadableAbstract;
@@ -21,17 +22,17 @@ class DataAbstract extends ReadableAbstract implements Factory
 {
     /**
      *  @var bool
-     */ 
+     */
     protected $valid        = true;
 
     /**
      *  @var array
-     */ 
+     */
     protected $error        = [];
 
     /**
      *  @var array
-     */ 
+     */
     protected $shared       = [];
 
     /**
@@ -205,5 +206,12 @@ class DataAbstract extends ReadableAbstract implements Factory
         }
 
         return $shared;
+    }
+
+    public function requested(RequestInterface $request)
+    {
+        return $this->set(
+            $request->all()
+        )->validate()->valid();
     }
 }
