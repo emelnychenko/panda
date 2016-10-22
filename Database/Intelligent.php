@@ -10,6 +10,7 @@ namespace Panda\Database;
 
 use Panda\Database\Quering;
 
+use Panda\Form\DataAbstract         as Form;
 use Panda\Essence\WriteableAbstract as Essence;
 
 /**
@@ -72,17 +73,17 @@ abstract class Intelligent extends Essence
     /**
      *  @var string
      */
-    protected $created_at   = 'created_at';
+    protected $created_at   = 'create_time';
 
     /**
      *  @var string
      */
-    protected $updated_at   = 'updated_at';
+    protected $updated_at   = 'update_time';
 
     /**
-     *  @var string
+     *  @var boolean
      */
-    protected $indb         = false;
+    protected $isset        = false;
 
     public static function factory()
     {
@@ -91,6 +92,8 @@ abstract class Intelligent extends Essence
 
     public static function create($shared = null, $equal = null)
     {
+        $this->objected($shared, $equal);
+
         return static::factory()->insert(
             $shared, $equal
         );
@@ -98,9 +101,9 @@ abstract class Intelligent extends Essence
 
     /**
      *  Custom request template for select one unit
-     * 
-     *  @param  callable $callback 
-     *  
+     *
+     *  @param  callable $callback
+     *
      *  @return mixed
      */
     public static function one_query(callable $callback)
@@ -115,7 +118,7 @@ abstract class Intelligent extends Essence
 
         if (empty($fetch) === true) return null;
 
-        $self->indb = true;
+        $self->isset = true;
 
         return $self->originate($fetch);
     }
@@ -137,9 +140,9 @@ abstract class Intelligent extends Essence
 
     /**
      *  Use template for select one unit
-     * 
-     *  @param  callable $callback 
-     *  
+     *
+     *  @param  callable $callback
+     *
      *  @return mixed
      */
     public static function one($condition = null, $order = null, $offset = null)
@@ -156,9 +159,9 @@ abstract class Intelligent extends Essence
 
     /**
      *  Custom method for selection array of unit
-     * 
-     *  @param  callable $callback 
-     *  
+     *
+     *  @param  callable $callback
+     *
      *  @return mixed
      */
     public static function by_query(callable $callback)
@@ -175,7 +178,7 @@ abstract class Intelligent extends Essence
 
         $collection = [];
 
-        $self->indb = true;
+        $self->isset = true;
 
         foreach ($fetches as $fetch) {
             array_push($collection, clone $self->originate($fetch));
@@ -185,9 +188,9 @@ abstract class Intelligent extends Essence
 
     /**
      *  Custom method for selection array of unit
-     * 
-     *  @param  callable $callback 
-     *  
+     *
+     *  @param  callable $callback
+     *
      *  @return mixed
      */    }
 
@@ -205,9 +208,9 @@ abstract class Intelligent extends Essence
 
     /**
      *  Custom method for selection all of unit
-     * 
-     *  @param  callable $callback 
-     *  
+     *
+     *  @param  callable $callback
+     *
      *  @return mixed
      */
     public static function all()
@@ -221,9 +224,9 @@ abstract class Intelligent extends Essence
 
     /**
      *  Custom method for selection array of unit
-     * 
-     *  @param  callable $callback 
-     *  
+     *
+     *  @param  callable $callback
+     *
      *  @return mixed
      */
     public function select(Quering $query = null, $column = ['*'])
@@ -235,7 +238,7 @@ abstract class Intelligent extends Essence
 
     public function insert($shared = null, $equal = null)
     {
-        if ($this->indb === true) return $this;
+        if ($this->isset === true) return $this;
 
         if ($shared !== null) {
             $this->replace(
@@ -257,14 +260,16 @@ abstract class Intelligent extends Essence
 
         $this->originate();
 
-        $this->indb === true;
+        $this->isset === true;
 
         return $this;
     }
 
     public function update($shared = null, $equal = null)
     {
-        if ($this->indb === false) return $this;
+        if ($this->isset === false) return $this;
+
+        $this->objected($shared, $equal);
 
         if ($shared !== null) {
             $this->replace(
@@ -303,7 +308,7 @@ abstract class Intelligent extends Essence
 
     public function delete()
     {
-        if ($this->indb === false) return $this;
+        if ($this->isset === false) return $this;
 
         $shared = $this->origin; $condition = $this->primary($shared);
 
@@ -311,14 +316,14 @@ abstract class Intelligent extends Essence
             $q->delete()->from($this->table)->where($condition);
         });
 
-        $this->indb === false;
+        $this->isset === false;
 
         return $this;
     }
 
     public function save()
     {
-        if ($this->indb === false) {
+        if ($this->isset === false) {
             return $this->insert();
         }
 
@@ -336,14 +341,16 @@ abstract class Intelligent extends Essence
     }
 
     /**
-     *  
-     *  
+     *
+     *
      *  @param  mixed $shared
-     *  
+     *
      *  @return Intelligent
      */
     public function fill($shared)
     {
+        $this->objected($shared, $equal);
+
         $this->replace($shared);
 
         return $this;
@@ -424,12 +431,21 @@ abstract class Intelligent extends Essence
 
     public function adapter()
     {
-        $adapter = Manager::get($this->adapter);
+        static $adapter = null;
 
         if ($adapter === null) {
             //
+            $adapter = Manager::get($this->adapter);
         }
 
         return $adapter;
+    }
+
+    protected function objected(&$shared, $equal = null)
+    {
+        if (is_object($shared) && is_subclass_of($shared, Form::class) === true)
+            $shared = is_array($equal) === false ? $shared->all() : array_replace(
+                $shared->all(), $equal
+            );
     }
 }
