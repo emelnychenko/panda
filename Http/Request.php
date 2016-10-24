@@ -18,7 +18,7 @@ use Panda\Essence\Readable              as Essence;
  *
  *  @subpackage Http
  */
-class Request extends Essence implements RequestInterface, Factory
+class Request extends \Panda\Essence\ReadableAbstract implements RequestInterface, Factory
 {
     /**
      *  @var \Panda\Essence\Readable
@@ -53,10 +53,10 @@ class Request extends Essence implements RequestInterface, Factory
     /**
      *  Simple constructor.
      *
-     *  @var array $query 
+     *  @var array $query
      *  @var array $request
      *  @var array $files
-     *  @var array $cookie 
+     *  @var array $cookie
      *  @var array $server
      */
     public function __construct(
@@ -98,21 +98,40 @@ class Request extends Essence implements RequestInterface, Factory
             );
         }
 
-        parent::__construct(
-            $this->method() === 'GET' ? $this->query->shared() : $this->request->shared()
-        );
+        $this->shared = $this->{
+            $this->method('is', 'get') ? 'query' : 'request'
+        }->data();
     }
 
     /**
      *  Simple constructor.
      *
-     *  @var array $query 
+     *  @var array $query
      *  @var array $request
      *  @var array $files
-     *  @var array $cookie 
+     *  @var array $cookie
      *  @var array $server
      */
     public static function factory(
+        array $query    = null,
+        array $request  = null,
+        array $files    = null,
+        array $cookie   = null,
+        array $server   = null
+    ) {
+        return new static($query, $request, $files, $cookie, $server);
+    }
+
+    /**
+     *  Simple constructor.
+     *
+     *  @var array $query
+     *  @var array $request
+     *  @var array $files
+     *  @var array $cookie
+     *  @var array $server
+     */
+    public static function init(
         array $query    = null,
         array $request  = null,
         array $files    = null,
@@ -411,7 +430,7 @@ class Request extends Essence implements RequestInterface, Factory
     {
         if (
             preg_match_all(
-                '/([a-z]{1,8}(?:-[a-z]{1,8})?)(?:;q=([0-9.]+))?/', 
+                '/([a-z]{1,8}(?:-[a-z]{1,8})?)(?:;q=([0-9.]+))?/',
                 strtolower(
                     $this->server('HTTP_ACCEPT_LANGUAGE')
                 ),
