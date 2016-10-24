@@ -165,7 +165,7 @@ class Response implements Factory
      */
     public function __construct($content = '', $status = 200, array $header = [])
     {
-        $this->content  = $content; 
+        $this->content  = $content;
         $this->status   = $status;
         $this->header   = Essence::factory($header);
     }
@@ -182,7 +182,7 @@ class Response implements Factory
     public static function factory($content = '', $status = 200, array $header = [])
     {
         return new static($content, $status, $header);
-    } 
+    }
 
     /**
      *  Create text/plain response.
@@ -274,7 +274,7 @@ class Response implements Factory
     {
         if ($status === null) {
             return $this->status;
-        } 
+        }
 
         $this->status = $status;
 
@@ -333,9 +333,9 @@ class Response implements Factory
      */
     public function __toString()
     {
-        foreach ($this->header->shared() as $key => $equal) {
-            header(sprintf('%s: %s', $key, $equal));
-        }
+        $this->header->data(function($key, $value) {
+            header(sprintf('%s: %s', $key, $value));
+        });
 
         http_response_code(
             $this->status
