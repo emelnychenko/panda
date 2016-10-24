@@ -168,6 +168,19 @@ class Router implements RouterInterface, Factory
     }
 
     /**
+     *  Register route for DELETE method.
+     *
+     *  @var mixed $url
+     *  @var mixed $handler
+     *
+     *  @return \Panda\Http\Router
+     */
+    public function del($url, $handler = null)
+    {
+        return $this->add(['DELETE'], $url, $handler);
+    }
+
+    /**
      *  Register route for DENIED method.
      *
      *  @var mixed $url
@@ -245,7 +258,7 @@ class Router implements RouterInterface, Factory
     {
         $url = $this->request()->path();
         $all = array_merge(
-            $this->route->all(), $this->error->except('*'), $this->error->only('*')
+            $this->route->data(), $this->error->except('*'), $this->error->only('*')
         );
 
         foreach($all as $identifier => $essence) {
