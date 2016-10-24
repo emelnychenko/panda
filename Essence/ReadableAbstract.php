@@ -118,7 +118,7 @@ abstract class ReadableAbstract
         }
 
         if (!is_array($keys)) {
-            $keys       = func_get_args(); 
+            $keys       = func_get_args();
             $fillable   = null;
         }
 
@@ -188,7 +188,9 @@ abstract class ReadableAbstract
              return isset($this->shared);
         }
 
-        return array_key_exists($key, $this->shared);
+        return array_key_exists(
+            $key, $this->shared
+        );
     }
 
     /**
@@ -196,18 +198,14 @@ abstract class ReadableAbstract
      *
      *  @return array
      */
-    public function shared()
+    public function data(callable $iterator = null)
     {
-        return $this->shared;
-    }
+        if ($iterator !== null) {
+            foreach ($this->shared as $key => $value) {
+                call_user_func($iterator, $key, $value);
+            }
+        }
 
-    /**
-     *  Return shared
-     *
-     *  @return array
-     */
-    public function data()
-    {
         return $this->shared;
     }
 
