@@ -37,14 +37,4 @@ class Readable extends ReadableAbstract implements Factory
     {
         return new static($shared);
     }
-
-    /**
-     *  Return whole shared result.
-     *
-     *  @return array
-     */
-    public function all()
-    {
-        return $this->shared;
-    }
 }
