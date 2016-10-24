@@ -3,7 +3,7 @@
  *
  *
  *
- * 
+ *
  */
 
 namespace Panda\Http\Request;
@@ -28,7 +28,7 @@ class File
     protected $valid    = true;
 
     /**
-     *  
+     *
      */
     public function __construct(array $file = null)
     {
@@ -40,8 +40,8 @@ class File
     }
 
     /**
-     *  
-     * 
+     *
+     *
      *  @return \Panda\File\Upload
      */
     public static function factory(array $file = null)
@@ -51,9 +51,9 @@ class File
 
     /**
      *  #
-     * 
+     *
      *  @param numeric $size
-     * 
+     *
      *  @return mixed
      */
     public function name()
@@ -63,9 +63,9 @@ class File
 
     /**
      *  #
-     * 
+     *
      *  @param numeric $size
-     * 
+     *
      *  @return mixed
      */
     public function file()
@@ -75,9 +75,9 @@ class File
 
     /**
      *  #
-     * 
+     *
      *  @param numeric $size
-     * 
+     *
      *  @return mixed
      */
     public function size()
@@ -86,8 +86,8 @@ class File
     }
 
     /**
-     *  
-     * 
+     *
+     *
      *  @return \Panda\Essence|Readable
      */
     public function mime()
@@ -96,8 +96,8 @@ class File
     }
 
     /**
-     *  
-     * 
+     *
+     *
      *  @return \Panda\Essence|Readable
      */
     public function error()
@@ -106,8 +106,8 @@ class File
     }
 
     /**
-     *  
-     * 
+     *
+     *
      *  @return \Panda\Essence|Readable
      */
     public function temp()
@@ -117,7 +117,7 @@ class File
 
     /**
      *  #
-     * 
+     *
      *  @return bool
      */
     public function valid()
@@ -125,8 +125,13 @@ class File
         return $this->valid;
     }
 
+    public function __get($equal)
+    {
+        return $this->file->get($equal);
+    }
+
     /**
-     *  
+     *
      */
     public function put($destination)
     {
