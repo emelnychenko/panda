@@ -170,6 +170,8 @@ class Quering
      */
     public function from($table, $alias = null)
     {
+        $this->isolate($table);
+
         $this->table = $alias === null ? $table : sprintf('%s AS %s', $table, $alias);
 
         return $this;
@@ -189,6 +191,8 @@ class Quering
         $columns = is_array($column) ? $column : [$column => $equal];
 
         foreach ($columns as $column => $equal) {
+            $this->isolate($column);
+            
             $this->set[$column] = $this->bind($equal);
         }
 
@@ -444,5 +448,27 @@ class Quering
         }
 
         return sprintf("%s %s", $clause, $shared);
+    }
+
+    protected function isolate(&$name)
+    {
+        $delimiter = strpos($name, '`');
+
+        if ($delimiter !== false)
+            return $name;
+
+        $delimiter = strpos($name, '.');
+
+        if ($delimiter !== false)
+            return $name = sprintf('`%s`', $name);
+
+
+        $partial = explode('.', $name);
+
+        foreach ($partial as &$word) {
+            $word = sprintf('`%s`', $word);
+        }
+
+        return $name = implode('.', $partial);
     }
 }
