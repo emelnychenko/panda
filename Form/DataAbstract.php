@@ -210,8 +210,8 @@ class DataAbstract extends ReadableAbstract implements Factory
 
     public function requested(RequestInterface $request)
     {
-        return $this->set(
-            $request->all()
-        )->validate()->valid();
+        $data = $request->data();
+        
+        return $this->set($data)->validate()->valid();
     }
 }
