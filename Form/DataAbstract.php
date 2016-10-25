@@ -191,13 +191,13 @@ class DataAbstract extends ReadableAbstract implements Factory
     {
         return array_key_exists($input, $this->shared);
     }
-
+    
     /**
      *  comment ...
      *
      *  @return array
      */
-    public function all()
+    public function data()
     {
         $shared = [];
 
@@ -206,6 +206,16 @@ class DataAbstract extends ReadableAbstract implements Factory
         }
 
         return $shared;
+    }
+
+    /**
+     *  comment ...
+     *
+     *  @return array
+     */
+    public function all()
+    {
+        return $this->data();
     }
 
     public function requested(RequestInterface $request)
