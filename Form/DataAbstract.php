@@ -191,18 +191,24 @@ class DataAbstract extends ReadableAbstract implements Factory
     {
         return array_key_exists($input, $this->shared);
     }
-    
+
     /**
      *  comment ...
      *
      *  @return array
      */
-    public function data()
+    public function data(callable $iterator = null)
     {
         $shared = [];
 
         foreach ($this->shared as $name => $input) {
             $shared[$name] = $input->get();
+        }
+
+        if ($iterator !== null) {
+            foreach ($shared as $name => $input) {
+                call_user_func($iterator, $name, $input);
+            }
         }
 
         return $shared;
@@ -221,7 +227,7 @@ class DataAbstract extends ReadableAbstract implements Factory
     public function requested(RequestInterface $request)
     {
         $data = $request->data();
-        
+
         return $this->set($data)->validate()->valid();
     }
 }
