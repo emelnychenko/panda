@@ -86,8 +86,8 @@ class Client implements Factory
             throw new Narrator('Url parameter empty of not string');
         }
 
-        $this->query    = Essence::factory();
-        $this->header   = Essence::factory();
+        $this->query    = Essence::factory([]);
+        $this->header   = Essence::factory([]);
         // $this->header = Essence::factory();
 
         preg_match('/^(http|https):\/\/([a-z0-9A-Z\-\.]+)(\:[0-9]+|)/i', $url, $matches);
@@ -165,9 +165,9 @@ class Client implements Factory
 
         $query  = [];
 
-        foreach ($this->query->shared() as $key => $value) {
+        $this->query->data(function($key, $value) use (&$query) {
             array_push($query, sprintf('%s=%s', $key, urlencode($value)));
-        }
+        });
 
         if (empty($query) === false) {
             $urlize = array_merge($urlize, [
@@ -244,11 +244,11 @@ class Client implements Factory
     {
         $shared = [];
 
-        foreach ($this->header->shared() as $name => $equal) {
+        $this->header->data(function($name, $equal) use (&$shared) {
             array_push(
                 $shared, sprintf('%s: %s', $name, $equal)
             );
-        }
+        });
 
         return $shared;
     }
