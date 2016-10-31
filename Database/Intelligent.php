@@ -262,7 +262,7 @@ abstract class Intelligent extends Essence
 
         $this->originate();
 
-        $this->isset === true;
+        $this->isset = true;
 
         return $this;
     }
@@ -318,7 +318,7 @@ abstract class Intelligent extends Essence
             $q->delete()->from($this->table)->where($condition);
         });
 
-        $this->isset === false;
+        $this->isset = false;
 
         return $this;
     }
