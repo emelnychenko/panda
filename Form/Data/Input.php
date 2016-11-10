@@ -47,7 +47,7 @@ class Input implements Factory
 
     /**
      *  Get input value
-     * 
+     *
      *  @return scalar
      */
     public function get()
@@ -57,9 +57,9 @@ class Input implements Factory
 
     /**
      *  Get readonly values.
-     * 
+     *
      *  @param  scalar
-     *  
+     *
      *  @return mixed
      */
     public function __get($key)
@@ -69,12 +69,12 @@ class Input implements Factory
 
     /**
      *  Set input value.
-     * 
+     *
      *  @param scalar
      */
     public function set($equal)
     {
-        $this->equal = strip_tags(trim($equal));
+        $this->equal = $equal;
 
         return $this;
     }
@@ -99,7 +99,7 @@ class Input implements Factory
 
     /**
      *  Sanitize whole filters stack and set equal.
-     * 
+     *
      *  @return \Panda\Form\Data\Input
      */
     public function sanitize()
@@ -119,7 +119,7 @@ class Input implements Factory
 
     /**
      *  Validate whole filters stack and write report.
-     * 
+     *
      *  @return \Panda\Form\Data\Input
      */
     public function validate()
@@ -143,10 +143,10 @@ class Input implements Factory
 
     /**
      *  Update filters stack with associative names.
-     * 
+     *
      *  @param  mixed $filter
      *  @param  mixed $helper
-     * 
+     *
      *  @return \Panda\Form\Data\Input
      */
     public function filter($filter, $helper = null)
@@ -177,7 +177,7 @@ class Input implements Factory
     /**
      *  @param  mixed $filter
      *  @param  mixed $message
-     *  
+     *
      *  @return \Panda\Form\Data\Input
      */
     public function error($filter = null, $message = null)
