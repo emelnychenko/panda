@@ -263,7 +263,6 @@ class Router implements RouterInterface, Factory
 
         foreach($all as $identifier => $essence) {
             if (preg_match($this->capture($essence['url']), $url, $matches)) {
-
                 array_shift($matches); foreach ($matches as $key => $value) {
                     if ($value === '') unset($matches[$key]);
                 }
@@ -364,7 +363,7 @@ class Router implements RouterInterface, Factory
     protected function capture($url)
     {
         $xor = str_replace(
-            ['/', '[', ']', '*'], ['\/', '(|', ')', '(.*?)'], $url
+            ['/', '[', ']', '*'], ['\/', '(|', ')', '.*?'], $url
         );
 
         $all = preg_replace(
