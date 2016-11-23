@@ -363,7 +363,7 @@ class Router implements RouterInterface, Factory
     protected function capture($url)
     {
         $xor = str_replace(
-            ['/', '[', ']', '*'], ['\/', '(|', ')', '.*?'], $url
+            ['/', '[', ']', '*'], ['\/', '(|', ')', $this->capture], $url
         );
 
         $all = preg_replace(
