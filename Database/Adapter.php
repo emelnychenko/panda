@@ -21,7 +21,7 @@ abstract class Adapter
 {
     /**
      *  @const MYSQL
-     */ 
+     */
     const MYSQL     = 'mysql';
 
     /**
@@ -56,7 +56,7 @@ abstract class Adapter
      *      'username'  => '',
      *      'password'  => '',
      *  );
-     * 
+     *
      *  @var array $conf
      */
     public function __construct(array $config = null)
@@ -69,7 +69,7 @@ abstract class Adapter
 
     /**
      *  Factory static method for creating self instance, set prototype and fast connect.
-     * 
+     *
      *  @var array  $conf
      *  @var mixed  $prototype
      *  @var bool   $connect
@@ -87,7 +87,7 @@ abstract class Adapter
 
     /**
      *  Method for set username value with safe base64 encoding.
-     * 
+     *
      *  @var string $username
      *
      *  @return \Blink\Database\AdapterProvider
@@ -101,7 +101,7 @@ abstract class Adapter
 
     /**
      *  Method for set password value with safe base64 encoding.
-     * 
+     *
      *  @var string $username
      *
      *  @return \Blink\Database\AdapterProvider
@@ -124,8 +124,8 @@ abstract class Adapter
             !isset($this->instance)
         ) {
             $this->instance = new PDO(
-                $this->data_src_name(), 
-                base64_decode($this->username), 
+                $this->data_src_name(),
+                base64_decode($this->username),
                 base64_decode($this->password),
                 array(
                     PDO::ATTR_PERSISTENT => true
@@ -133,11 +133,11 @@ abstract class Adapter
             );
 
             $this->instance->setAttribute(
-                PDO::ATTR_ERRMODE, 
+                PDO::ATTR_ERRMODE,
                 PDO::ERRMODE_EXCEPTION
             );
         }
-        
+
         return $this;
     }
 
@@ -154,16 +154,16 @@ abstract class Adapter
                     $instance->query($decission, PDO::FETCH_ASSOC), true
                 );
             } elseif (is_callable($decission)) {
-                $quering = Quering::factory();
+                $quering = new \Frame\Database\Query();
 
                 call_user_func($decission, $quering);
 
-                $query = $quering->__toString();
+                $query = $quering->to('string');
 
                 if (empty($query) === false) {
                     $statement = Statement::factory($instance->prepare($query));
 
-                    return $statement->exec($quering->binded());
+                    return $statement->exec($quering->get('bind'));
                 }
             }
         });
@@ -233,13 +233,13 @@ abstract class Adapter
      *  @var array $association
      *  @var Closure $callback
      */
-    protected function __conf_composite(array $conf = null, $association, $callback = null) 
+    protected function __conf_composite(array $conf = null, $association, $callback = null)
     {
         foreach ($association as $argument => $thread) {
             if (
                 isset($conf[$thread])
             ) {
-                $this->{$argument} = isset($callback) ? 
+                $this->{$argument} = isset($callback) ?
                     call_user_func(
                         $callback, $conf[$thread]
                     ) : $conf[$thread];

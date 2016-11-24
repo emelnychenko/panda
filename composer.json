@@ -10,12 +10,14 @@
         }
     ],
     "autoload": {
-        "psr-4": { 
+        "psr-4": {
             "Panda\\": ""
         },
         "files": ["panda.procedures.php"]
     },
     "require": {
-        "php": ">=5.5.0"
+        "php": ">=5.5.0",
+        "bluware/frame"         : "dev-master",
+        "bluware/tdd"           : "dev-master"
     }
 }
