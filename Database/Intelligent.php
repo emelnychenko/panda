@@ -8,7 +8,7 @@
 
 namespace Panda\Database;
 
-use Panda\Database\Quering;
+use Frame\Database\Query;
 
 use Panda\Form\DataAbstract         as Form;
 use Panda\Essence\WriteableAbstract as Essence;
@@ -231,9 +231,9 @@ abstract class Intelligent extends Essence
      *
      *  @return mixed
      */
-    public function select(Quering $query = null, $column = ['*'])
+    public function select(Query $query = null, $column = ['*'])
     {
-        $query = $query === null ? Quering::factory() : $query;
+        $query = $query === null ? Query::factory() : $query;
 
         return $query->select($column)->from($this->table);
     }
