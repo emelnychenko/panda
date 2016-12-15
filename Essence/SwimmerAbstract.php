@@ -18,14 +18,14 @@ abstract class SwimmerAbstract
 {
     /**
      *  @var bool
-     */ 
+     */
     protected $passed = false;
 
     /**
      *  Set false for skipping.
      *
      *  @return \Panda\Essence\SwimmerAbstract
-     */ 
+     */
     public function prevent()
     {
         $this->passed = false;
@@ -37,19 +37,17 @@ abstract class SwimmerAbstract
      *  Set true for skipping.
      *
      *  @return \Panda\Essence\SwimmerAbstract
-     */ 
+     */
     public function pass()
     {
-        $this->passed = true;
-
-        return $this;
+        return null;
     }
 
     /**
      *  Set true for skipping.
      *
      *  @return \Panda\Essence\SwimmerAbstract
-     */ 
+     */
     public function next()
     {
         return $this->pass();
@@ -59,7 +57,7 @@ abstract class SwimmerAbstract
      *  Return floating desiccion
      *
      *  @return bool
-     */ 
+     */
     public function passed()
     {
         return $this->passed;

@@ -13,7 +13,7 @@ use Panda\Essence\Writeable     as Essence;
 use Panda\Bootloader            as Bootloader;
 use Panda\Secure\Guard          as Guard;
 use Panda\Database\Manager      as Database;
-use Panda\Http\Router           as Router;
+use Frame\Routing               as Router;
 use Panda\Http\Request          as Request;
 use Panda\Swift\View            as View;
 use Panda\Console\Bamboo        as Bamboo;
@@ -58,13 +58,14 @@ class Applique
         $this->config = Essence::factory();
         $this->invoke = Essence::factory();
         $this->hoster = Essence::factory();
-        $request      = Request::factory(); 
-        
+        $request      = Request::factory();
+
         $this->register([
             'loader' => Bootloader::class,
             'request'=> $request,
-            'router' => Router::factory($request),
+            'router' => new Router(),
             'bamboo' => Bamboo::class,
+            'request'=> $request,
             'view'   =>   View::class
         ]);
 
@@ -223,6 +224,6 @@ class Applique
      */
     public static function send(Applique $app)
     {
-        echo php_sapi_name() === 'cli' ? $app->bamboo()->run($app) : $app->router()->run($app);
+        echo $app->router()->run($app);
     }
 }

@@ -51,7 +51,7 @@ abstract class ControllerAbstract extends Swimmer implements Factory
 
     public function request($key = null, $def = null)
     {
-        $request = $this->invoke('router')->request();
+        $request = $this->invoke('request');
 
         if ($key !== null) {
             return $request->get($key, $def);
