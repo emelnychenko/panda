@@ -16,6 +16,8 @@ use Panda\Http\Session                  as Session;
 use Panda\Http\Cookie                   as Cookie;
 use Panda\Swift\View                    as View;
 
+use Frame\Http;
+
 /**
  *  Http Controller Abstract
  *
@@ -25,8 +27,12 @@ abstract class ControllerAbstract extends Swimmer implements Factory
 {
     protected $applique;
 
+    protected $request;
+
     public function __construct(Applique $app = null)
     {
+        $this->request  = Http::request();
+
         $this->applique = $app;
     }
 
@@ -49,55 +55,101 @@ abstract class ControllerAbstract extends Swimmer implements Factory
         return $this->app($service);
     }
 
-    public function request($key = null, $def = null)
-    {
-        $request = $this->invoke('request');
-
-        if ($key !== null) {
-            return $request->get($key, $def);
-        }
-
-        return $request;
-    }
-
     public function session($container = 'panda.app')
     {
         return new Session($container);
     }
 
-    public function html($content, $status = 200, array $headers = array())
+    /**
+     *  Fast router implementation.
+     *
+     *  @return mixed
+     */
+    public function request($input = null)
     {
-        return Response::html($content, $status, $headers);
+        if ($input === null)
+            return $this->request;
+
+        $params = func_get_args();
+
+        return call_user_func_array([
+            $this->request, array_shift(
+                $params
+            )
+        ], $params);
     }
 
-    public function text($content, $status = 200, array $headers = array())
-    {
-        return Response::text($content, $status, $headers);
-    }
-
-    public function json($content, $status = 200, array $headers = array())
-    {
-        return Response::json(
-            json_encode($content, JSON_PRETTY_PRINT), $status, $headers
+    /**
+     *  @param  string $input
+     *
+     *  @return mixed
+     */
+    public function response($body, $code = 200, $headers = []) {
+        /**
+         *  @var mixed
+         */
+        return forward_static_call_array(
+            [
+                Http::class,
+                'response'
+            ], func_get_args()
         );
     }
 
+    /**
+     *  @param  string      $url
+     *  @param  integer     $code
+     *  @param  array       $headers
+     *
+     *  @return mixed
+     */
+    public function redirect($url, $code = 200, array $headers = [])
+    {
+        /**
+         *  @var \Frame\Response
+         */
+        return $this->response(
+            'redirect', $url, $code, $headers
+        );
+    }
+
+    /**
+     *  @param  string      $url
+     *  @param  integer     $code
+     *  @param  array       $headers
+     *
+     *  @return mixed
+     */
+    public function goto($url, $code = 200, array $headers = [])
+    {
+        /**
+         *  @var \Frame\Response
+         */
+        return $this->response(
+            'redirect', $url, $code, $headers
+        );
+    }
+
+    /**
+     *  @param  string  $path
+     *  @param  array   $shared
+     *  @param  boolean $prevent
+     *  @param  integer $code
+     *  @param  array   $headers
+     *
+     *  @return mixed
+     */
     public function view(
         $path,
-        array $shared       = [],
-        $prevent            = false,
-        $status             = 200,
-        array $headers      = []
+        array $data   = [],
+        $prevent        = false,
+        $code         = 200,
+        $headers  = []
     ) {
-        return $this->html(
+        return $this->response('html',
             $this->invoke('view')->compile(
-                $path, $shared, $prevent
-            )->render(), $status, $headers
+                $path, $data, $prevent
+            )->render(), $code, $headers
         );
-    }
-
-    public function redirect($url, $status = 303, array $headers = array())
-    {
-        return Response::redirect($url, $status, $headers);
     }
 }

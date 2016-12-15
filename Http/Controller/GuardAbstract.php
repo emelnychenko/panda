@@ -21,9 +21,9 @@ abstract class GuardAbstract extends Controller
 {
     public function __construct(Applique $applique = null)
     {
-        $this->applique = $applique;
-
         $applique->register(get_called_class(), $this);
+
+        parent::__construct($applique);
     }
 
     abstract public function inspect();
