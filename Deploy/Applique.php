@@ -75,7 +75,9 @@ class Applique
 
            Guard::register($this->config->get('defender', null));
            NoSQL::factory($this->config->get('nosql', []));
-        Database::factory($this->config->get('database', []));
+            \Frame\Database::union()->from(
+                'collection', $this->config->get('database', [])
+            );
     }
 
     /**
