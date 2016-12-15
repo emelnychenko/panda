@@ -13,6 +13,7 @@ use Panda\Alloy\Factory;
 use Panda\Form\Data\Input as Input;
 use Panda\Essence\ReadableAbstract;
 
+use Frame\Http\Request;
 /**
  *  Panda Form Data Abstract
  *
@@ -224,7 +225,7 @@ class DataAbstract extends ReadableAbstract implements Factory
         return $this->data();
     }
 
-    public function requested(RequestInterface $request)
+    public function requested(Request $request)
     {
         $data = $request->data();
 
