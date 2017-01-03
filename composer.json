@@ -17,6 +17,6 @@
     },
     "require": {
         "php": ">=5.5.0",
-        "bluware/frame"         : "dev-v1.0.0-*"
+        "bluware/frame"         : "dev-master"
     }
 }
