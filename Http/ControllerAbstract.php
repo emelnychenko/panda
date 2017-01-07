@@ -17,6 +17,7 @@ use Panda\Http\Cookie                   as Cookie;
 use Panda\Swift\View                    as View;
 
 use Frame\Http;
+use Frame\Hook;
 
 /**
  *  Http Controller Abstract
@@ -25,6 +26,8 @@ use Frame\Http;
  */
 abstract class ControllerAbstract extends Swimmer implements Factory
 {
+    use Hook\Mock;
+
     protected $applique;
 
     protected $request;
@@ -34,6 +37,8 @@ abstract class ControllerAbstract extends Swimmer implements Factory
         $this->request  = Http::request();
 
         $this->applique = $app;
+
+        $this->hook     = $this->applique->invoke('hook');
     }
 
     public static function factory(Applique $app = null)
