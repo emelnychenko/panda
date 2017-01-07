@@ -26,5 +26,5 @@ abstract class GuardAbstract extends Controller
         parent::__construct($applique);
     }
 
-    abstract public function inspect();
+    abstract public function before();
 }
