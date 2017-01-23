@@ -15,8 +15,9 @@ use Panda\Secure\Guard          as Guard;
 use Panda\Database\Manager      as Database;
 use Frame\Routing               as Router;
 use Frame\Hook                  as Hook;
+use Frame\View                  as View;
 use Panda\Http\Request          as Request;
-use Panda\Swift\View            as View;
+// use Panda\Swift\View            as View;
 use Panda\Console\Bamboo        as Bamboo;
 use Panda\NoSQL\Manager         as NoSQL;
 
@@ -68,7 +69,7 @@ class Applique
             'bamboo' => Bamboo::class,
             'request'=> $request,
             'view'   =>   View::class,
-            'hook'   =>  new Hook, 
+            'hook'   =>  new Hook,
         ]);
 
         if ($config !== null) {

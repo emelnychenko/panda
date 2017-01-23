@@ -152,7 +152,7 @@ abstract class ControllerAbstract extends Swimmer implements Factory
         $headers  = []
     ) {
         return $this->response('html',
-            $this->invoke('view')->compile(
+            $this->invoke('view')->make(
                 $path, $data, $prevent
             )->render(), $code, $headers
         );
